@@ -70,10 +70,9 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
             }}
           >
             <Router>
-              {!pdf && <Navbar props={initial} />}
+              { <Navbar props={initial} />}
               <Container className="dashboard">
                 <Switch>
-                  <ProtectRoute path="/dashboard" exact component={Spline} />{" "}
                   <ProtectRoute
                     path="/dashboard/registration"
                     exact

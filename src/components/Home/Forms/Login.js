@@ -1,20 +1,27 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
+import Check from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import { login } from "../../../client/client";
 import { useToasts } from "react-toast-notifications";
 import Spinner from "../../Spinner/Spiner";
 import "./form.css";
+import avatar from "../../../assets/coca.png";
+
+
 const style = {
-  maxWidth: 300,
+  width: '400px',
   padding: "20px",
-  borderRadius: "16px",
+  borderRadius: "8px",
+  backgroundColor: "none",
   margin: "auto",
   transition: "0.3s",
-  boxShadow: "0 8px 40px -12px rgba(0,0,0,0.4)",
+  boxShadow: "0 8px 40px -12px rgba(0,0,0,0.1)",
   "&:hover": {
     boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.4)",
   },
@@ -26,9 +33,21 @@ const spinerStyle = {
   gap: "12px",
 };
 
+const logomain = {
+  background:'none',
+  width: '100px',
+  height:'100px',
+  padding: "20px",
+  backgroundColor: "none",
+  margin: "auto",
+  
+
+}
+
 function Login() {
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   //   const [formData, setForm] = useState({});
   const username = useRef("");
@@ -58,10 +77,15 @@ function Login() {
     }
   }
 
+  function handlecheck(){
+    setChecked(!checked)
+}
   return (
     <div className="login-form">
+      {/* <Card style={logomain}>
+      <img className="aimg" src={avatar} alt="" />
+     </Card> */}
       <Card variant="outlined" style={style}>
-        <h3> Sign in </h3>{" "}
         <TextField
           label="Email "
           margin="normal"
@@ -70,7 +94,7 @@ function Login() {
           autoComplete="off"
           fullWidth
           ref={formref}
-        />{" "}
+          />{" "}
         <TextField
           label="Password "
           margin="normal"
@@ -81,12 +105,19 @@ function Login() {
           fullWidth
           ref={formref}
         />{" "}
+
+        <FormControlLabel
+          style={{marginRight:'70px'}}
+          fullWidth
+      control={<Checkbox checked={checked} onChange={handlecheck} />}
+      label="Remember me"
+        />
+        
         <Button
           variant="contained"
-          fullWidth
-          color="primary"
           style={{ marginTop: "1rem" }}
           onClick={handle}
+          style={{color:'#ffff',maxWidth: '100px', maxHeight: '30px', minWidth: '30px', minHeight: '30px',background:"#1F2937"}}
         >
           {loading ? (
             <div style={spinerStyle}>
@@ -95,7 +126,9 @@ function Login() {
           ) : (
             "Login"
           )}{" "}
-        </Button>{" "}
+     
+        </Button>
+      
         <h4>
           <Link to="/reset-password" style={{ textDecoration: "none" }}>
             Forgot password ?

@@ -17,7 +17,6 @@ function index() {
       {" "}
       <div>
         <Router>
-          <Navbar />
           <Container className="main-home">
             <Switch>
               <Route path="/login">
@@ -29,7 +28,6 @@ function index() {
             </Switch>{" "}
           </Container>{" "}
         </Router>{" "}
-        <Footer />
       </div>{" "}
     </>
   );

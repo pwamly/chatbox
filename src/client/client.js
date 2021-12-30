@@ -12,8 +12,10 @@ let access_token;
 let userId;
 let tokenPayload;
 
-const logged = localStorage.getItem("islogged");
-const token = localStorage.getItem("token");
+// const logged = localStorage.getItem("islogged");
+// const token = localStorage.getItem("token");
+const logged = true;
+const token = 'sjbcskclscms;mamcx;aslm;cma;ma;l';
 
 //..................start..................
 // ............. auth functions........
@@ -623,11 +625,11 @@ export const createHttpActionsFor = (resource) => {
  */
 export const getUserId = () => {
     if (isEmpty(userId)) {
-        const payload = getTokenPayload(token);
-        const { id } = payload;
+        // const payload = getTokenPayload(token);
+        // const { id } = payload;
 
-        // userId = localStorage.getItem("userId"); // eslint-disable-line
-        userId = id;
+        // userId = localStorage.getItem("userId"); // XXXXXXXXXXX eslint-disable-line not commented now
+        userId = 'ewecwcwecee';
     }
 
     return userId;
