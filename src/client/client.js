@@ -68,7 +68,7 @@ export const isLogged = () => {
 
 export const login = async(payload) => {
     try {
-        const authRes = await instance.post("/auth/login", {...payload });
+        const authRes = await instance.post("/login", {...payload });
         const { accessToken } = authRes;
         if (accessToken) {
             localStorage.setItem("token", accessToken);

@@ -4,7 +4,6 @@ import Card from "@material-ui/core/Card";
 import Container from "@material-ui/core/Container";
 import ForgotPassword from "./Forms/ForgotPassword/ForgotPasswordForm";
 import Login from "./Forms/Login";
-import Navbar from "./Navibar/Navbar";
 import Footer from "../Footer/Footer";
 import "./home.css";
 
@@ -15,13 +14,13 @@ function index() {
   return (
     <>
       {" "}
-      <div>
-        <Router>
+        <div>
+           <Router>
           <Container className="main-home">
             <Switch>
               <Route path="/login">
                 <Login />
-              </Route>{" "}
+                  </Route>
               <Route path="/reset-password">
                 <ForgotPassword />
               </Route>{" "}
