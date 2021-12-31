@@ -8,7 +8,7 @@ import Footer from "../Footer/Footer";
 import "./home.css";
 
 const login = true;
-const forgot = "";
+
 
 function index() {
   return (
