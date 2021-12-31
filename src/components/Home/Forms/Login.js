@@ -44,6 +44,7 @@ const logomain = {
 
 }
 
+
 function Login() {
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
@@ -57,20 +58,26 @@ function Login() {
   async function handle() {
     try {
       setLoading(true);
+      if(!username.current.value=='' && !password.current.value==''){
       const response = await login({
         username: username.current.value,
         password: password.current.value,
       });
-      formref.current.reset();
       if (response) {
+        // formref.current.reset() to do clear form;
         setLoading(false);
-        addToast("... was created successfully", {
+        addToast("welcome!", {
           appearance: "success",
           autoDismiss: true,
         });
+        window.location.replace(`/dashboard`);
+        return
       }
       setLoading(false);
-      addToast("Wrong Credentials!", { appearance: "error" });
+      addToast("Wrong Credentials try again!", { appearance: "error" });
+    }else{addToast("Fill all the fileds!", { appearance: "error" });
+    setLoading(false);
+    return}
     } catch (error) {
       setLoading(false);
       addToast("Failed", { appearance: "error" });

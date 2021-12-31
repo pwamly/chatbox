@@ -52,7 +52,7 @@ if (!instance) {
             if (originalRequest.url === "/auth/reset-password") {
                 return;
             } else {
-                if (status === 403) {
+                if (status === 405) {
                     if (!isAlreadyFetchingAccessToken) {
                         isAlreadyFetchingAccessToken = true;
 

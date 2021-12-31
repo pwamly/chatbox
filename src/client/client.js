@@ -9,13 +9,12 @@ import camelCase from "lodash/camelCase";
 import jwtDecode from "jwt-decode";
 
 let access_token;
-let userId;
 let tokenPayload;
-
-// const logged = localStorage.getItem("islogged");
-// const token = localStorage.getItem("token");
-const logged = true;
-const token = 'sjbcskclscms;mamcx;aslm;cma;ma;l';
+const logged = localStorage.getItem("islogged");
+const token = localStorage.getItem("token");
+let userId = localStorage.getItem("userId");
+// const logged = true;
+// const token = 'sjbcskclscms;mamcx;aslm;cma;ma;l';
 
 //..................start..................
 // ............. auth functions........
@@ -30,6 +29,7 @@ const token = 'sjbcskclscms;mamcx;aslm;cma;ma;l';
  * @since 0.1.0
  */
 export const getTokenPayload = (token) => {
+
     if (isEmpty(tokenPayload)) {
         try {
             tokenPayload = jwtDecode(token);
@@ -69,11 +69,13 @@ export const isLogged = () => {
 export const login = async(payload) => {
     try {
         const authRes = await instance.post("/login", {...payload });
-        const { accessToken } = authRes;
+        
+        const { token:accessToken } = authRes;
         if (accessToken) {
             localStorage.setItem("token", accessToken);
             localStorage.setItem("islogged", true);
-            window.location.replace(`/dashboard`);
+            // window.location.replace(`/dashboard`);
+            return "success"
         }
     } catch (error) {
         console.log("error in login", error);
@@ -617,20 +619,19 @@ export const createHttpActionsFor = (resource) => {
 /**
  * @function
  * @name getUserId
- * @description retrieve userId from local storage if not set
+ * @description retrieve userId from local storage 
  *
  * @returns {string |undefined} user id
  * @since 0.1.0
  * @version 0.1.0
  */
 export const getUserId = () => {
-    if (isEmpty(userId)) {
-        // const payload = getTokenPayload(token);
-        // const { id } = payload;
-
-        // userId = localStorage.getItem("userId"); // XXXXXXXXXXX eslint-disable-line not commented now
-        userId = 'ewecwcwecee';
+    if (!userId) {
+         const payload = getTokenPayload(token);
+         const { id } = payload;
+        console.log('if is not available on local',userId)
+        localStorage.setItem("userId", id);
+       return {'userId':id}  
     }
-
     return userId;
 };
