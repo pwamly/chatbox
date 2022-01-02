@@ -1,40 +1,94 @@
-import React, { useState } from "react";
-import { NavLink, Link } from "react-router-dom";
-import { SidebarData } from "../Menubar/sidebarData";
-import { connect } from "react-redux";
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
-import * as IoIcons from "react-icons/io";
-import "../Navibar/navbar.css";
-import { logout as signout } from "../../../client";
-import { VIEW_USER, CLEAR_REPORT_DATA } from "../../../actions";
+import './navbar.css';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import React, { useState } from 'react';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import { Link } from 'react-router-dom';
+import { logout } from '../../../client/index';
+// import { useStateValue } from './StateProvider';
 
-function Index({ dispatch, props }) {
-  const [sidebar, setSidebar] = useState(false);
-  const showsidebar = () => setSidebar(!sidebar);
-  const [modalShown, toggleModal] = useState(false);
+function Navbar() {
+  const [showMediaIcons, setShowMediaIcons] = useState(false);
+  // const [{ basket }, dispatch] = useStateValue();
+  // const basket;
+  // function dispatch(){}
 
-  function handle(title) {
-    if (title == "Registration") {
-      dispatch({ type: CLEAR_REPORT_DATA });
-    }
-  }
-  const logout = {
-    title: "Reports",
-    path: "/reports",
-    icon: <IoIcons.IoIosLogOut />,
-    cName: "nav-text",
-  };
   return (
-    <>
-      <div className="navbar">
-      
-      </div>{" "}
-      
-    </>
+    <div className='header'>
+      <nav className='main-nav'>
+        <div className='logo'>
+          <Link to='/'>
+            <h2>
+              <span>S</span>
+              <span>GA</span>
+            </h2>
+          </Link>
+        </div>
+
+        {/* //////////////////////////////// */}
+        <div
+          className={
+            showMediaIcons ? 'menu-link mobile-menu-link' : 'menu-link'
+          }>
+          {/* <div className="menu-link"> */}
+          <ul>
+            <Link to='/dashboard'>
+              <li>
+                <a href='#'>Dashboard</a>
+              </li>
+            </Link>
+            <Link to='/mens'>
+              <li>
+                <a href='#'>SGA</a>
+              </li>
+            </Link>
+            <Link>
+              <li>
+                <a href='#'>Orders</a>
+              </li>
+            </Link>
+            <Link>
+              <li>
+                <a href='#'>Dispatch</a>
+              </li>
+            </Link>
+            <Link>
+              <li>
+                <a href='#'>Delivery</a>
+              </li>
+            </Link>
+          </ul>
+        </div>
+
+        <div className='social-media'>
+          <div className='header'>
+            <div className='header__nav'>
+              <Link to='/login'>
+                <div className='header__option'>
+                  <span
+                    className='header__optionLineTwo'
+                    onClick={() => logout()}>
+                    Sign out
+                  </span>
+                </div>
+              </Link>
+              <Link to='/checkout'>
+                <div className='header__optionBasket'>
+                  <ShoppingBasketIcon />
+                  <span className='header__optionLineTwo header__basketCount'></span>
+                </div>
+              </Link>
+            </div>
+
+            {/* hamburget menu start  */}
+            <div className='hamburger-menu'>
+              <a href='#' onClick={() => setShowMediaIcons(!showMediaIcons)}>
+                <GiHamburgerMenu />
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
   );
 }
-const MapStateToprops = (store) => {
-  return { ...store };
-};
-export default connect(MapStateToprops)(Index);
+export default Navbar;

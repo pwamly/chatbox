@@ -59,32 +59,31 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
 
   return (
     <>
-      {" "}
-      {showProfile && <Profile />}{" "}
+      {' '}
+      {showProfile && <Profile />}{' '}
       <BreakpointProvider>
-        <IconContext.Provider value={{ color: "#fff" }}>
+        <IconContext.Provider value={{ color: '#fff' }}>
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
             <Router>
-              { <Navbar props={initial} />}
-              <Container className="dashboard">
+              {<Navbar props={initial} />}
+              <Container className='dashboard'>
                 <Switch>
                   <ProtectRoute
-                    path="/dashboard/registration"
+                    path='/dashboard'
                     exact
                     component={RegistrationForm}
-                  />{" "}
-                  <ProtectRoute path="/dashboard/team" component={Team} />{" "}
-                  <ProtectRoute path="/dashboard/reports" component={Report} />{" "}
-                </Switch>{" "}
-              </Container>{" "}
-            </Router>{" "}
-          </div>{" "}
-        </IconContext.Provider>{" "}
+                  />{' '}
+                  <ProtectRoute path='/dashboard/team' component={Team} />{' '}
+                  <ProtectRoute path='/dashboard/reports' component={Report} />{' '}
+                </Switch>{' '}
+              </Container>{' '}
+            </Router>{' '}
+          </div>{' '}
+        </IconContext.Provider>{' '}
       </BreakpointProvider>
     </>
   );

@@ -72,10 +72,12 @@ export const login = async(payload) => {
         
         const { token:accessToken } = authRes;
         if (accessToken) {
-            localStorage.setItem("token", accessToken);
-            localStorage.setItem("islogged", true);
-            // window.location.replace(`/dashboard`);
-            return "success"
+          const payload = getTokenPayload(accessToken);
+          const { id } = payload;
+          localStorage.setItem('token', accessToken);
+          localStorage.setItem('islogged', true);
+          localStorage.setItem('userId', id);
+          return 'success';
         }
     } catch (error) {
         console.log("error in login", error);
