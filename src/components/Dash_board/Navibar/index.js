@@ -1,7 +1,8 @@
 import './navbar.css';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import React, { useState } from 'react';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+// import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import Signiout from '@material-ui/icons/ExitToApp';
 import { Link } from 'react-router-dom';
 import { logout } from '../../../client/index';
 // import { useStateValue } from './StateProvider';
@@ -36,24 +37,29 @@ function Navbar() {
                 <a href='#'>Dashboard</a>
               </li>
             </Link>
-            <Link to='/mens'>
+            <Link to='/sga'>
               <li>
                 <a href='#'>SGA</a>
               </li>
             </Link>
-            <Link>
+            <Link to='/order'>
               <li>
                 <a href='#'>Orders</a>
               </li>
             </Link>
-            <Link>
+            <Link to='/dispatch'>
               <li>
                 <a href='#'>Dispatch</a>
               </li>
             </Link>
-            <Link>
+            <Link to='/delivery'>
               <li>
                 <a href='#'>Delivery</a>
+              </li>
+            </Link>
+            <Link to='/dashboard/reports'>
+              <li>
+                <a href='#'>Reports</a>
               </li>
             </Link>
           </ul>
@@ -63,20 +69,21 @@ function Navbar() {
           <div className='header'>
             <div className='header__nav'>
               <Link to='/login'>
-                <div className='header__option'>
+                <div className='header__option' >
                   <span
                     className='header__optionLineTwo'
                     onClick={() => logout()}>
-                    Sign out
+                    SW  <Signiout />
                   </span>
+                  
                 </div>
               </Link>
-              <Link to='/checkout'>
+              {/* <Link to='/checkout'>
                 <div className='header__optionBasket'>
-                  <ShoppingBasketIcon />
+                  <Signiout />
                   <span className='header__optionLineTwo header__basketCount'></span>
                 </div>
-              </Link>
+              </Link> */}
             </div>
 
             {/* hamburget menu start  */}
@@ -88,6 +95,11 @@ function Navbar() {
           </div>
         </div>
       </nav>
+      <nav className='sub-nav' style={{ background:'#f3f4f6',  width: '100%',padding:'30px 10px 10px 40px' }}>
+      <span style={{fontSize:'16px'}}>
+        Dashboard
+  </span>  
+    </nav>
     </div>
   );
 }

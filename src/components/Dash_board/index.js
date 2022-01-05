@@ -9,20 +9,21 @@ import Team from "./Team/Index";
 import { useGet } from "../../hooks";
 import "./dashbar.css";
 import RegistrationForm from "./Registration";
-import { ProtectRoute } from "../../components/ProtectRoute";
-import Regform from "../Pdf/Pdf";
-import Printform from "../Dash_board/Printform/Printform";
-import Spline from "./Charts/Spline";
-import Profile from "../Dash_board/Profile/Profile";
-import { SAVE_INITIAL_DATA } from "../../actions";
-import Report from "./Report/Report";
-import { Breakpoint, BreakpointProvider } from "react-socks";
+import Dashview from './DashView';
+import { ProtectRoute } from '../../components/ProtectRoute';
+import Regform from '../Pdf/Pdf';
+import Printform from '../Dash_board/Printform/Printform';
+import Spline from './Charts/Spline';
+import Profile from '../Dash_board/Profile/Profile';
+import { SAVE_INITIAL_DATA } from '../../actions';
+import Report from './Report/Report';
+import { Breakpoint, BreakpointProvider } from 'react-socks';
 import {
   Redirect,
   BrowserRouter as Router,
   Route,
   Switch,
-} from "react-router-dom";
+} from 'react-router-dom';
 
 const { getProfile } = httpActions;
 
@@ -35,9 +36,9 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
 
   if (fname && lname) {
     initial = `${fname} ${lname}`
-      .split(" ")
+      .split(' ')
       .map((n, i, a) => (i === 0 || i + 1 === a.length ? n[0] : null))
-      .join("")
+      .join('')
       .toUpperCase();
   }
 
@@ -72,12 +73,8 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
               {<Navbar props={initial} />}
               <Container className='dashboard'>
                 <Switch>
-                  <ProtectRoute
-                    path='/dashboard'
-                    exact
-                    component={RegistrationForm}
-                  />{' '}
-                  <ProtectRoute path='/dashboard/team' component={Team} />{' '}
+                  <ProtectRoute path='/dashboard' exact component={Dashview} />{' '}
+                  <ProtectRoute path='/dashboard/employee' component={Team} />{' '}
                   <ProtectRoute path='/dashboard/reports' component={Report} />{' '}
                 </Switch>{' '}
               </Container>{' '}

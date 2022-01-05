@@ -29,6 +29,7 @@ import {
   CLEAR_PROFILE_DATA,
 } from "../../../../actions";
 import "./tableteam.css";
+import { ROW_SELECT_SINGLE } from 'react-bootstrap-table-next';
 
 const useStyles = makeStyles({
   table: {
@@ -40,22 +41,20 @@ function BasicTable({ adduser, dispatch }) {
   const { results: rows, loading, refresh } = useGetList(getUsers);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
-
   const Actions = useCallback(
     (row) => (
       <div
         style={{
-          marginTop: "30px",
-          display: "flex",
-          flexDirection: "row",
-          gap: "15px",
-          paddingRight: "40px",
-        }}
-      >
+          marginTop: '30px',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '15px',
+          paddingRight: '40px',
+        }}>
         <Link>
-          {" "}
+          {' '}
           <ImPencil
-            className="IconStyle"
+            className='IconStyle'
             onClick={() => {
               dispatch({ type: SAVE_PROFILE_DATA, payload: row });
               dispatch({ type: ADD_USER });
@@ -64,8 +63,8 @@ function BasicTable({ adduser, dispatch }) {
         </Link>
 
         <FaTrash
-          id="trash"
-          className="IconStyle"
+          id='trash'
+          className='IconStyle'
           onClick={() => {
             handledelete(row);
           }}
@@ -76,13 +75,13 @@ function BasicTable({ adduser, dispatch }) {
   );
   let history = useHistory();
   const columns = [
-    { label: "First name", show: true, name: "first_name" },
-    { label: "Last name", show: true, name: "last_name" },
-    { label: "Phone ", show: true, name: "phone" },
-    { label: "Email", show: true, name: "email" },
-    { label: "Role", show: true, name: "userRole" },
-    { label: "Signature ", show: true, name: "signature" },
-    { name: "formatter", label: "Actions", show: true, formatter: Actions },
+    { label: 'First name', show: true, name: 'fname' },
+    { label: 'Last name', show: true, name: 'lname' },
+    { label: 'Phone ', show: true, name: 'phone' },
+    { label: 'Email', show: true, name: 'email' },
+    { label: 'Role', show: true, name: 'role' },
+    { label: 'Branch ', show: true, name: 'branch' },
+    { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
   const classes = useStyles();
@@ -99,40 +98,36 @@ function BasicTable({ adduser, dispatch }) {
 
       if (response) {
         setLoadingdel(false);
-        addToast("deleted successfully", {
-          appearance: "success",
+        addToast('deleted successfully', {
+          appearance: 'success',
           autoDismiss: true,
         });
-        window.location.replace("/dashboard/team");
+        window.location.replace('/dashboard/team');
         return;
       }
       setLoadingdel(false);
-      addToast("Wrong Credentials!", { appearance: "error" });
+      addToast('Wrong Credentials!', { appearance: 'error' });
     } catch (error) {
       setLoadingdel(false);
-      addToast("Failed", { appearance: "error" });
+      addToast('Failed', { appearance: 'error' });
     }
   }
 
   return (
-    <div className="table-wrapper">
-      <div style={{ textAlign: "center" }}>TEAM</div>
-
+    <div className='table-wrapper'>
       <TableContainer
         component={Paper}
         style={{
-          border: "none",
-        }}
-      >
+          border: 'none',
+        }}>
         <Table
           className={classes.table}
-          aria-label="simple table"
+          aria-label='simple table'
           style={{
-            border: "none",
-            padding: "auto",
-          }}
-        >
-          <TableHead style={{ background: "rgb(241, 239, 239)" }}>
+            border: 'none',
+            padding: 'auto',
+          }}>
+          <TableHead style={{ background: 'rgb(241, 239, 239)' }}>
             <TableRow>
               <TableCell></TableCell>
               {columns.map((th) => (
@@ -141,54 +136,58 @@ function BasicTable({ adduser, dispatch }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {index + 1}
-                </TableCell>
-                {columns.map((column) => {
-                  if (column.show == false) {
-                    return null;
-                  }
-                  if (column.name == "formatter") {
-                    return <TableCell>{column.formatter(row)}</TableCell>;
-                  }
-                  return (
-                    <TableCell style={{ border: "none !important" }}>
-                      {row[column.name] || "N/A"}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
+            {rows &&
+              rows.map((row, index) => (
+                <TableRow key={row.id}>
+                  <TableCell component='th' scope='row'>
+                    {index + 1}
+                  </TableCell>
+                  {columns.map((column) => {
+                    if (column.show == false) {
+                      return null;
+                    }
+
+                    if (column.name == 'formatter') {
+                      return <TableCell>{column.formatter(row)}</TableCell>;
+                    }
+                    return (
+                      <TableCell
+                        style={{
+                          border: 'none !important',
+                          fontSize: 'small',
+                        }}>
+                        {row[column.name] || 'N/A'}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
           </TableBody>
-          <caption>
-            <div style={{ float: "right", marginRight: "50px" }}>
+          <caption style={{ background: 'rgb(241, 239, 239)' }}>
+            <div style={{ float: 'right', marginRight: '50px' }}>
               <Pagination
                 style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  textDecoration: "none !important",
-                }}
-              >
-                <Button
-                  variant="text"
-                  style={{ marginRight: "10px", fontSize: "12px" }}
-                  onClick={() => history.push("/dashboard/")}
-                >
-                  Close{" "}
-                </Button>{" "}
-                <AddIcon className="plus" onClick={handleAdduser} />
-                <Pagination.First onClick={() => ""} disabled={true} />
+                  display: 'flex',
+                  flexDirection: 'row',
+                  textDecoration: 'none !important',
+                }}>
+                {/* <Button
+                  variant='text'
+                  style={{ marginRight: '10px', fontSize: '12px' }}
+                  onClick={() => history.push('/dashboard/')}>
+                  Close{' '}
+                </Button>{' '} */}
+                <AddIcon className='plus' onClick={handleAdduser} />
+                <Pagination.First onClick={() => ''} disabled={true} />
                 <Pagination.Prev
-                  onClick={() => "goToPage(currentPage - 1)"}
+                  onClick={() => 'goToPage(currentPage - 1)'}
                   disabled={true}
                 />
                 <Pagination.Next
-                  onClick={() => " goToPage(currentPage + 1)"}
+                  onClick={() => ' goToPage(currentPage + 1)'}
                   disabled={true}
                 />
-                <Pagination.Last onClick={() => "goToPage(pages)"} />
+                <Pagination.Last onClick={() => 'goToPage(pages)'} />
               </Pagination>
             </div>
           </caption>

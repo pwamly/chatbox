@@ -18,3 +18,4 @@ export const CLEAR_REPORT_DATA = "CLEAR_REPORT_DATA";
 export const CLEAR_PROFILE_DATA = "CLEAR_PROFILE_DATA";
 export const SHOW_HISTORY_TABLE = "SHOW_HISTORY_TABLE";
 export const SHOW_PDF = "SHOW_PDF";
+export const DASH_BPARD = 'DASH_BPARD';

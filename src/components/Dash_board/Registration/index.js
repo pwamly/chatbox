@@ -153,16 +153,19 @@ function Index({ reportdata }) {
 
     switch (step.id) {
         case "Owner":
-            return ( <
-                Grid container justify = "center"
-                direction = "column"
-                alignContent = "center"
-                style = {
-                    { height: "100hv", border: "3px", boxSizing: "border-box" } } >
-                <
-                Owner {...props }
-                />{" "} <
-                /Grid>
+            return (
+              <Grid
+                container
+                justify='center'
+                direction='column'
+                alignContent='center'
+                style={{
+                  height: '100hv',
+                  border: '3px',
+                  boxSizing: 'border-box',
+                }}>
+                <Owner {...props} />{' '}
+              </Grid>
             );
 
         case "Inspection-type":

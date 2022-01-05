@@ -121,13 +121,13 @@ function Login() {
           variant='contained'
           style={{ marginTop: '1rem' }}
           onClick={handle}
+          color='primary'
           style={{
             color: '#ffff',
             maxWidth: '100px',
             maxHeight: '30px',
             minWidth: '30px',
             minHeight: '30px',
-            background: '#1F2937',
           }}>
           {loading ? (
             <div style={spinerStyle}>
@@ -137,8 +137,8 @@ function Login() {
             'Login'
           )}{' '}
         </Button>
-        <h4>
-          <Link to='/reset-password' style={{ textDecoration: 'none' }}>
+        <h4 style={{ color: 'blue' }}>
+          <Link to='/reset-password' style={{ color: 'blue' }}>
             Forgot password ?
           </Link>{' '}
         </h4>{' '}
