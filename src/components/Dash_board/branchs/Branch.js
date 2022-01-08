@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
-import Card from "@material-ui/core/Card";
-import Button from "@material-ui/core/Button";
-import { useToasts } from "react-toast-notifications";
-import TextField from "@material-ui/core/TextField";
+import React, { useRef, useState, useEffect } from 'react';
+import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
+import { useToasts } from 'react-toast-notifications';
+import TextField from '@material-ui/core/TextField';
 import FormLabel from '@material-ui/core/FormLabel';
 import Spinner from '../../Spinner/Spiner';
 import Select from '@material-ui/core/Select';
@@ -10,7 +10,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
-import { addUser, editUser } from '../../../client/client';
+import { addUser, addBranch, editUser } from '../../../client/client';
 
 const spinerStyle = {
   display: 'flex',
@@ -18,7 +18,14 @@ const spinerStyle = {
   gap: '12px',
 };
 
-function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
+function Regteam({
+  adduser,
+  teamdata,
+  dispatch,
+  branchdata,
+  saveedit,
+  saveeditbtn,
+}) {
   const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
   const [usrbranch, setCng] = useState('');
   const [usrrole, setRole] = useState('');
@@ -27,24 +34,23 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
 
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
+
+  // ........... to be passed to form values ..........
+
   const formref = useRef();
-  const fsname = useRef('');
-  const lsname = useRef('');
-  const usrphone = useRef('');
-  const usremail = useRef('');
-  const signature = useRef('');
-  const usrpass = useRef('');
+  const bname = useRef('');
+  const bregion = useRef('');
+  const bdistrict = useRef('');
+  const baddress = useRef('');
+  const bid = useRef('');
 
   const {
-    fname = '',
-    lname = '',
-    phone = '',
-    email = '',
-    role = '',
-    branch = '',
-    pass = '',
-    userid = '',
-  } = teamdata;
+    branchname = '',
+    region = '',
+    district = '',
+    branchaddress = '',
+    branchId = '',
+  } = branchdata;
   const handleChange = (event) => {
     setCng(event.target.value);
   };
@@ -72,15 +78,12 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
       if (saveedit == 'add') {
         setLoading(true);
         // formref.current.reset();
-        let response = await addUser({
-          firstname: fsname.current.value,
-          lastname: lsname.current.value,
-          email: usremail.current.value,
-          username: usremail.current.value,
-          branch: branch,
-          role: role,
-          phone: usrphone.current.value,
-          password: usrpass.current.value,
+        let response = await addBranch({
+          branchId: bid.current.value,
+          branchaddress: baddress.current.value,
+          branchname: bname.current.value,
+          district: bdistrict.current.value,
+          region: bregion.current.value,
         });
 
         if (response) {
@@ -101,15 +104,11 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
         setLoading(true);
         // formref.current.reset();
         let response = await editUser({
-          firstname: fsname.current.value,
-          lastname: lsname.current.value,
-          email: usremail.current.value,
-          username: usremail.current.value,
-          branch: usrbranch,
-          role: usrrole,
-          phone: usrphone.current.value,
-          password: usrpass.current.value,
-          userid: userid,
+          branchId: bid.current.value,
+          branchaddress: baddress.current.value,
+          branchname: bname.current.value,
+          district: bdistrict.current.value,
+          region: bregion.current.value,
         });
 
         if (response) {
@@ -157,57 +156,57 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
         //   boxShadow: '0 16px 70px -12.125px rgba(0,0,0,0.4)',
         // },
       }}>
-      <FormLabel>Employee Form</FormLabel>
+      <FormLabel>BRANCH FORM</FormLabel>
       <TextField
-        label='First Name '
+        label='Branch ID'
         margin='normal'
-        inputRef={fsname}
+        inputRef={bid}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        ref={formref}
-        defaultValue={fname}
-      />{' '}
-      <TextField
-        label='Last Name '
-        margin='normal'
-        inputRef={lsname}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={lname}
+        defaultValue={branchId}
         ref={formref}
       />{' '}
       <TextField
-        label='Phone'
+        label='Branch Name '
         margin='normal'
-        inputRef={usrphone}
+        inputRef={bname}
         variant='outlined'
         autoComplete='off'
         fullWidth
         ref={formref}
-        defaultValue={phone}
+        defaultValue={branchname}
       />{' '}
       <TextField
-        label='Email'
+        label='Region '
         margin='normal'
-        inputRef={usremail}
+        inputRef={bregion}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={email}
+        defaultValue={region}
         ref={formref}
       />{' '}
       <TextField
-        label='Password'
+        label='District'
         margin='normal'
-        inputRef={usrpass}
+        inputRef={bdistrict}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={pass}
         ref={formref}
-      />
+        defaultValue={district}
+      />{' '}
+      <TextField
+        label='Address'
+        margin='normal'
+        inputRef={baddress}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={branchaddress}
+        ref={formref}
+      />{' '}
       <div
         style={{
           display: 'flex',
@@ -215,65 +214,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
           marginTop: '20px',
           width: '300px',
           gap: '100px',
-        }}>
-        <InputLabel id='label2' style={{ fontSize: '15px' }}>
-          {' '}
-          Branch
-        </InputLabel>
-        <Select
-          labelId='label'
-          id='select'
-          open={open}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          value={usrbranch}
-          placeholder='Branch'
-          onChange={handleChange}
-          defaultValue={branch}
-          ref={formref}>
-          {[
-            { branch: 'dar es salaam', id: 1 },
-            { branch: 'Mbeya', id: 2 },
-          ].map((e) => (
-            <MenuItem value={e.branch} id={e.id}>
-              {e.branch}{' '}
-            </MenuItem>
-          ))}
-        </Select>{' '}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          marginTop: '20px',
-          width: '300px',
-          gap: '120px',
-        }}>
-        <InputLabel id='label2' style={{ fontSize: '15px' }}>
-          {' '}
-          Role
-        </InputLabel>
-        <Select
-          labelId='labe2'
-          id='select2'
-          open={open2}
-          onClose={handleClose2}
-          onOpen={handleOpen2}
-          value={usrrole}
-          onChange={handleChange2}
-          defaultValue={role}
-          ref={formref}>
-          {[
-            { role: 'driver', id: 5 },
-            { role: 'accountant', id: 3 },
-          ].map((e) => (
-            <MenuItem value={e.role} id={e.id}>
-              {' '}
-              {e.role}{' '}
-            </MenuItem>
-          ))}
-        </Select>{' '}
-      </div>
+        }}></div>
       <div
         style={{
           display: 'flex',

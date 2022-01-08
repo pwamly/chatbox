@@ -14,9 +14,12 @@ const initstore = {
   token: '',
   reportdata: {},
   teamdata: {},
+  branchdata: {},
   historytable: false,
   pdf: false,
   showdash: 'Dashboard',
+  saveedit: 'save',
+  saveeditbtn: 'ADD',
 };
 if (!store) {
     store = createStore(reducer, initstore);

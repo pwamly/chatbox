@@ -1,13 +1,14 @@
 import {
   ACTIVATE_USER,
   ADD_USER,
+  EDIT_USER,
   DEACTIVATE_USER,
   REMOVE_USER,
-  EDIT_USER,
   EXIT_ADD_FORM,
   EXIT_EDIT_USER,
   ADD_USER_FORM,
   CLEAR_PROFILE_DATA,
+  CLEAR_BRANCH_DATA,
   VIEW_USER,
   EXIT_VEW_USER,
   SAVE_UPDATES,
@@ -20,6 +21,7 @@ import {
   SHOW_HISTORY_TABLE,
   SHOW_PDF,
   DASH_BPARD,
+  SAVE_BRANCH_DATA,
 } from './actions';
 // import { removeUser, registerUser } from "./client/";
 let removeUser, registerUser;
@@ -35,7 +37,11 @@ function reducer(state, action) {
 
   /*user data*/
   if (action.type === ADD_USER) {
-    return { ...state, adduser: true };
+    return { ...state, adduser: true, saveedit: 'add', saveeditbtn: 'ADD' };
+  }
+
+  if (action.type === EDIT_USER) {
+    return { ...state, adduser: true, saveedit: 'edit', saveeditbtn: 'EDIT' };
   }
 
   if (action.type === REMOVE_USER) {
@@ -68,9 +74,7 @@ function reducer(state, action) {
       showProfile: false,
     };
   }
-  if (action.type === EDIT_USER) {
-    return { ...state, edituser: true };
-  }
+
   if (action.type === EXIT_EDIT_USER) {
     return { ...state, edituser: false };
   }
@@ -123,11 +127,13 @@ function reducer(state, action) {
       return { ...state, reportdata: { ...action.payload } };
     }
   }
+
   if (action.type === SAVE_PROFILE_DATA) {
     if (action.payload) {
       return { ...state, teamdata: { ...action.payload } };
     }
   }
+
   if (action.type === CLEAR_PROFILE_DATA) {
     return { ...state, teamdata: {} };
   }
@@ -145,6 +151,14 @@ function reducer(state, action) {
     return { ...state, showdash: dashboard };
   }
 
+  if (action.type === SAVE_BRANCH_DATA) {
+    if (action.payload) {
+      return { ...state, branchdata: { ...action.payload } };
+    }
+  }
+  if (action.type === CLEAR_BRANCH_DATA) {
+    return { ...state, branchdata: {} };
+  }
   return state;
 }
 

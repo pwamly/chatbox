@@ -6,9 +6,11 @@ import Footer from "../Footer/Footer";
 import { connect } from "react-redux";
 import { getUserId, httpActions } from "../../client/index";
 import Team from "./Team/Index";
-import { useGet } from "../../hooks";
-import "./dashbar.css";
-import RegistrationForm from "./Registration";
+import Branch from './branchs/Index';
+import Orders from './Orders/Index';
+import { useGet } from '../../hooks';
+import './dashbar.css';
+import RegistrationForm from './Registration';
 import Dashview from './DashView';
 import { ProtectRoute } from '../../components/ProtectRoute';
 import Regform from '../Pdf/Pdf';
@@ -76,6 +78,8 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
                   <ProtectRoute path='/dashboard' exact component={Dashview} />{' '}
                   <ProtectRoute path='/dashboard/employee' component={Team} />{' '}
                   <ProtectRoute path='/dashboard/reports' component={Report} />{' '}
+                  <ProtectRoute path='/dashboard/branch' component={Branch} />{' '}
+                  <ProtectRoute path='/dashboard/orders' component={Orders} />{' '}
                 </Switch>{' '}
               </Container>{' '}
             </Router>{' '}

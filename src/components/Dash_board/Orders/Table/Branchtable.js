@@ -4,30 +4,32 @@ import React, {
   useEffect,
   useState,
   useRef,
-} from "react";
-import { Link, useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import { FaEye, FaRegEye, FaTrash, FaPrint } from "react-icons/fa";
-import { ImPencil } from "react-icons/im";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import { useToasts } from "react-toast-notifications";
-import Paper from "@material-ui/core/Paper";
-import Pagination from "react-bootstrap/Pagination";
-import { useGet, useGetList } from "../../../../hooks/index";
-import { connect } from "react-redux";
-import AddIcon from "@material-ui/icons/Add";
-import Button from "@material-ui/core/Button";
-import { getUsers, deleteUser } from "../../../../client/client";
+} from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { FaEye, FaRegEye, FaTrash, FaPrint } from 'react-icons/fa';
+import { ImPencil } from 'react-icons/im';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import { useToasts } from 'react-toast-notifications';
+import Paper from '@material-ui/core/Paper';
+import Pagination from 'react-bootstrap/Pagination';
+import { useGet, useGetList } from '../../../../hooks/index';
+import { connect } from 'react-redux';
+import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
+import { getUsers, deleteUser, getBranches } from '../../../../client/client';
 import {
   ADD_USER,
   EDIT_USER,
-  SAVE_PROFILE_DATA,
   CLEAR_PROFILE_DATA,
+  SAVE_REPORT_DATA,
+  SAVE_BRANCH_DATA,
+  CLEAR_BRANCH_DATA,
 } from '../../../../actions';
 import './tableteam.css';
 import { ROW_SELECT_SINGLE } from 'react-bootstrap-table-next';
@@ -39,7 +41,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getUsers);
+  const { results: rows, loading, refresh } = useGetList(getBranches);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -58,7 +60,7 @@ function BasicTable({ adduser, dispatch }) {
             className='IconStyle'
             onClick={() => {
               console.log('xxxxxxxxxxxxxxxxxxxx', row);
-              dispatch({ type: SAVE_PROFILE_DATA, payload: row });
+              dispatch({ type: SAVE_BRANCH_DATA, payload: row });
               dispatch({ type: EDIT_USER });
             }}
           />
@@ -77,18 +79,17 @@ function BasicTable({ adduser, dispatch }) {
   );
   let history = useHistory();
   const columns = [
-    { label: 'First name', show: true, name: 'fname' },
-    { label: 'Last name', show: true, name: 'lname' },
-    { label: 'Phone ', show: true, name: 'phone' },
-    { label: 'Email', show: true, name: 'email' },
-    { label: 'Role', show: true, name: 'role' },
-    { label: 'Branch ', show: true, name: 'branch' },
+    { label: 'Branch Name', show: true, name: 'branchname' },
+    { label: 'Region', show: true, name: 'region' },
+    { label: 'District ', show: true, name: 'district' },
+    { label: 'Addess', show: true, name: 'branchaddress' },
+    { label: 'Created', show: true, name: 'created' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
   const classes = useStyles();
   const handleAdduser = () => {
-    dispatch({ type: CLEAR_PROFILE_DATA });
+    dispatch({ type: CLEAR_BRANCH_DATA });
     dispatch({ type: ADD_USER });
   };
 

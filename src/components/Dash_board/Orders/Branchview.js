@@ -1,5 +1,5 @@
 import React from 'react';
-import './dashview.css';
+import './branchview.css';
 import { Link, useHistory } from 'react-router-dom';
 
 // import { useStateValue } from "./StateProvider";
@@ -33,11 +33,9 @@ function Index({ id, title, image, price, rating }) {
   };
 
   return (
-    <div className='dashview'>
+    <div className='dashview' onClick={() => history.push('/dashboard/branch')}>
       {dataadimindata && (
-        <div
-          className='product'
-          onClick={() => history.push('/dashboard/branch')}>
+        <div className='branch'>
           <img src={image} alt='' className='images' />
           <p className='product__title'>Branches</p>
           <p className='product__price'>
@@ -46,18 +44,7 @@ function Index({ id, title, image, price, rating }) {
           </p>
         </div>
       )}
-      {dataadimindata && (
-        <div
-          className='product'
-          onClick={() => history.push('/dashboard/employee')}>
-          <p className='product__title'>Employee</p>
-          <p className='product__price'>
-            <small>{dataadimindata.employe}</small>
-            <strong>{price}</strong>
-            <br />
-          </p>
-        </div>
-      )}
+      {dataadimindata && <div className='branch'>wjpwepwjpss</div>}
       {dataadimindata && (
         <div className='product'>
           <p className='product__title'>Customers</p>
@@ -69,7 +56,7 @@ function Index({ id, title, image, price, rating }) {
         </div>
       )}
       {dataadimindata && (
-        <div className='product'>
+        <div className='branch'>
           <p className='product__title'>Vehicle</p>
           <p className='product__price'>
             <small>{dataadimindata.vehicle}</small>
@@ -79,7 +66,7 @@ function Index({ id, title, image, price, rating }) {
         </div>
       )}
       {dataadimindata && (
-        <div className='product'>
+        <div className='branch'>
           <p className='product__title'>Transporters</p>
           <p className='product__price'>
             <small>{dataadimindata.Transporters}</small>

@@ -42,7 +42,7 @@ function Navbar() {
                 <a href='#'>SGA</a>
               </li>
             </Link>
-            <Link to='/order'>
+            <Link to='/dashboard/orders'>
               <li>
                 <a href='#'>Orders</a>
               </li>
@@ -69,13 +69,12 @@ function Navbar() {
           <div className='header'>
             <div className='header__nav'>
               <Link to='/login'>
-                <div className='header__option' >
+                <div className='header__option'>
                   <span
                     className='header__optionLineTwo'
                     onClick={() => logout()}>
-                    SW  <Signiout />
+                    SW <Signiout />
                   </span>
-                  
                 </div>
               </Link>
               {/* <Link to='/checkout'>
@@ -95,11 +94,15 @@ function Navbar() {
           </div>
         </div>
       </nav>
-      <nav className='sub-nav' style={{ background:'#f3f4f6',  width: '100%',padding:'30px 10px 10px 40px' }}>
-      <span style={{fontSize:'16px'}}>
-        Dashboard
-  </span>  
-    </nav>
+      <nav
+        className='sub-nav'
+        style={{
+          background: '#f3f4f6',
+          width: '100%',
+          padding: '30px 10px 10px 40px',
+        }}>
+        <span style={{ fontSize: '16px' }}>Dashboard</span>
+      </nav>
     </div>
   );
 }

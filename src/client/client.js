@@ -113,179 +113,247 @@ export const editProfile = async(payload) => {
     return false;
 };
 
-export const logout = async() => {
-    localStorage.clear();
-    window.location.replace(`/`);
-    try {
-        const authRes = await instance.post("/auth/logout", {
-            token: token,
-        });
-        const { accessToken } = authRes.data;
-        if (authRes.status == "200") {}
-    } catch (error) {
-        console.log("error in login", error);
-    }
 
-    return false;
+export const editBranch = async (payload) => {
+  try {
+    const response = await instance.put(`/admin/edit-user/${payload.userid}`, {
+      ...payload,
+    });
+
+    if (response) {
+      const { successful, success } = response;
+      return successful || success;
+    }
+  } catch (error) {
+    return error;
+    console.log('error in login', error);
+  }
+
+  return false;
 };
 
-export const getCode = async(data) => {
-    try {
-        const { email } = data;
-        const code = await instance.post("/auth/forgot-password", { email });
-        return code;
-    } catch (error) {
-        return {};
+export const editUser = async (payload) => {
+  try {
+    const response = await instance.put(`/admin/edit-user/${payload.userid}`, {
+      ...payload,
+    });
+
+    if (response) {
+      const { successful, success } = response;
+      return successful || success;
     }
+  } catch (error) {
+    return error;
+    console.log('error in login', error);
+  }
+
+  return false;
 };
 
-export const postCode = async(data) => {
-    try {
-        const { email, usercode, newpass } = data;
-        const isSuccessful = await instance.post("/auth/reset-password", {
-            email,
-            code: usercode,
-            newpassword: newpass,
-        });
-        if (isSuccessful) {
-            return { isSuccessful: true };
-        }
-        return { isSuccessful: false };
-    } catch (error) {
-        return { isSuccessful: false };
+export const logout = async () => {
+  localStorage.clear();
+  window.location.replace(`/`);
+  try {
+    const authRes = await instance.post('/auth/logout', {
+      token: token,
+    });
+    const { accessToken } = authRes.data;
+    if (authRes.status == '200') {
     }
+  } catch (error) {
+    console.log('error in login', error);
+  }
+
+  return false;
+};
+
+export const getCode = async (data) => {
+  try {
+    const { email } = data;
+    const code = await instance.post('/auth/forgot-password', { email });
+    return code;
+  } catch (error) {
+    return {};
+  }
+};
+
+export const postCode = async (data) => {
+  try {
+    const { email, usercode, newpass } = data;
+    const isSuccessful = await instance.post('/auth/reset-password', {
+      email,
+      code: usercode,
+      newpassword: newpass,
+    });
+    if (isSuccessful) {
+      return { isSuccessful: true };
+    }
+    return { isSuccessful: false };
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
 //.................................. api endpoints........................
 
-export const getAllReports = async(data) => {
-    try {
-        if (data) {
-            const reports = await instance.get("/api/reports", {
-                params: data,
-            });
-            if (reports) {
-                return reports;
-            }
-        } else {
-            const reports = await instance.get("/api/reports");
-            if (reports) {
-                return reports;
-            }
-        }
-    } catch (error) {
-        return { isSuccessful: false };
+export const getAllReports = async (data) => {
+  try {
+    if (data) {
+      const reports = await instance.get('/api/reports', {
+        params: data,
+      });
+      if (reports) {
+        return reports;
+      }
+    } else {
+      const reports = await instance.get('/api/reports');
+      if (reports) {
+        return reports;
+      }
     }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
-export const getAllhistory = async(data) => {
-    try {
-        if (data) {
-            const reports = await instance.get("/api/reports/history", {
-                params: data,
-            });
-            if (reports) {
-                return reports;
-            }
-        } else {
-            const reports = await instance.get("/api/reports/history");
-            if (reports) {
-                return reports;
-            }
-        }
-    } catch (error) {
-        return { isSuccessful: false };
+export const getAllhistory = async (data) => {
+  try {
+    if (data) {
+      const reports = await instance.get('/api/reports/history', {
+        params: data,
+      });
+      if (reports) {
+        return reports;
+      }
+    } else {
+      const reports = await instance.get('/api/reports/history');
+      if (reports) {
+        return reports;
+      }
     }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
-export const getUsers = async() => {
-    try {
-        const users = await instance.get("/api/users");
-        if (users) {
-            return users;
-        }
-    } catch (error) {
-        return { isSuccessful: false };
+export const getUsers = async () => {
+  try {
+    const users = await instance.get('/api/users');
+    if (users) {
+      return users;
     }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
-export const postVehicleInfo = async(data) => {
-    try {
-        const response = await instance.post("/api/actions/registervehicle", {
-            ...data,
-        });
-        if (response) {
-            return response;
-        }
-    } catch (error) {
-        return { isSuccessful: false };
+// ............................. new services  2022 ...........................
+
+export const getBranches = async () => {
+  try {
+    const branches = await instance.get('/admin/branches');
+    if (branches) {
+      return branches;
     }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
-export const deleteReport = async(id) => {
-    try {
-        const response = await instance.delete(`/api/reports/deletevehicle/${id}`);
-
-        if (response) {
-            return response;
-        }
-    } catch (error) {
-        return { isSuccessful: false };
+export const postVehicleInfo = async (data) => {
+  try {
+    const response = await instance.post('/api/actions/registervehicle', {
+      ...data,
+    });
+    if (response) {
+      return response;
     }
-};
-export const deletehistory = async(id) => {
-    try {
-        const response = await instance.delete(`/api/reports/deletehistory/${id}`);
-
-        if (response) {
-            return response;
-        }
-    } catch (error) {
-        return { isSuccessful: false };
-    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
-export const EditReport = async(data) => {
-    try {
-        const { id } = data;
-        const isSuccessful = await instance.put(`/api/actions/editvehicle/${id}`, {
-            ...data,
-        });
-        if (isSuccessful) {
-            return { isSuccessful: true };
-        }
-        return { isSuccessful: false };
-    } catch (error) {
-        return { isSuccessful: false };
+export const deleteReport = async (id) => {
+  try {
+    const response = await instance.delete(`/api/reports/deletevehicle/${id}`);
+
+    if (response) {
+      return response;
     }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+export const deletehistory = async (id) => {
+  try {
+    const response = await instance.delete(`/api/reports/deletehistory/${id}`);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
-export const deleteUser = async(id) => {
-    try {
-        const response = await instance.delete(`/api/users/${id}`);
-
-        if (response) {
-            return response;
-        }
-    } catch (error) {
-        return { isSuccessful: false };
+export const EditReport = async (data) => {
+  try {
+    const { id } = data;
+    const isSuccessful = await instance.put(`/api/actions/editvehicle/${id}`, {
+      ...data,
+    });
+    if (isSuccessful) {
+      return { isSuccessful: true };
     }
+    return { isSuccessful: false };
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
-export const addUser = async(data) => {
-    try {
-        const response = await instance.post("/auth/register", {
-            ...data,
-        });
+export const deleteUser = async (id) => {
+  try {
+    const response = await instance.delete(`/admin/delete-user/${id}`);
 
-        if (response) {
-            return response;
-        }
-    } catch (error) {
-        return { isSuccessful: false };
+    if (response) {
+      return response;
     }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const addUser = async (data) => {
+  try {
+    const response = await instance.post('/admin/create-user', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 //..................end..................
+
+export const addBranch = async (data) => {
+  try {
+    const response = await instance.post('/admin/create-branch', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+
+
 // ............. auth functions..........
 
 /**
