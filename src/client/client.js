@@ -150,6 +150,24 @@ export const editUser = async (payload) => {
   return false;
 };
 
+export const editOrder = async (payload) => {
+  try {
+    const response = await instance.put(`/admin/edit-user/${payload.userid}`, {
+      ...payload,
+    });
+
+    if (response) {
+      const { successful, success } = response;
+      return successful || success;
+    }
+  } catch (error) {
+    return error;
+    console.log('error in login', error);
+  }
+
+  return false;
+};
+
 export const logout = async () => {
   localStorage.clear();
   window.location.replace(`/`);
@@ -260,6 +278,17 @@ export const getBranches = async () => {
   }
 };
 
+export const getOrders = async () => {
+  try {
+    const branches = await instance.get('/api/orders');
+    if (branches) {
+      return branches;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const postVehicleInfo = async (data) => {
   try {
     const response = await instance.post('/api/actions/registervehicle', {
@@ -341,6 +370,21 @@ export const addUser = async (data) => {
 export const addBranch = async (data) => {
   try {
     const response = await instance.post('/admin/create-branch', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const addorder = async (data) => {
+  console.log('vvvvvvvvvvvvvvvvvv', data);
+  try {
+    const response = await instance.post('/api/create-order', {
       ...data,
     });
 

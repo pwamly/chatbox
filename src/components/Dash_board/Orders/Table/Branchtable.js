@@ -22,7 +22,7 @@ import { useGet, useGetList } from '../../../../hooks/index';
 import { connect } from 'react-redux';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import { getUsers, deleteUser, getBranches } from '../../../../client/client';
+import { getUsers, deleteUser, getOrders } from '../../../../client/client';
 import {
   ADD_USER,
   EDIT_USER,
@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getBranches);
+  const { results: rows, loading, refresh } = useGetList(getOrders);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -79,11 +79,15 @@ function BasicTable({ adduser, dispatch }) {
   );
   let history = useHistory();
   const columns = [
-    { label: 'Branch Name', show: true, name: 'branchname' },
-    { label: 'Region', show: true, name: 'region' },
-    { label: 'District ', show: true, name: 'district' },
-    { label: 'Addess', show: true, name: 'branchaddress' },
-    { label: 'Created', show: true, name: 'created' },
+    { label: 'Order Id', show: true, name: 'orderid' },
+    { label: 'Customer Name', show: true, name: 'customername' },
+    { label: 'Package Location Steet', show: true, name: 'pstreet' },
+    { label: 'Consigner Name', show: true, name: 'consignername' },
+    { label: 'Destination ', show: true, name: 'dregion' },
+    { label: 'Consignee Name', show: true, name: 'consigneename' },
+    { label: 'Pick up Time', show: true, name: 'pickuptime' },
+    { label: 'Expected Delivery Time', show: true, name: 'expdlrtime' },
+    { label: 'Customer Notes', show: true, name: 'customernotes' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 

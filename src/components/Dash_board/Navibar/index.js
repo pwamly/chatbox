@@ -3,12 +3,14 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import React, { useState } from 'react';
 // import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import Signiout from '@material-ui/icons/ExitToApp';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { logout } from '../../../client/index';
 // import { useStateValue } from './StateProvider';
 
 function Navbar() {
   const [showMediaIcons, setShowMediaIcons] = useState(false);
+
+  let history = useHistory();
   // const [{ basket }, dispatch] = useStateValue();
   // const basket;
   // function dispatch(){}

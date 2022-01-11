@@ -7,7 +7,13 @@ import { ADD_USER } from '../../../actions';
 
 function Index({ adduser }) {
   return (
-    <div style={{ height: '600px' }}>
+    <div
+      style={{
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
       {!adduser ? <BranchDash /> : <Adduser />}{' '}
     </div>
   );

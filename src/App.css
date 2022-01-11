@@ -25,5 +25,10 @@ h4 {
 
  .site{
     background:#f3f4f6;
-    height: 100%;
+    /* background:red; */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height:75hv;
+    font-size: 15px !important;
  }

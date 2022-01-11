@@ -10,13 +10,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
-import { addUser, addBranch, editUser } from '../../../client/client';
-
+import { addUser, addorder, editUser } from '../../../client/client';
+import { Divider } from '@mui/material';
+import './order.css';
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabels from '@mui/material/InputLabel';
+import { InputLabel as inputlabels } from '@mui/material/InputLabel';
 import MenuItems from '@mui/material/MenuItem';
 // import FormControl from '@mui/material/FormControl';
 import Selects from '@mui/material/Select';
@@ -24,9 +25,10 @@ import Selects from '@mui/material/Select';
 // .................... for select end.........................
 
 //  import Textdate from '@mui/material/TextField';
- import AdapterDateFns from '@mui/lab/AdapterDateFns';
- import LocalizationProvider from '@mui/lab/LocalizationProvider';
- import DateTimePicker from '@mui/lab/DateTimePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import DateAdapter from '@mui/lab/AdapterMoment';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -75,6 +77,32 @@ const consgigners = [
   },
 ];
 
+const regions = [
+  {
+    id: 1,
+    name: 'kigoma',
+  },
+  {
+    id: 2,
+    name: 'Mwanza',
+  },
+  {
+    id: 3,
+    name: 'Arusha',
+  },
+];
+
+const districts = [
+  {
+    id: 1,
+    regionid: 1,
+    regionname: 'kigoma',
+    name: 'Uvinza',
+  },
+  { id: 1, regionid: 2, regionname: 'Mwanza', name: 'Igoma' },
+  { id: 1, regionid: 3, name: 'Arumeru', regionname: 'Arusha' },
+];
+
 function getStyles(name, customerData, theme) {
   return {
     fontWeight:
@@ -105,26 +133,43 @@ function Regteam({
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
+  // ........................... for select ..................
+
+  const theme = useTheme();
+  const [customerData, setcustomerData] = useState('');
+  const [cData, setCData] = useState('');
+  const [distdata, setDistdata] = useState('');
+  const [regdata, setRegtdata] = useState('');
+  const [distdatap, setDistdatap] = useState('');
+  const [regdatap, setRegtdatap] = useState('');
+  const [pickdate, setPickdate] = useState(new Date().toGMTString());
+  const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
 
   // ........... to be passed to form values ..........
 
   const formref = useRef();
-  const bname = useRef('');
-  const bregion = useRef('');
-  const bdistrict = useRef('');
-  const baddress = useRef('');
-  const bid = useRef('');
-
+  const pickdat = useRef('');
+  const deliverydate = useRef('');
+  const packstreet = useRef('');
+  const custnote = useRef('');
+  const pkgnotes = useRef('');
+  const distnstreet = useRef();
+  const dtnnote = useRef();
+  const congneename = useRef();
+  const congneephone = useRef();
   // ......................... to be passed to the form default...........
+
   const {
-    branchname = '',
-    customerid = '',
-    region = '',
-    district = '',
-    branchaddress = '',
-    branchId = '',
+    customernotes = '',
+    pstreet = '',
+    consignername = '',
+    pnotes = '',
+    dstreet = '',
+    dnotes = '',
+    consigneephone = '',
+    consigneename = '',
   } = branchdata;
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -148,17 +193,47 @@ function Regteam({
     setRole(event.target.value);
   };
 
+  function selcust(data, selector) {
+    console.log('fffffffffffffffffffffff', data, selector);
+    let newdata = data.reduce((acc, item) => {
+      if (item.customerId === selector) {
+        acc.push(item);
+      }
+      return acc;
+    }, []);
+    return newdata[0];
+  }
+
+  function selcons(data, selector) {
+    let newdata = data.reduce((acc, item) => {
+      if (item.consignerid === selector) {
+        acc.push(item);
+      }
+      return acc;
+    }, []);
+    return newdata[0];
+  }
+
   async function handlesave() {
     try {
       if (saveedit == 'add') {
         setLoading(true);
         // formref.current.reset();
-        let response = await addBranch({
-          branchId: bid.current.value,
-          branchaddress: baddress.current.value,
-          branchname: bname.current.value,
-          district: bdistrict.current.value,
-          region: bregion.current.value,
+        let response = await addorder({
+          pickuptime: pickdate._i,
+          expdlrtime: deliverydat._i,
+          packagestreet: packstreet.current.value,
+          custnote: custnote.current.value,
+          packagenotes: pkgnotes.current.value,
+          destinationstreet: distnstreet.current.value,
+          customerData: selcust(customers, customerData),
+          consignerdata: selcons(consgigners, cData),
+          Packagedistdata: distdata,
+          packageRegionData: regdata,
+          destinationData: distdatap,
+          destinationRegionData: regdatap,
+          destinationnotes: dtnnote.current.value,
+          consigneename: congneename.current.value,
         });
 
         if (response) {
@@ -179,11 +254,18 @@ function Regteam({
         setLoading(true);
         // formref.current.reset();
         let response = await editUser({
-          branchId: bid.current.value,
-          branchaddress: baddress.current.value,
-          branchname: bname.current.value,
-          district: bdistrict.current.value,
-          region: bregion.current.value,
+          pickuptime: pickdat.current.value,
+          expdlrtime: deliverydate.current.value,
+          pstreet: packstreet.current.value,
+          custnote: custnote.current.value,
+          pnotes: pkgnotes.current.value,
+          dstreet: distnstreet.current.value,
+          customerData: customerData,
+          cData: cData,
+          distdata: distdata,
+          regdata: regdata,
+          distdatap: distdatap,
+          regdatap: regdatap,
         });
 
         if (response) {
@@ -207,56 +289,86 @@ function Regteam({
     }
   }
 
-  // ........................... for select ..................
-
-  const theme = useTheme();
-  const [customerData, setcustomerData] = useState([]);
-  const [cData, setCData] = useState([]);
-
   const handleChanges = (event) => {
     const {
       target: { value },
     } = event;
-    setcustomerData(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+    setcustomerData(value);
   };
+
+  //......................... for customers............
 
   const handleChangesc = (event) => {
     const {
       target: { value },
     } = event;
-    setCData(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+    setCData(value);
   };
+
+  //......................... for regions............
+
+  const handleChangesreg = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setRegtdata(value);
+  };
+
+  //......................... for districts............
+
+  const handleChangesdis = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setDistdata(value);
+  };
+  //......................... for regions package............
+
+  const handleChangesregp = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setRegtdatap(value);
+  };
+
+  //......................... for districts package............
+
+  const handleChangesdisp = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setDistdatap(value);
+  };
+
+  //................................... for date time ............
 
   return (
     <Card
       variant='outlined '
       style={{
-        marginTop: '30px',
-        position: 'relative',
-        left: '50%',
-        top: '50%',
         fontFamily: 'sans-serif',
-        transform: 'translate(-50%, -50%)',
         minWidth: '300px',
-        zIndex: '1',
+        borderRadius: '16px',
+        padding: '40px',
+        width: '80%',
         height: 'auto',
         borderRadius: '16px',
-        maxWidth: '80%',
-        padding: '20px',
-        borderRadius: '16px',
         transition: '0.3s',
-        // boxShadow: '0 8px 40px -12px rgba(0,0,0,0.4)',
-        // '&:hover': {
-        //   boxShadow: '0 16px 70px -12.125px rgba(0,0,0,0.4)',
-        // },
+        margin: '20px',
       }}>
       <FormLabel>ORDER FORM</FormLabel>
+      <Divider
+        fullWidth
+        style={{
+          background: 'gray',
+          marginTop: '10px',
+          marginBottom: '30px',
+          height: '30px',
+        }}
+      />
+      <span>
+        <h5>Customer Details</h5>
+      </span>
       <div
         style={{
           display: 'flex',
@@ -265,7 +377,9 @@ function Regteam({
           width: '100%',
           gap: '5%',
         }}>
-        <span style={{ width: '12%' }}>Customer Name : </span>
+        {/* <span style={{ width: '12%' }}>Customer Name : </span> */}
+        <InputLabel id='demo-multiple-name-label'>Customer Name</InputLabel>
+
         <Select
           labelId='demo-multiple-name-label'
           id='demo-multiple-name'
@@ -293,7 +407,8 @@ function Regteam({
           width: '100%',
           gap: '5%',
         }}>
-        <span style={{ widith: '12%' }}>Consigner Name : </span>
+        {/* <span style={{ widith: '12%' }}>Consigner Name : </span> */}
+        <InputLabel id='demo-multiple-name-label'>Consigner Name</InputLabel>
         <Select
           labelId='demo-multiple-name-label2'
           id='demo-multiple-name2'
@@ -313,127 +428,272 @@ function Regteam({
           ))}
         </Select>
       </div>
-      <div
-        id='tofrom'
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-        }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            marginTop: '20px',
-            width: '100%',
-            gap: '10%',
-          }}>
-          <span style={{ width: '12%' }}>FROM : </span>
-          <Select
-            labelId='demo-multiple-name-label2'
-            id='demo-multiple-name2'
-            value={cData}
-            label='helloo'
-            style={{ width: '75%' }}
-            onChange={handleChangesc}
-            input={<OutlinedInput label='Name'></OutlinedInput>}
-            MenuProps={MenuProps}>
-            {consgigners.map((el) => (
-              <MenuItem
-                key={el.consignerid}
-                value={el.consignerid}
-                style={getStyles(consgigners, cData, theme)}>
-                {el.cfname + ' ' + el.clname}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            marginTop: '20px',
-            width: '100%',
-            gap: '5',
-          }}>
-          <span style={{ width: '12%' }}>TO : </span>
-          <Select
-            labelId='demo-multiple-name-label2'
-            id='demo-multiple-name2'
-            value={cData}
-            label='helloo'
-            style={{ width: '75%' }}
-            onChange={handleChangesc}
-            input={<OutlinedInput label='Name'></OutlinedInput>}
-            MenuProps={MenuProps}>
-            {consgigners.map((el) => (
-              <MenuItem
-                key={el.consignerid}
-                value={el.consignerid}
-                style={getStyles(consgigners, cData, theme)}>
-                {el.cfname + ' ' + el.clname}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>
+        <LocalizationProvider dateAdapter={DateAdapter}>
+          <DateTimePicker
+            renderInput={(props) => (
+              <TextField
+                label='pickup-date'
+                margin='normal'
+                inputRef={pickdat}
+                variant='outlined'
+                autoComplete='off'
+                fullWidth
+                {...props}
+              />
+            )}
+            label='Pick Up Date'
+            value={pickdate}
+            onChange={(newValue) => {
+              setPickdate(newValue);
+            }}
+          />
+        </LocalizationProvider>
+        <LocalizationProvider dateAdapter={DateAdapter}>
+          <DateTimePicker
+            renderInput={(props) => (
+              <TextField
+                label='delivery-date'
+                margin='normal'
+                inputRef={deliverydate}
+                variant='outlined'
+                autoComplete='off'
+                fullWidth
+                {...props}
+              />
+            )}
+            label='Expected Delivery Date'
+            value={deliverydat}
+            onChange={(newValue) => {
+              setDeliverydate(newValue);
+            }}
+          />
+        </LocalizationProvider>
       </div>
       <TextField
-        label='FROM'
+        multiline
+        rows={2}
+        maxRows={4}
+        fullWidth
+        label='Note'
         margin='normal'
-        inputRef={bid}
+        inputRef={custnote}
         variant='outlined'
         autoComplete='off'
-        fullWidth
-        defaultValue={branchId}
+        defaultValue={customernotes}
         ref={formref}
-      />{' '}
-      <TextField
-        label='To '
-        margin='normal'
-        inputRef={bname}
-        variant='outlined'
-        autoComplete='off'
+      />
+      <Divider
         fullWidth
-        ref={formref}
-        defaultValue={branchname}
-      />{' '}
-      <TextField
-        label='Region '
-        margin='normal'
-        inputRef={bregion}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={region}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='District'
-        margin='normal'
-        inputRef={bdistrict}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        ref={formref}
-        defaultValue={district}
-      />{' '}
-      <TextField
-        label='Address'
-        margin='normal'
-        inputRef={baddress}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={branchaddress}
-        ref={formref}
-      />{' '}
+        style={{
+          background: 'gray',
+          marginTop: '10px',
+          marginBottom: '30px',
+          height: '30px',
+        }}
+      />
+      <span>
+        <h5>Package Location Details</h5>
+      </span>
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'row',
           marginTop: '20px',
-          width: '300px',
-          gap: '100px',
-        }}></div>
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-label'>Region</InputLabel>
+        <Select
+          labelId='demo-multiple-name-labelreg'
+          id='demo-multiple-namereg'
+          value={regdata}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangesreg}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {regions.map((el) => (
+            <MenuItem
+              key={el.id}
+              value={el.name}
+              style={getStyles(regions, regdata, theme)}>
+              {el.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-label'>District</InputLabel>
+        <Select
+          labelId='demo-multiple-name-label2'
+          id='demo-multiple-name2'
+          value={distdata}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangesdis}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {districts.map((el) => (
+            <MenuItem
+              key={el.consignerid}
+              value={el.name}
+              style={getStyles(districts, distdata, theme)}>
+              {el.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
+      <TextField
+        label='Street'
+        margin='normal'
+        inputRef={packstreet}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={pstreet}
+        ref={formref}
+      />{' '}
+      <TextField
+        multiline
+        rows={2}
+        maxRows={4}
+        fullWidth
+        label='Note'
+        margin='normal'
+        inputRef={pkgnotes}
+        variant='outlined'
+        autoComplete='off'
+        defaultValue={pnotes}
+        ref={formref}
+      />
+      <Divider
+        fullWidth
+        style={{
+          background: 'gray',
+          marginTop: '10px',
+          marginBottom: '30px',
+          height: '30px',
+        }}
+      />{' '}
+      <span>
+        <h5>Destination Details</h5>
+      </span>
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-labelp'>Region</InputLabel>
+        <Select
+          labelId='demo-multiple-name-labelregp'
+          id='demo-multiple-nameregp'
+          value={regdatap}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangesregp}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {regions.map((el) => (
+            <MenuItem
+              key={el.id}
+              value={el.name}
+              style={getStyles(regions, regdatap, theme)}>
+              {el.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-labelp'>District</InputLabel>
+        <Select
+          labelId='demo-multiple-name-label2p'
+          id='demo-multiple-name2p'
+          value={distdatap}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangesdisp}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {districts.map((el) => (
+            <MenuItem
+              key={el.consignerid}
+              value={el.name}
+              style={getStyles(districts, distdatap, theme)}>
+              {el.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
+      <TextField
+        label='Street'
+        margin='normal'
+        inputRef={distnstreet}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={dstreet}
+        ref={formref}
+      />{' '}
+      <TextField
+        label='Consignee Name'
+        margin='normal'
+        inputRef={congneename}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={consigneename}
+        ref={formref}
+      />{' '}
+      <TextField
+        label='Consignee Phone'
+        margin='normal'
+        inputRef={congneephone}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={consigneephone}
+        ref={formref}
+      />{' '}
+      <TextField
+        multiline
+        rows={2}
+        maxRows={4}
+        fullWidth
+        label='Note'
+        margin='normal'
+        inputRef={dtnnote}
+        variant='outlined'
+        autoComplete='off'
+        defaultValue={dnotes}
+        ref={formref}
+      />
+      <Divider
+        fullWidth
+        style={{
+          background: 'gray',
+          marginTop: '10px',
+          marginBottom: '30px',
+          height: '30px',
+        }}
+      />{' '}
       <div
         style={{
           display: 'flex',
@@ -441,7 +701,6 @@ function Regteam({
           justifyContent: 'center',
           gap: '70px',
         }}>
-        {' '}
         <Button
           variant='contained'
           width='sm'
@@ -464,7 +723,6 @@ function Regteam({
           Close
         </Button>
       </div>
-      <h4> </h4>
     </Card>
   );
 }
@@ -473,3 +731,4 @@ const MapStateToprops = (store) => {
 };
 
 export default connect(MapStateToprops)(Regteam);
+

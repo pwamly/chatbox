@@ -1,7 +1,14 @@
 .dashboard {
-    min-height: 75vh;
-    width: 100%;
     display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    overflow: none;
 }
 
 .menu-bars {
