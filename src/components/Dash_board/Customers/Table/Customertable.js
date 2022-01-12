@@ -22,7 +22,11 @@ import { useGet, useGetList } from '../../../../hooks/index';
 import { connect } from 'react-redux';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import { getUsers, deleteOrder, getOrders } from '../../../../client/client';
+import {
+  getUsers,
+  deleteCustomer,
+  getCustomers,
+} from '../../../../client/client';
 import {
   ADD_USER,
   EDIT_USER,
@@ -41,7 +45,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getOrders);
+  const { results: rows, loading, refresh } = useGetList(getCustomers);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -90,15 +94,11 @@ function BasicTable({ adduser, dispatch }) {
   );
   let history = useHistory();
   const columns = [
-    // { label: 'Order Id', show: true, name: 'orderid' },
-    { label: 'Customer Name', show: true, name: 'customername' },
-    { label: 'Package Location Steet', show: true, name: 'pstreet' },
-    { label: 'Consigner Name', show: true, name: 'consignername' },
-    { label: 'Destination ', show: true, name: 'dregion' },
-    { label: 'Consignee Name', show: true, name: 'consigneename' },
-    { label: 'Pick up Time', show: true, name: 'pickuptime' },
-    { label: 'Expected Delivery Time', show: true, name: 'expdlrtime' },
-    { label: 'Customer Notes', show: true, name: 'customernotes' },
+    { label: 'Customer Name', show: true, name: 'username' },
+    { label: 'Email', show: true, name: 'email' },
+    { label: 'Phone', show: true, name: 'phone' },
+    { label: 'Address', show: true, name: 'generaladdress' },
+    { label: 'Registere At', show: true, name: 'created' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
@@ -109,10 +109,10 @@ function BasicTable({ adduser, dispatch }) {
   };
 
   async function handledelete(row) {
-    const { orderid } = row;
+    const { customerid } = row;
     try {
       setLoadingdel(true);
-      let response = await deleteOrder(orderid);
+      let response = await deleteCustomer(customerid);
 
       if (response) {
         setLoadingdel(false);
@@ -120,7 +120,7 @@ function BasicTable({ adduser, dispatch }) {
           appearance: 'success',
           autoDismiss: true,
         });
-        window.location.replace('/dashboard/orders');
+        window.location.replace('/dashboard/customers');
         return;
       }
       setLoadingdel(false);

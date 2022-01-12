@@ -8,6 +8,7 @@ import { getUserId, httpActions } from "../../client/index";
 import Team from "./Team/Index";
 import Branch from './branchs/Index';
 import Orders from './Orders/Index';
+import Customers from './Customers/Index';
 import { useGet } from '../../hooks';
 import './dashbar.css';
 import RegistrationForm from './Registration';
@@ -80,6 +81,10 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
                   <ProtectRoute path='/dashboard/reports' component={Report} />{' '}
                   <ProtectRoute path='/dashboard/branch' component={Branch} />{' '}
                   <ProtectRoute path='/dashboard/orders' component={Orders} />{' '}
+                  <ProtectRoute
+                    path='/dashboard/customers'
+                    component={Customers}
+                  />{' '}
                 </Switch>{' '}
               </Container>{' '}
             </Router>{' '}

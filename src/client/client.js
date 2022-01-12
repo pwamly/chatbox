@@ -289,6 +289,18 @@ export const getOrders = async () => {
   }
 };
 
+
+export const getCustomers = async () => {
+  try {
+    const customers = await instance.get('/api/customers');
+    if (customers) {
+      return customers;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const postVehicleInfo = async (data) => {
   try {
     const response = await instance.post('/api/actions/registervehicle', {
@@ -352,6 +364,30 @@ export const deleteUser = async (id) => {
   }
 };
 
+export const deleteOrder = async (id) => {
+  try {
+    const response = await instance.delete(`/api/delete-order/${id}`);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const deleteCustomer = async (id) => {
+  try {
+    const response = await instance.delete(`/api/delete-customer/${id}`);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const addUser = async (data) => {
   try {
     const response = await instance.post('/admin/create-user', {
@@ -382,9 +418,22 @@ export const addBranch = async (data) => {
 };
 
 export const addorder = async (data) => {
-  console.log('vvvvvvvvvvvvvvvvvv', data);
   try {
     const response = await instance.post('/api/create-order', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const registerCustomer = async (data) => {
+  try {
+    const response = await instance.post('/api/register-customer', {
       ...data,
     });
 
