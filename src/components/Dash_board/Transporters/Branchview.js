@@ -1,11 +1,7 @@
 import React from 'react';
-import './dashview.css';
+import './branchview.css';
 import { Link, useHistory } from 'react-router-dom';
-import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
-import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
-import BusinessIcon from '@mui/icons-material/Business';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
+
 // import { useStateValue } from "./StateProvider";
 
 function Index({ id, title, image, price, rating }) {
@@ -37,16 +33,10 @@ function Index({ id, title, image, price, rating }) {
   };
 
   return (
-    <div className='dashview'>
+    <div className='dashview' onClick={() => history.push('/dashboard/branch')}>
       {dataadimindata && (
-        <div
-          className='product'
-          onClick={() => history.push('/dashboard/branch')}>
-          <HomeWorkIcon
-            sx={{
-              fontSize: '75px',
-            }}
-          />
+        <div className='branch'>
+          <img src={image} alt='' className='images' />
           <p className='product__title'>Branches</p>
           <p className='product__price'>
             <small>{dataadimindata.branches}</small>
@@ -54,33 +44,9 @@ function Index({ id, title, image, price, rating }) {
           </p>
         </div>
       )}
+      {dataadimindata && <div className='branch'>wjpwepwjpss</div>}
       {dataadimindata && (
-        <div
-          className='product'
-          onClick={() => history.push('/dashboard/employee')}>
-          <PeopleAltIcon
-            sx={{
-              fontSize: '75px',
-            }}
-          />
-
-          <p className='product__title'>Employee</p>
-          <p className='product__price'>
-            <small>{dataadimindata.employe}</small>
-            <strong>{price}</strong>
-            <br />
-          </p>
-        </div>
-      )}
-      {dataadimindata && (
-        <div
-          className='product'
-          onClick={() => history.push('/dashboard/customers')}>
-          <BusinessIcon
-            sx={{
-              fontSize: '75px',
-            }}
-          />
+        <div className='product'>
           <p className='product__title'>Customers</p>
           <p className='product__price'>
             <small>{dataadimindata.customers}</small>
@@ -90,14 +56,7 @@ function Index({ id, title, image, price, rating }) {
         </div>
       )}
       {dataadimindata && (
-        <div
-          className='product'
-          onClick={() => history.push('/dashboard/vehicles')}>
-          <EmojiTransportationIcon
-            sx={{
-              fontSize: '75px',
-            }}
-          />
+        <div className='branch'>
           <p className='product__title'>Vehicle</p>
           <p className='product__price'>
             <small>{dataadimindata.vehicle}</small>
@@ -107,14 +66,7 @@ function Index({ id, title, image, price, rating }) {
         </div>
       )}
       {dataadimindata && (
-        <div
-          className='product'
-          onClick={() => history.push('/dashboard/transporters')}>
-          <DepartureBoardIcon
-            sx={{
-              fontSize: '75px',
-            }}
-          />
+        <div className='branch'>
           <p className='product__title'>Transporters</p>
           <p className='product__price'>
             <small>{dataadimindata.Transporters}</small>

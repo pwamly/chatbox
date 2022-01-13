@@ -61,7 +61,7 @@ function BasicTable({ adduser, dispatch }) {
             onClick={() => {
               // dispatch({ type: SAVE_REPORT_DATA, payload: row });
               // dispatch({ type: SHOW_PDF });
-              history.push('/dashboard/reports/view');
+              // history.push('/dashboard/reports/view');
             }}
           />
         </Link>
@@ -70,7 +70,7 @@ function BasicTable({ adduser, dispatch }) {
           <ImPencil
             className='IconStyle'
             onClick={() => {
-              console.log('xxxxxxxxxxxxxxxxxxxx', row);
+              console.log('', row);
               dispatch({ type: SAVE_BRANCH_DATA, payload: row });
               dispatch({ type: EDIT_USER });
             }}

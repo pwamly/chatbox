@@ -301,6 +301,17 @@ export const getCustomers = async () => {
   }
 };
 
+export const getVehicles = async () => {
+  try {
+    const vehicles = await instance.get('/api/vehicles');
+    if (vehicles) {
+      return vehicles;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const postVehicleInfo = async (data) => {
   try {
     const response = await instance.post('/api/actions/registervehicle', {
@@ -388,6 +399,18 @@ export const deleteCustomer = async (id) => {
   }
 };
 
+export const deleteVehicle = async (id) => {
+  try {
+    const response = await instance.delete(`/api/delete-vehicle/${id}`);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const addUser = async (data) => {
   try {
     const response = await instance.post('/admin/create-user', {
@@ -434,6 +457,20 @@ export const addorder = async (data) => {
 export const registerCustomer = async (data) => {
   try {
     const response = await instance.post('/api/register-customer', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const registerVehicle = async (data) => {
+  try {
+    const response = await instance.post('/api/register-vehicle', {
       ...data,
     });
 

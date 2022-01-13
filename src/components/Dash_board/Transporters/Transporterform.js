@@ -12,7 +12,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
 import { addUser, registerCustomer, editUser } from '../../../client/client';
 import { Divider } from '@mui/material';
-import './order.css';
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
@@ -305,7 +304,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>CUSTOMER FORM</FormLabel>
+      <FormLabel>TRANSPORTER FORM</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -316,23 +315,13 @@ function Regteam({
         }}
       />{' '}
       <TextField
-        label='First Name'
+        label='Transporter Name'
         margin='normal'
         inputRef={fstname}
         variant='outlined'
         autoComplete='off'
         fullWidth
         defaultValue={fname}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Last Name'
-        margin='normal'
-        inputRef={lstname}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={lname}
         ref={formref}
       />{' '}
       <TextField
@@ -425,7 +414,17 @@ function Regteam({
           gap: '5%',
         }}></div>
       <TextField
-        label='Street'
+        label='Address'
+        margin='normal'
+        inputRef={caddress}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={address}
+        ref={formref}
+      />
+      <TextField
+        label='Route'
         margin='normal'
         inputRef={cstreet}
         variant='outlined'
@@ -435,15 +434,15 @@ function Regteam({
         ref={formref}
       />{' '}
       <TextField
-        label='Address'
+        label='Vehicle Details'
         margin='normal'
-        inputRef={caddress}
+        inputRef={cstreet}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={address}
+        defaultValue={street}
         ref={formref}
-      />{' '}
+      />
       <div
         style={{
           display: 'flex',

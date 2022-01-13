@@ -94,10 +94,11 @@ function BasicTable({ adduser, dispatch }) {
   );
   let history = useHistory();
   const columns = [
-    { label: 'Customer Name', show: true, name: 'username' },
+    { label: 'Transporter Name', show: true, name: 'transportname' },
     { label: 'Email', show: true, name: 'email' },
     { label: 'Phone', show: true, name: 'phone' },
     { label: 'Address', show: true, name: 'generaladdress' },
+    { label: 'Route', show: true, name: 'route' },
     { label: 'Registere At', show: true, name: 'created' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];

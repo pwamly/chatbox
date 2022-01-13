@@ -10,9 +10,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
-import { addUser, registerCustomer, editUser } from '../../../client/client';
+import { addUser, registerVehicle, editUser } from '../../../client/client';
 import { Divider } from '@mui/material';
-import './order.css';
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
@@ -41,66 +40,26 @@ const MenuProps = {
   },
 };
 
-const customers = [
+const statusd = [
   {
-    customerId: 'bdar-1',
-    customername: 'NMB KAWE',
-    customeraddress: 'P.O.BOX 56,KINONDONI,KAWE NALEWA STREET,MOBILE:2222229',
+    value: 'working',
+    name: 'WORKING',
   },
   {
-    customerId: 'bdar-2',
-    customername: 'CRD MBEZI',
-    customeraddress: 'P.O.BOX 16,UBUNGO,MAGUFULI BUS STOP STREET,MOBILE:123444',
+    value: 'not working',
+    name: 'NOT WORKING',
   },
 ];
 
-const consgigners = [
+const routestatusd = [
   {
-    consignerid: 'nmb-dar-kinondoni-kawe-1',
-    ccompanyId: 'bdar-1',
-    cfname: 'Johny',
-    clname: 'kibweta',
-    cmobile: '+255673999',
-    cemail: 'kibwe@gmail.com',
-    crole: 'IT',
-    caddress: 'P.O.BOX 56,KINONDONI,KAWE NALEWA STREET,MOBILE:2222229',
+    name: 'ON ROAD',
+    value: 'on road',
   },
   {
-    consignerid: 'nmb-dar-kinondoni-kawe-2',
-    ccompanyId: 'bdar-1',
-    cfname: 'kulwa',
-    clname: 'magembe',
-    cmobile: '+2556739444',
-    cemail: 'magembe@gmail.com',
-    crole: 'accountant',
-    caddress: 'P.O.BOX 46,TEMEKE,KIWALENI STREET,MOBILE:23444',
+    name: 'READY FOR PICK UP',
+    value: 'available',
   },
-];
-
-const regions = [
-  {
-    id: 1,
-    name: 'kigoma',
-  },
-  {
-    id: 2,
-    name: 'Mwanza',
-  },
-  {
-    id: 3,
-    name: 'Arusha',
-  },
-];
-
-const districts = [
-  {
-    id: 1,
-    regionid: 1,
-    regionname: 'kigoma',
-    name: 'Uvinza',
-  },
-  { id: 1, regionid: 2, regionname: 'Mwanza', name: 'Igoma' },
-  { id: 1, regionid: 3, name: 'Arumeru', regionname: 'Arusha' },
 ];
 
 function getStyles(name, customerData, theme) {
@@ -136,32 +95,28 @@ function Regteam({
   // ........................... for select ..................
 
   const theme = useTheme();
-  const [distdata, setDistdata] = useState('');
-  const [regdata, setRegtdata] = useState('');
+  const [routestat, setRoutestat] = useState('');
+  const [stat, setStatus] = useState('');
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
 
   // ........... to be passed to form values ..........
 
   const formref = useRef();
-  const fstname = useRef('');
-  const lstname = useRef('');
-  const cemail = useRef('');
-  const cphone = useRef('');
-  const cstreet = useRef('');
-  const caddress = useRef('');
+  const vname = useRef('');
+  const pnumber = useRef('');
+  const imodel = useRef('');
+  const lcapacity = useRef('');
+  const vdetails = useRef('');
 
   // ......................... to be passed to the form default...........
 
   const {
-    fname = '',
-    lname = '',
-    email = '',
-    phone = '',
-    street = '',
-    region = '',
-    district = '',
-    address = '',
+    name = '',
+    plateno = '',
+    model = '',
+    loadcapacity = '',
+    details = '',
   } = branchdata;
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -211,15 +166,13 @@ function Regteam({
       if (saveedit == 'add') {
         setLoading(true);
         // formref.current.reset();
-        let response = await registerCustomer({
-          district: distdata,
-          region: regdata,
-          fname: fstname.current.value,
-          lname: lstname.current.value,
-          email: cemail.current.value,
-          phone: cphone.current.value,
-          street: cstreet.current.value,
-          address: caddress.current.value,
+        let response = await registerVehicle({
+          name: vname.current.value,
+          plateno: pnumber.current.value,
+          model: imodel.current.value,
+          loadcapacity: lcapacity.current.value,
+          status: stat,
+          routestatus: routestat,
         });
 
         if (response) {
@@ -240,14 +193,12 @@ function Regteam({
         setLoading(true);
         // formref.current.reset();
         let response = await editUser({
-          district: distdata,
-          region: regdata,
-          fname: fstname.current.value,
-          lname: lstname.current.value,
-          email: cemail.current.value,
-          phone: cphone.current.value,
-          street: cstreet.current.value,
-          address: address.current.value,
+          name: vname.current.value,
+          plateno: pnumber.current.value,
+          model: imodel.current.value,
+          loadcapacity: lcapacity.current.value,
+          status: stat,
+          routestatus: routestat,
         });
 
         if (response) {
@@ -273,20 +224,20 @@ function Regteam({
 
   //......................... for regions............
 
-  const handleChangesreg = (event) => {
+  const handleChangesStatus = (event) => {
     const {
       target: { value },
     } = event;
-    setRegtdata(value);
+    setStatus(value);
   };
 
   //......................... for districts............
 
-  const handleChangesdis = (event) => {
+  const handleChangesroutestatus = (event) => {
     const {
       target: { value },
     } = event;
-    setDistdata(value);
+    setRoutestat(value);
   };
 
   //................................... for date time ............
@@ -305,7 +256,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>CUSTOMER FORM</FormLabel>
+      <FormLabel>VEHICLE FORM</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -316,43 +267,43 @@ function Regteam({
         }}
       />{' '}
       <TextField
-        label='First Name'
+        label='Vehicle Name'
         margin='normal'
-        inputRef={fstname}
+        inputRef={vname}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={fname}
+        defaultValue={name}
+        ref={formref}
+      />
+      <TextField
+        label='Plate Number'
+        margin='normal'
+        inputRef={pnumber}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={plateno}
         ref={formref}
       />{' '}
       <TextField
-        label='Last Name'
+        label='Model'
         margin='normal'
-        inputRef={lstname}
+        inputRef={imodel}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={lname}
+        defaultValue={model}
         ref={formref}
       />{' '}
       <TextField
-        label='Email'
+        label='Load Capacity'
         margin='normal'
-        inputRef={cemail}
+        inputRef={lcapacity}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={email}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Phone'
-        margin='normal'
-        inputRef={cphone}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={phone}
+        defaultValue={loadcapacity}
         ref={formref}
       />{' '}
       <div
@@ -362,23 +313,22 @@ function Regteam({
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>Region</InputLabel>
+        <InputLabel id='demo-multiple-name-label'>Status</InputLabel>
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
-          value={regdata}
+          value={stat}
           label='helloo'
           defaultValue='Mwanza'
           style={{ width: '100%' }}
           fullWidth
-          onChange={handleChangesreg}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
+          onChange={handleChangesStatus}
           MenuProps={MenuProps}>
-          {regions.map((el) => (
+          {statusd.map((el) => (
             <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(regions, regdata, theme)}>
+              key={el.name}
+              value={el.value}
+              style={getStyles(statusd, stat, theme)}>
               {el.name}
             </MenuItem>
           ))}
@@ -391,22 +341,22 @@ function Regteam({
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>District</InputLabel>
+        <InputLabel id='demo-multiple-name-label'>Route Status</InputLabel>
         <Select
           labelId='demo-multiple-name-label2'
           id='demo-multiple-name2'
-          value={distdata}
+          value={routestat}
           label='helloo'
           style={{ width: '100%' }}
           fullWidth
-          onChange={handleChangesdis}
+          onChange={handleChangesroutestatus}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {districts.map((el) => (
+          {routestatusd.map((el) => (
             <MenuItem
               key={el.consignerid}
-              value={el.name}
-              style={getStyles(districts, distdata, theme)}>
+              value={el.value}
+              style={getStyles(routestatusd, routestat, theme)}>
               {el.name}
             </MenuItem>
           ))}
@@ -425,25 +375,15 @@ function Regteam({
           gap: '5%',
         }}></div>
       <TextField
-        label='Street'
+        label='Vehicle Details'
         margin='normal'
-        inputRef={cstreet}
+        inputRef={vdetails}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={street}
+        defaultValue={details}
         ref={formref}
-      />{' '}
-      <TextField
-        label='Address'
-        margin='normal'
-        inputRef={caddress}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={address}
-        ref={formref}
-      />{' '}
+      />
       <div
         style={{
           display: 'flex',

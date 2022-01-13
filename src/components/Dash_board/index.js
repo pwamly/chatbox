@@ -9,6 +9,8 @@ import Team from "./Team/Index";
 import Branch from './branchs/Index';
 import Orders from './Orders/Index';
 import Customers from './Customers/Index';
+import Transporters from './Transporters/Index';
+import Vehicles from './Vehicle/Index';
 import { useGet } from '../../hooks';
 import './dashbar.css';
 import RegistrationForm from './Registration';
@@ -84,6 +86,14 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
                   <ProtectRoute
                     path='/dashboard/customers'
                     component={Customers}
+                  />{' '}
+                  <ProtectRoute
+                    path='/dashboard/transporters'
+                    component={Transporters}
+                  />{' '}
+                  <ProtectRoute
+                    path='/dashboard/vehicles'
+                    component={Vehicles}
                   />{' '}
                 </Switch>{' '}
               </Container>{' '}

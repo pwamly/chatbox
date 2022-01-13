@@ -24,8 +24,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import {
   getUsers,
-  deleteCustomer,
-  getCustomers,
+  deleteVehicle,
+  getVehicles,
 } from '../../../../client/client';
 import {
   ADD_USER,
@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getCustomers);
+  const { results: rows, loading, refresh } = useGetList(getVehicles);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -94,11 +94,13 @@ function BasicTable({ adduser, dispatch }) {
   );
   let history = useHistory();
   const columns = [
-    { label: 'Customer Name', show: true, name: 'username' },
-    { label: 'Email', show: true, name: 'email' },
-    { label: 'Phone', show: true, name: 'phone' },
-    { label: 'Address', show: true, name: 'generaladdress' },
-    { label: 'Registere At', show: true, name: 'created' },
+    { label: 'Vehicle Name', show: true, name: 'name' },
+    { label: 'Plate Number', show: true, name: 'plateno' },
+    { label: 'Model', show: true, name: 'model' },
+    { label: 'Load Capacity', show: true, name: 'loadcapacity' },
+    { label: 'Status', show: true, name: 'status' },
+    { label: 'Route Status', show: true, name: 'routestatus' },
+    { label: 'Registered At', show: true, name: 'created' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
@@ -109,10 +111,10 @@ function BasicTable({ adduser, dispatch }) {
   };
 
   async function handledelete(row) {
-    const { customerid } = row;
+    const { vehicleid } = row;
     try {
       setLoadingdel(true);
-      let response = await deleteCustomer(customerid);
+      let response = await deleteVehicle(vehicleid);
 
       if (response) {
         setLoadingdel(false);
@@ -120,7 +122,7 @@ function BasicTable({ adduser, dispatch }) {
           appearance: 'success',
           autoDismiss: true,
         });
-        window.location.replace('/dashboard/customers');
+        window.location.replace('/dashboard/vehicles');
         return;
       }
       setLoadingdel(false);
