@@ -24,8 +24,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import {
   getUsers,
-  deleteCustomer,
-  getCustomers,
+  deleteTransporter,
+  getTransporters,
 } from '../../../../client/client';
 import {
   ADD_USER,
@@ -45,7 +45,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getCustomers);
+  const { results: rows, loading, refresh } = useGetList(getTransporters);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -94,11 +94,12 @@ function BasicTable({ adduser, dispatch }) {
   );
   let history = useHistory();
   const columns = [
-    { label: 'Transporter Name', show: true, name: 'transportname' },
+    { label: 'Transporter Name', show: true, name: 'name' },
     { label: 'Email', show: true, name: 'email' },
     { label: 'Phone', show: true, name: 'phone' },
-    { label: 'Address', show: true, name: 'generaladdress' },
+    { label: 'Address', show: true, name: 'address' },
     { label: 'Route', show: true, name: 'route' },
+    { label: 'vehicledetails', show: true, name: 'vehicledetails' },
     { label: 'Registere At', show: true, name: 'created' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
@@ -110,10 +111,10 @@ function BasicTable({ adduser, dispatch }) {
   };
 
   async function handledelete(row) {
-    const { customerid } = row;
+    const { transporterid } = row;
     try {
       setLoadingdel(true);
-      let response = await deleteCustomer(customerid);
+      let response = await deleteTransporter(transporterid);
 
       if (response) {
         setLoadingdel(false);
@@ -121,7 +122,7 @@ function BasicTable({ adduser, dispatch }) {
           appearance: 'success',
           autoDismiss: true,
         });
-        window.location.replace('/dashboard/customers');
+        window.location.replace('/dashboard/transporters');
         return;
       }
       setLoadingdel(false);

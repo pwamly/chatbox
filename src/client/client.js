@@ -150,6 +150,10 @@ export const editUser = async (payload) => {
   return false;
 };
 
+
+
+
+
 export const editOrder = async (payload) => {
   try {
     const response = await instance.put(`/admin/edit-user/${payload.userid}`, {
@@ -289,10 +293,20 @@ export const getOrders = async () => {
   }
 };
 
-
 export const getCustomers = async () => {
   try {
     const customers = await instance.get('/api/customers');
+    if (customers) {
+      return customers;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const getTransporters = async () => {
+  try {
+    const customers = await instance.get('/api/transporters');
     if (customers) {
       return customers;
     }
@@ -399,6 +413,18 @@ export const deleteCustomer = async (id) => {
   }
 };
 
+export const deleteTransporter = async (id) => {
+  try {
+    const response = await instance.delete(`/api/delete-transporter/${id}`);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const deleteVehicle = async (id) => {
   try {
     const response = await instance.delete(`/api/delete-vehicle/${id}`);
@@ -467,6 +493,21 @@ export const registerCustomer = async (data) => {
     return { isSuccessful: false };
   }
 };
+
+export const registerTransporter = async (data) => {
+  try {
+    const response = await instance.post('/api/register-transporter', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 
 export const registerVehicle = async (data) => {
   try {

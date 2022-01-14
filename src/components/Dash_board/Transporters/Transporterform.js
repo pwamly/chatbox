@@ -10,7 +10,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
-import { addUser, registerCustomer, editUser } from '../../../client/client';
+import { addUser, registerTransporter, editUser } from '../../../client/client';
 import { Divider } from '@mui/material';
 // ...................... for select ..............................
 
@@ -135,32 +135,29 @@ function Regteam({
   // ........................... for select ..................
 
   const theme = useTheme();
-  const [distdata, setDistdata] = useState('');
-  const [regdata, setRegtdata] = useState('');
+
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
 
   // ........... to be passed to form values ..........
 
   const formref = useRef();
-  const fstname = useRef('');
-  const lstname = useRef('');
-  const cemail = useRef('');
-  const cphone = useRef('');
-  const cstreet = useRef('');
-  const caddress = useRef('');
+  const tname = useRef('');
+  const temail = useRef('');
+  const tphone = useRef('');
+  const taddress = useRef('');
+  const troute = useRef('');
+  const tdetails = useRef('');
 
   // ......................... to be passed to the form default...........
 
   const {
-    fname = '',
-    lname = '',
+    name = '',
+    vehicledetails = '',
     email = '',
-    phone = '',
-    street = '',
-    region = '',
-    district = '',
     address = '',
+    phone = '',
+    route = '',
   } = branchdata;
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -210,15 +207,13 @@ function Regteam({
       if (saveedit == 'add') {
         setLoading(true);
         // formref.current.reset();
-        let response = await registerCustomer({
-          district: distdata,
-          region: regdata,
-          fname: fstname.current.value,
-          lname: lstname.current.value,
-          email: cemail.current.value,
-          phone: cphone.current.value,
-          street: cstreet.current.value,
-          address: caddress.current.value,
+        let response = await registerTransporter({
+          name: tname.current.value,
+          email: temail.current.value,
+          phone: tphone.current.value,
+          address: taddress.current.value,
+          route: troute.current.value,
+          vehicledetails: tdetails.current.value,
         });
 
         if (response) {
@@ -239,14 +234,12 @@ function Regteam({
         setLoading(true);
         // formref.current.reset();
         let response = await editUser({
-          district: distdata,
-          region: regdata,
-          fname: fstname.current.value,
-          lname: lstname.current.value,
-          email: cemail.current.value,
-          phone: cphone.current.value,
-          street: cstreet.current.value,
-          address: address.current.value,
+          name: tname.current.value,
+          email: temail.current.value,
+          phone: tphone.current.value,
+          address: taddress.current.value,
+          route: troute.current.value,
+          vehicledetails: tdetails.current.value,
         });
 
         if (response) {
@@ -269,24 +262,6 @@ function Regteam({
       addToast('Failed', { appearance: 'error' });
     }
   }
-
-  //......................... for regions............
-
-  const handleChangesreg = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setRegtdata(value);
-  };
-
-  //......................... for districts............
-
-  const handleChangesdis = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDistdata(value);
-  };
 
   //................................... for date time ............
 
@@ -317,17 +292,17 @@ function Regteam({
       <TextField
         label='Transporter Name'
         margin='normal'
-        inputRef={fstname}
+        inputRef={tname}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={fname}
+        defaultValue={name}
         ref={formref}
       />{' '}
       <TextField
         label='Email'
         margin='normal'
-        inputRef={cemail}
+        inputRef={temail}
         variant='outlined'
         autoComplete='off'
         fullWidth
@@ -337,7 +312,7 @@ function Regteam({
       <TextField
         label='Phone'
         margin='normal'
-        inputRef={cphone}
+        inputRef={tphone}
         variant='outlined'
         autoComplete='off'
         fullWidth
@@ -349,58 +324,13 @@ function Regteam({
           marginTop: '20px',
           width: '100%',
           gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>Region</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelreg'
-          id='demo-multiple-namereg'
-          value={regdata}
-          label='helloo'
-          defaultValue='Mwanza'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesreg}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {regions.map((el) => (
-            <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(regions, regdata, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
+        }}></div>
       <div
         style={{
           marginTop: '20px',
           width: '100%',
           gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>District</InputLabel>
-        <Select
-          labelId='demo-multiple-name-label2'
-          id='demo-multiple-name2'
-          value={distdata}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesdis}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {districts.map((el) => (
-            <MenuItem
-              key={el.consignerid}
-              value={el.name}
-              style={getStyles(districts, distdata, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
+        }}></div>
       <div
         style={{
           marginTop: '20px',
@@ -416,7 +346,7 @@ function Regteam({
       <TextField
         label='Address'
         margin='normal'
-        inputRef={caddress}
+        inputRef={taddress}
         variant='outlined'
         autoComplete='off'
         fullWidth
@@ -426,21 +356,21 @@ function Regteam({
       <TextField
         label='Route'
         margin='normal'
-        inputRef={cstreet}
+        inputRef={troute}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={street}
+        defaultValue={route}
         ref={formref}
       />{' '}
       <TextField
         label='Vehicle Details'
         margin='normal'
-        inputRef={cstreet}
+        inputRef={tdetails}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={street}
+        defaultValue={vehicledetails}
         ref={formref}
       />
       <div
