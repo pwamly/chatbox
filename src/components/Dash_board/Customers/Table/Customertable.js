@@ -63,9 +63,9 @@ function BasicTable({ adduser, dispatch }) {
           <FaEye
             className='IconStyle'
             onClick={() => {
-              // dispatch({ type: SAVE_REPORT_DATA, payload: row });
+              dispatch({ type: SAVE_REPORT_DATA, payload: row });
               // dispatch({ type: SHOW_PDF });
-              // history.push('/dashboard/reports/view');
+              history.push('/dashboard/customers/view');
             }}
           />
         </Link>
@@ -76,7 +76,7 @@ function BasicTable({ adduser, dispatch }) {
             onClick={() => {
               console.log('xxxxxxxxxxxxxxxxxxxx', row);
               dispatch({ type: SAVE_BRANCH_DATA, payload: row });
-              dispatch({ type: EDIT_USER });
+              history.push('/dashboard/customers/edit');
             }}
           />
         </Link>
@@ -98,14 +98,15 @@ function BasicTable({ adduser, dispatch }) {
     { label: 'Email', show: true, name: 'email' },
     { label: 'Phone', show: true, name: 'phone' },
     { label: 'Address', show: true, name: 'generaladdress' },
-    { label: 'Registere At', show: true, name: 'created' },
+    { label: 'Consignors', show: true, name: 'consignorsno' },
+    { label: 'Registered At', show: true, name: 'created' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
   const classes = useStyles();
   const handleAdduser = () => {
     dispatch({ type: CLEAR_BRANCH_DATA });
-    dispatch({ type: ADD_USER });
+    history.push('/dashboard/customers/create-customer');
   };
 
   async function handledelete(row) {

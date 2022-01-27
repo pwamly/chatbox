@@ -4,6 +4,15 @@ import BranchDash from './Table/Branchtable';
 import Adduser from './Orderform';
 import { connect } from 'react-redux';
 import { ADD_USER } from '../../../actions';
+import { ProtectRoute } from '../../../components/ProtectRoute';
+import Orderview from '../../../components/Dash_board/Orders/Orderview/Orderview';
+import ItemForm from './Orderview/ItemModal';
+import {
+  Redirect,
+  BrowserRouter as Router,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
 function Index({ adduser }) {
   return (
@@ -14,7 +23,25 @@ function Index({ adduser }) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      {!adduser ? <BranchDash /> : <Adduser />}{' '}
+      <Router>
+        <Switch>
+          <ProtectRoute path='/dashboard/orders' exact component={BranchDash} />{' '}
+          <ProtectRoute
+            path='/dashboard/orders/create-user'
+            component={Adduser}
+          />{' '}
+          <ProtectRoute
+            path='/dashboard/orders/view'
+            exact
+            component={Orderview}
+          />
+          <ProtectRoute
+            path='/dashboard/orders/view/add-item'
+            component={ItemForm}
+          />
+        </Switch>{' '}
+      </Router>{' '}
+      {/* {!adduser ? <BranchDash /> : <Adduser />}{' '} */}
     </div>
   );
 }

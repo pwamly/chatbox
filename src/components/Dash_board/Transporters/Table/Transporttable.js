@@ -74,8 +74,9 @@ function BasicTable({ adduser, dispatch }) {
           <ImPencil
             className='IconStyle'
             onClick={() => {
-              console.log('xxxxxxxxxxxxxxxxxxxx', row);
+              console.log('xxxx', row);
               dispatch({ type: SAVE_BRANCH_DATA, payload: row });
+              
               dispatch({ type: EDIT_USER });
             }}
           />

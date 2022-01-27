@@ -44,7 +44,11 @@ function Navbar() {
                 <a href='#'>SGA</a>
               </li>
             </Link>
-            <Link to='/dashboard/orders'>
+            <Link
+              onClick={() => {
+                // history.push('/dashboard/orders');
+                window.location.replace('/dashboard/orders');
+              }}>
               <li>
                 <a href='#'>Orders</a>
               </li>
@@ -103,7 +107,7 @@ function Navbar() {
           width: '100%',
           padding: '30px 10px 10px 40px',
         }}>
-        <span style={{ fontSize: '16px' }}>Dashboard</span>
+        {/* <span style={{ fontSize: '16px' }}>Dashboard</span>.......... to  */}
       </nav>
     </div>
   );

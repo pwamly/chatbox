@@ -65,7 +65,6 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
 
   return (
     <>
-      {' '}
       {showProfile && <Profile />}{' '}
       <BreakpointProvider>
         <IconContext.Provider value={{ color: '#fff' }}>

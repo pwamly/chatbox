@@ -4,16 +4,17 @@ import Button from '@material-ui/core/Button';
 import { useToasts } from 'react-toast-notifications';
 import TextField from '@material-ui/core/TextField';
 import FormLabel from '@material-ui/core/FormLabel';
-import Spinner from '../../Spinner/Spiner';
+import Spinner from '../../../Spinner/Spiner';
 import Select from '@material-ui/core/Select';
+import { Link, useHistory } from 'react-router-dom';
 import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
-import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
-import { addUser, registerCustomer, editUser } from '../../../client/client';
+import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
+import { addUser, addorder, editUser } from '../../../../client/client';
 import { Divider } from '@mui/material';
-import { Link, useHistory } from 'react-router-dom';
-import './order.css';
+import './customerview.css';
+// import useTheme from '../CustomerView/customerview.css';
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
@@ -125,6 +126,7 @@ function Regteam({
   teamdata,
   dispatch,
   branchdata,
+  reportdata,
   saveedit,
   saveeditbtn,
 }) {
@@ -134,38 +136,45 @@ function Regteam({
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
-  const history = useHistory();
-
-  // ......................... to be passed to the form default...........
-
-  const {
-    fname = '',
-    lname = '',
-    email = '',
-    phone = '',
-    street = '',
-    region = '',
-    district = '',
-    address = '',
-  } = branchdata;
-
   // ........................... for select ..................
 
   const theme = useTheme();
-  const [distdata, setDistdata] = useState(district);
-  const [regdata, setRegtdata] = useState(region);
+  const [customerData, setcustomerData] = useState('');
+  const [cData, setCData] = useState('');
+  const [distdata, setDistdata] = useState('');
+  const [regdata, setRegtdata] = useState('');
+  const [distdatap, setDistdatap] = useState('');
+  const [regdatap, setRegtdatap] = useState('');
+  const [pickdate, setPickdate] = useState(new Date().toGMTString());
+  const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
 
   // ........... to be passed to form values ..........
 
   const formref = useRef();
-  const fstname = useRef('');
-  const lstname = useRef('');
-  const cemail = useRef('');
-  const cphone = useRef('');
-  const cstreet = useRef('');
-  const caddress = useRef('');
+  const pickdat = useRef('');
+  const deliverydate = useRef('');
+  const packstreet = useRef('');
+  const custnote = useRef('');
+  const pkgnotes = useRef('');
+  const distnstreet = useRef();
+  const dtnnote = useRef();
+  const congneename = useRef();
+  const congneephone = useRef();
+  // ......................... to be passed to the form default...........
+
+  const history = useHistory();
+  const {
+    customernotes = '',
+    pstreet = '',
+    consignername = '',
+    pnotes = '',
+    dstreet = '',
+    dnotes = '',
+    consigneephone = '',
+    consigneename = '',
+  } = reportdata;
 
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -190,7 +199,7 @@ function Regteam({
   };
 
   function selcust(data, selector) {
-    console.log('fff', data, selector);
+    console.log('', data, selector);
     let newdata = data.reduce((acc, item) => {
       if (item.customerId === selector) {
         acc.push(item);
@@ -215,15 +224,21 @@ function Regteam({
       if (saveedit == 'add') {
         setLoading(true);
         // formref.current.reset();
-        let response = await registerCustomer({
-          district: distdata,
-          region: regdata,
-          fname: fstname.current.value,
-          lname: lstname.current.value,
-          email: cemail.current.value,
-          phone: cphone.current.value,
-          street: cstreet.current.value,
-          address: caddress.current.value,
+        let response = await addorder({
+          pickuptime: pickdate._i,
+          expdlrtime: deliverydat._i,
+          packagestreet: packstreet.current.value,
+          custnote: custnote.current.value,
+          packagenotes: pkgnotes.current.value,
+          destinationstreet: distnstreet.current.value,
+          customerData: selcust(customers, customerData),
+          consignerdata: selcons(consgigners, cData),
+          Packagedistdata: distdata,
+          packageRegionData: regdata,
+          destinationData: distdatap,
+          destinationRegionData: regdatap,
+          destinationnotes: dtnnote.current.value,
+          consigneename: congneename.current.value,
         });
 
         if (response) {
@@ -244,14 +259,18 @@ function Regteam({
         setLoading(true);
         // formref.current.reset();
         let response = await editUser({
-          district: distdata,
-          region: regdata,
-          fname: fstname.current.value,
-          lname: lstname.current.value,
-          email: cemail.current.value,
-          phone: cphone.current.value,
-          street: cstreet.current.value,
-          address: address.current.value,
+          pickuptime: pickdat.current.value,
+          expdlrtime: deliverydate.current.value,
+          pstreet: packstreet.current.value,
+          custnote: custnote.current.value,
+          pnotes: pkgnotes.current.value,
+          dstreet: distnstreet.current.value,
+          customerData: customerData,
+          cData: cData,
+          distdata: distdata,
+          regdata: regdata,
+          distdatap: distdatap,
+          regdatap: regdatap,
         });
 
         if (response) {
@@ -275,6 +294,22 @@ function Regteam({
     }
   }
 
+  const handleChanges = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setcustomerData(value);
+  };
+
+  //......................... for customers............
+
+  const handleChangesc = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCData(value);
+  };
+
   //......................... for regions............
 
   const handleChangesreg = (event) => {
@@ -291,6 +326,23 @@ function Regteam({
       target: { value },
     } = event;
     setDistdata(value);
+  };
+  //......................... for regions package............
+
+  const handleChangesregp = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setRegtdatap(value);
+  };
+
+  //......................... for districts package............
+
+  const handleChangesdisp = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setDistdatap(value);
   };
 
   //................................... for date time ............
@@ -309,7 +361,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>CUSTOMER FORM</FormLabel>
+      <FormLabel>CONSIGNOR FORM</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -318,45 +370,35 @@ function Regteam({
           marginBottom: '30px',
           height: '30px',
         }}
-      />{' '}
+      />
       <TextField
-        label='First Name'
+        label='FULL NAME'
         margin='normal'
-        inputRef={fstname}
+        inputRef={distnstreet}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={fname}
+        defaultValue={dstreet}
         ref={formref}
       />{' '}
       <TextField
-        label='Last Name'
+        label='EMAIL'
         margin='normal'
-        inputRef={lstname}
+        inputRef={distnstreet}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={lname}
+        defaultValue={dstreet}
         ref={formref}
       />{' '}
       <TextField
-        label='Email'
+        label='PHONE'
         margin='normal'
-        inputRef={cemail}
+        inputRef={distnstreet}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={email}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Phone'
-        margin='normal'
-        inputRef={cphone}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={phone}
+        defaultValue={dstreet}
         ref={formref}
       />{' '}
       <div
@@ -366,13 +408,12 @@ function Regteam({
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>Region</InputLabel>
+        <InputLabel id='demo-multiple-name-label'>EMPLOYEE</InputLabel>
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
           value={regdata}
           label='helloo'
-          defaultValue='Mwanza'
           style={{ width: '100%' }}
           fullWidth
           onChange={handleChangesreg}
@@ -388,64 +429,14 @@ function Regteam({
           ))}
         </Select>
       </div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>District</InputLabel>
-        <Select
-          labelId='demo-multiple-name-label2'
-          id='demo-multiple-name2'
-          value={distdata}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesdis}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {districts.map((el) => (
-            <MenuItem
-              key={el.consignerid}
-              value={el.name}
-              style={getStyles(districts, distdata, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}></div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}></div>
       <TextField
-        label='Street'
+        label='NIDA NO'
         margin='normal'
-        inputRef={cstreet}
+        inputRef={distnstreet}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={street}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Address'
-        margin='normal'
-        inputRef={caddress}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={address}
+        defaultValue={dstreet}
         ref={formref}
       />{' '}
       <div
@@ -473,7 +464,10 @@ function Regteam({
           variant='contained'
           width='sm'
           style={{ marginTop: '20px' }}
-          onClick={() => history.push('/dashboard/customers')}>
+          onClick={() => {
+            dispatch({ type: EXIT_ADD_FORM });
+            history.goBack();
+          }}>
           Close
         </Button>
       </div>

@@ -44,7 +44,7 @@ function Index({ id, title, image, price, rating }) {
           </p>
         </div>
       )}
-      {dataadimindata && <div className='branch'>wjpwepwjpss</div>}
+      {dataadimindata && <div className='branch'></div>}
       {dataadimindata && (
         <div className='product'>
           <p className='product__title'>Customers</p>

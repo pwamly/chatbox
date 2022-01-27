@@ -143,7 +143,7 @@ function Regteam({
         fontFamily: 'sans-serif',
         transform: 'translate(-50%, -50%)',
         width: '35%',
-        minWidth: '300px',
+        minWidth: '80%',
         zIndex: '1',
         height: 'auto',
         borderRadius: '16px',

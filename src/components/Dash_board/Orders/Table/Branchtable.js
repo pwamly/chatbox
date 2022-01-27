@@ -59,9 +59,8 @@ function BasicTable({ adduser, dispatch }) {
           <FaEye
             className='IconStyle'
             onClick={() => {
-              // dispatch({ type: SAVE_REPORT_DATA, payload: row });
-              // dispatch({ type: SHOW_PDF });
-              // history.push('/dashboard/reports/view');
+              dispatch({ type: SAVE_REPORT_DATA, payload: row });
+              history.push('orders/view');
             }}
           />
         </Link>
@@ -72,7 +71,7 @@ function BasicTable({ adduser, dispatch }) {
             onClick={() => {
               console.log('', row);
               dispatch({ type: SAVE_BRANCH_DATA, payload: row });
-              dispatch({ type: EDIT_USER });
+              history.push('/dashboard/orders/create-user');
             }}
           />
         </Link>
@@ -105,7 +104,7 @@ function BasicTable({ adduser, dispatch }) {
   const classes = useStyles();
   const handleAdduser = () => {
     dispatch({ type: CLEAR_BRANCH_DATA });
-    dispatch({ type: ADD_USER });
+    history.push('/dashboard/orders/create-user');
   };
 
   async function handledelete(row) {
@@ -189,12 +188,6 @@ function BasicTable({ adduser, dispatch }) {
                   flexDirection: 'row',
                   textDecoration: 'none !important',
                 }}>
-                {/* <Button
-                  variant='text'
-                  style={{ marginRight: '10px', fontSize: '12px' }}
-                  onClick={() => history.push('/dashboard/')}>
-                  Close{' '}
-                </Button>{' '} */}
                 <AddIcon className='plus' onClick={handleAdduser} />
                 <Pagination.First onClick={() => ''} disabled={true} />
                 <Pagination.Prev
