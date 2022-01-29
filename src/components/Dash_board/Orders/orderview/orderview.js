@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { useGet, useGetList } from '../../../../hooks/index';
 import { getitemsbyid } from '../../../../client/client';
 
-function OrderView({ reportdata }) {
+function OrderViewF({ reportdata }) {
   const data = [];
   const history = useHistory();
   const { results: rows, loading, refresh } = useGet('');
@@ -261,4 +261,4 @@ const MapStateToprops = (store) => {
   return { ...store };
 };
 
-export default connect(MapStateToprops)(OrderView);
+export default connect(MapStateToprops)(OrderViewF);
