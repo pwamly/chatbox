@@ -73,6 +73,7 @@ padding: 10px 10px 0px 20px;
     border: 0.5px solid rgb(189, 179, 179);
     margin-top: -1px;
     margin-left: -1px;
+    /* padding-bottom: '200px', */
 
     
 }
@@ -130,6 +131,8 @@ padding: 10px 10px 0px 20px;
     margin-left: -1px;
     margin-right: -1px;
     margin-bottom: -1px;
+    /* background: blue; */
+    padding-bottom: 80px;
 
 
 }

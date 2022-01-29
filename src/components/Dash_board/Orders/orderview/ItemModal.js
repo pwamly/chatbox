@@ -11,7 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
-import { addUser, addorder, editUser } from '../../../../client/client';
+import { addUser, additem, editUser } from '../../../../client/client';
 import { Divider } from '@mui/material';
 import '../order.css';
 // ...................... for select ..............................
@@ -78,30 +78,45 @@ const consgigners = [
   },
 ];
 
-const regions = [
+const items = [
   {
     id: 1,
-    name: 'kigoma',
+    name: 'PC',
   },
   {
     id: 2,
-    name: 'Mwanza',
+    name: 'SEED',
   },
   {
     id: 3,
-    name: 'Arusha',
+    name: 'FOOD',
   },
 ];
 
-const districts = [
+const drivers = [
   {
     id: 1,
-    regionid: 1,
-    regionname: 'kigoma',
-    name: 'Uvinza',
+    userid: '',
+    name: 'Ally mauya',
   },
-  { id: 1, regionid: 2, regionname: 'Mwanza', name: 'Igoma' },
-  { id: 1, regionid: 3, name: 'Arumeru', regionname: 'Arusha' },
+  {
+    id: 1,
+    userid: '',
+    name: 'Johny peter',
+  },
+];
+
+const vehicles = [
+  {
+    id: 1,
+    userid: '',
+    name: 'ISSUZU',
+  },
+  {
+    id: 1,
+    userid: '',
+    name: 'TOYOTA',
+  },
 ];
 
 function getStyles(name, customerData, theme) {
@@ -141,8 +156,8 @@ function Regteam({
   const [customerData, setcustomerData] = useState('');
   const [cData, setCData] = useState('');
   const [distdata, setDistdata] = useState('');
-  const [regdata, setRegtdata] = useState('');
-  const [distdatap, setDistdatap] = useState('');
+  const [itemtypef, setItemtype] = useState('');
+  const [driver, setDriver] = useState('');
   const [regdatap, setRegtdatap] = useState('');
   const [pickdate, setPickdate] = useState(new Date().toGMTString());
   const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
@@ -150,30 +165,15 @@ function Regteam({
   const [loading, setLoading] = useState(false);
 
   // ........... to be passed to form values ..........
-
   const formref = useRef();
-  const pickdat = useRef('');
-  const deliverydate = useRef('');
-  const packstreet = useRef('');
-  const custnote = useRef('');
-  const pkgnotes = useRef('');
-  const distnstreet = useRef();
-  const dtnnote = useRef();
-  const congneename = useRef();
-  const congneephone = useRef();
+  const itemnamef = useRef();
+  const unitsf = useRef();
+  const weightf = useRef();
+  const notef = useRef();
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const {
-    customernotes = '',
-    pstreet = '',
-    consignername = '',
-    pnotes = '',
-    dstreet = '',
-    dnotes = '',
-    consigneephone = '',
-    consigneename = '',
-  } = reportdata;
+  const { orderid, itemname, itemtype, units, weight, note } = reportdata;
 
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -220,15 +220,22 @@ function Regteam({
 
   async function handlesave() {
     try {
-      if (saveedit == 'add') {
+      if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await addorder({});
+        let response = await additem({
+          orderid,
+          itemname: itemnamef.current.value,
+          units: unitsf.current.value,
+          weight: weightf.current.value,
+          note: notef.current.value,
+          itemtype: itemtypef,
+        });
 
         if (response) {
           console.log(response);
           setLoading(false);
-          addToast(' User Added successfully', {
+          addToast(' Item Added successfully', {
             appearance: 'success',
             autoDismiss: true,
           });
@@ -236,7 +243,7 @@ function Regteam({
           return;
         }
         setLoading(false);
-        addToast('Updated!', { appearance: 'warning' });
+        addToast('Failed!', { appearance: 'error' });
         return;
       }
       if (saveedit == 'edit') {
@@ -283,24 +290,20 @@ function Regteam({
 
   //......................... for regions............
 
-  const handleChangesreg = (event) => {
+  const handleChangesitemtype = (event) => {
     const {
       target: { value },
     } = event;
-    setRegtdata(value);
+    console.log('vccccccccccccccccccvvvvvvvvvvvvb', value);
+
+    setItemtype(value);
   };
 
   //......................... for districts............
 
-  const handleChangesdis = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDistdata(value);
-  };
   //......................... for regions package............
 
-  const handleChangesregp = (event) => {
+  const handleChangesvehicle = (event) => {
     const {
       target: { value },
     } = event;
@@ -309,11 +312,11 @@ function Regteam({
 
   //......................... for districts package............
 
-  const handleChangesdisp = (event) => {
+  const handleChangesdriver = (event) => {
     const {
       target: { value },
     } = event;
-    setDistdatap(value);
+    setDriver(value);
   };
 
   //................................... for date time ............
@@ -345,11 +348,11 @@ function Regteam({
       <TextField
         label='ITEM NAME'
         margin='normal'
-        inputRef={distnstreet}
+        inputRef={itemnamef}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={dstreet}
+        defaultValue={itemname}
         ref={formref}
       />{' '}
       <div
@@ -363,18 +366,18 @@ function Regteam({
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
-          value={regdata}
+          value={itemtypef}
           label='helloo'
           style={{ width: '100%' }}
           fullWidth
-          onChange={handleChangesreg}
+          onChange={handleChangesitemtype}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {regions.map((el) => (
+          {items.map((el) => (
             <MenuItem
               key={el.id}
               value={el.name}
-              style={getStyles(regions, regdata, theme)}>
+              style={getStyles(items, itemtypef, theme)}>
               {el.name}
             </MenuItem>
           ))}
@@ -383,21 +386,21 @@ function Regteam({
       <TextField
         label='UNITS'
         margin='normal'
-        inputRef={distnstreet}
+        inputRef={unitsf}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={dstreet}
+        defaultValue={units}
         ref={formref}
       />{' '}
       <TextField
         label='WEIGHT IN KG'
         margin='normal'
-        inputRef={distnstreet}
+        inputRef={weightf}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={dstreet}
+        defaultValue={weight}
         ref={formref}
       />{' '}
       <TextField
@@ -407,10 +410,10 @@ function Regteam({
         fullWidth
         label='NOTE'
         margin='normal'
-        inputRef={custnote}
+        inputRef={notef}
         variant='outlined'
         autoComplete='off'
-        defaultValue={customernotes}
+        defaultValue={note}
         ref={formref}
       />
       <Divider
@@ -422,87 +425,6 @@ function Regteam({
           height: '30px',
         }}
       />
-      <span>
-        <h5>Carrier Details</h5>
-      </span>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>Driver</InputLabel>
-        <Select
-          labelId='demo-multiple-name-label2'
-          id='demo-multiple-name2'
-          value={distdata}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesdis}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {districts.map((el) => (
-            <MenuItem
-              key={el.consignerid}
-              value={el.name}
-              style={getStyles(districts, distdata, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>VEHICLE</InputLabel>
-        <Select
-          labelId='demo-multiple-name-label2'
-          id='demo-multiple-name2'
-          value={distdata}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesdis}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {districts.map((el) => (
-            <MenuItem
-              key={el.consignerid}
-              value={el.name}
-              style={getStyles(districts, distdata, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <DateTimePicker
-            renderInput={(props) => (
-              <TextField
-                label='pickup-date'
-                margin='normal'
-                inputRef={pickdat}
-                variant='outlined'
-                autoComplete='off'
-                fullWidth
-                {...props}
-              />
-            )}
-            label='Pick Up Date'
-            value={pickdate}
-            onChange={(newValue) => {
-              setPickdate(newValue);
-            }}
-          />
-        </LocalizationProvider>
-      </div>
       <div
         style={{
           display: 'flex',

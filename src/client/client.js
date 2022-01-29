@@ -480,6 +480,21 @@ export const addorder = async (data) => {
   }
 };
 
+export const additem = async (data) => {
+  try {
+    const response = await instance.post('/api/orders/add-item', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', data);
+
+    return;
+  }
+};
 export const registerCustomer = async (data) => {
   try {
     const response = await instance.post('/api/register-customer', {

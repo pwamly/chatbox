@@ -1,14 +1,19 @@
-import React from 'react';
+import { React, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import './orderview.css';
 import ItemModal from './ItemModal';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useGet, useGetList } from '../../../../hooks/index';
+import { getitemsbyid } from '../../../../client/client';
 
 function OrderView({ reportdata }) {
   const data = [];
   const history = useHistory();
+  const { results: rows, loading, refresh } = useGet('');
+  // const { addToast } = useToasts();
+  const [loadingdel, setLoadingdel] = useState(false);
   const data1 = [
     {
       description: `Device name DESKTOP-7EVV1T3 Processor Intel(R) Core(TM)
@@ -54,7 +59,7 @@ function OrderView({ reportdata }) {
     },
   ];
 
-  console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu', reportdata);
+  console.log('u', reportdata);
 
   return (
     <>
