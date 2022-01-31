@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { ADD_USER } from '../../../actions';
 import { ProtectRoute } from '../../../components/ProtectRoute';
 import Orderview from './Orderview/Orderview';
-import ItemForm from './Orderview/ItemModal';
+import ItemForm from './Orderview/Orderview';
 import {
   Redirect,
   BrowserRouter as Router,
