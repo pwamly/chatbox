@@ -5,7 +5,7 @@ import Adduser from './Orderform';
 import { connect } from 'react-redux';
 import { ADD_USER } from '../../../actions';
 import { ProtectRoute } from '../../../components/ProtectRoute';
-import Orderview from '../../Dash_board/Orders/Orderview/Orderview';
+import Orderview from './Orderview/Orderview';
 import ItemForm from './Orderview/ItemModal';
 import {
   Redirect,
