@@ -22,7 +22,11 @@ import { useGet, useGetList } from '../../../../hooks/index';
 import { connect } from 'react-redux';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import { getUsers, deleteUser, getBranches } from '../../../../client/client';
+import {
+  deleteBranch,
+  deleteUser,
+  getBranches,
+} from '../../../../client/client';
 import {
   ADD_USER,
   EDIT_USER,
@@ -84,6 +88,7 @@ function BasicTable({ adduser, dispatch }) {
     { label: 'District ', show: true, name: 'district' },
     { label: 'Addess', show: true, name: 'branchaddress' },
     { label: 'Created', show: true, name: 'created' },
+    { label: 'Updated', show: true, name: 'updated' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
@@ -94,10 +99,10 @@ function BasicTable({ adduser, dispatch }) {
   };
 
   async function handledelete(row) {
-    const { userid } = row;
+    const { branchId } = row;
     try {
       setLoadingdel(true);
-      let response = await deleteUser(userid);
+      let response = await deleteBranch(branchId);
 
       if (response) {
         setLoadingdel(false);
@@ -105,7 +110,7 @@ function BasicTable({ adduser, dispatch }) {
           appearance: 'success',
           autoDismiss: true,
         });
-        window.location.replace('/dashboard/employee');
+        window.location.replace('/dashboard/branch');
         return;
       }
       setLoadingdel(false);

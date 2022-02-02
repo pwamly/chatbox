@@ -7,6 +7,10 @@ import { ADD_USER } from '../../../actions';
 import { ProtectRoute } from '../../../components/ProtectRoute';
 import Orderview from './ViewOrders/View';
 import ItemForm from './ViewOrders/ItemModal';
+import Assignbuddle from './ViewOrders/AssignBuddle';
+import SchedulePickup from './ViewOrders/SchedulePickup';
+import UnloadPickup from './ViewOrders/UnloadPickup';
+
 import {
   Redirect,
   BrowserRouter as Router,
@@ -38,6 +42,18 @@ function Index({ adduser }) {
           <ProtectRoute
             path='/dashboard/orders/view/add-item'
             component={ItemForm}
+          />
+          <ProtectRoute
+            path='/dashboard/orders/view/assign-bunddle'
+            component={Assignbuddle}
+          />
+          <ProtectRoute
+            path='/dashboard/orders/view/schedule-pickup'
+            component={SchedulePickup}
+          />
+          <ProtectRoute
+            path='/dashboard/orders/view/unload-pickup'
+            component={UnloadPickup}
           />
         </Switch>{' '}
       </Router>{' '}

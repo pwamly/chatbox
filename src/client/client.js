@@ -282,6 +282,19 @@ export const getBranches = async () => {
   }
 };
 
+
+export const deleteBranch = async (id) => {
+  try {
+    const response = await instance.delete(`/admin/delete-branch/${id}`);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const getOrders = async () => {
   try {
     const branches = await instance.get('/api/orders');
@@ -466,6 +479,20 @@ export const addBranch = async (data) => {
   }
 };
 
+export const updateBranch = async (data) => {
+  try {
+    const response = await instance.put(`/admin/edit-branch/${data.branchId}`, {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const addorder = async (data) => {
   try {
     const response = await instance.post('/api/create-order', {
@@ -490,7 +517,7 @@ export const additem = async (data) => {
       return response;
     }
   } catch (error) {
-    console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', data);
+    console.log('vvvvv', data);
 
     return;
   }

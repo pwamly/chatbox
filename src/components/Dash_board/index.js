@@ -36,8 +36,16 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
   let initial;
   const vendorId = getUserId();
   const { result: user, loading, refresh } = useGet(vendorId, getProfile);
-  const { fname, lname, email, username, phone, userRole, signature } =
-    user || {};
+  const {
+    fname,
+    lname,
+    email,
+    username,
+    phone,
+    userRole,
+    signature,
+    branchId,
+  } = user || {};
 
   if (fname && lname) {
     initial = `${fname} ${lname}`
@@ -57,6 +65,7 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
         username,
         phone,
         userRole,
+        branchId,
         initial,
         signature,
       },

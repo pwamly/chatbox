@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import './orderview.css';
@@ -7,11 +7,12 @@ import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useGet, useGetList } from '../../../../hooks/index';
 import { getitemsbyid } from '../../../../client/client';
+import { Divider } from '@mui/material';
 
 function OrderViewF({ reportdata }) {
   const data = [];
   const history = useHistory();
-  const { results: rows, loading, refresh } = useGet('');
+  // const { results: rows, loading, refresh } = useGet('');
   // const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const data1 = [
@@ -182,24 +183,56 @@ function OrderViewF({ reportdata }) {
               </div>
             </div>
           </div>
+          <div
+            style={{
+              width: '100%',
+              paddingTop: '30px',
+              display: 'flex',
+              justifyContent: 'center',
+              paddingBottom: '20px',
+              gap: '30px',
+            }}>
+            <button
+              className='itmbutons'
+              style={{ width: '100px' }}
+              onClick={() => {
+                history.push('/dashboard/orders/view/add-item');
+              }}>
+              Add Item
+            </button>
+
+            <button
+              style={{ width: '120px' }}
+              onClick={() => {
+                history.push('/dashboard/orders/view/schedule-pickup');
+              }}>
+              Schedule Pickup
+            </button>
+            <button
+              style={{ width: '120px' }}
+              onClick={() => {
+                history.push('/dashboard/orders/view/unload-pickup');
+              }}>
+              Unload Item
+            </button>
+            <button
+              style={{ width: '120px' }}
+              onClick={() => {
+                history.push('/dashboard/orders/view/assign-bunddle');
+              }}>
+              Assign a Bunddle
+            </button>
+          </div>
+          <Divider
+            fullWidth
+            style={{
+              background: 'gray',
+              height: '30px',
+            }}
+          />
           <div className='Orderdetails'>
             <div className='ordermaintitle'>
               <h3 style={{ width: '30%' }}>Order Items</h3>
-              <div
-                style={{
-                  width: '70%',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  paddingRight: '20px',
-                }}>
-                <button
-                  style={{ width: '100px' }}
-                  onClick={() => {
-                    history.push('/dashboard/orders/view/add-item');
-                  }}>
-                  add item
-                </button>
-              </div>
             </div>
 
             <div className='ordertable'>

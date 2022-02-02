@@ -10,7 +10,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
-import { addUser, addBranch, editUser } from '../../../client/client';
+import { addUser, addBranch, updateBranch } from '../../../client/client';
 
 const spinerStyle = {
   display: 'flex',
@@ -89,7 +89,7 @@ function Regteam({
         if (response) {
           console.log(response);
           setLoading(false);
-          addToast(' User Added successfully', {
+          addToast(' Branch Added successfully', {
             appearance: 'success',
             autoDismiss: true,
           });
@@ -103,8 +103,8 @@ function Regteam({
       if (saveedit == 'edit') {
         setLoading(true);
         // formref.current.reset();
-        let response = await editUser({
-          branchId: bid.current.value,
+        let response = await updateBranch({
+          branchId: branchId,
           branchaddress: baddress.current.value,
           branchname: bname.current.value,
           district: bdistrict.current.value,
@@ -114,7 +114,7 @@ function Regteam({
         if (response) {
           console.log(response);
           setLoading(false);
-          addToast(' User Updated successfully', {
+          addToast(' Branch Updated successfully', {
             appearance: 'success',
             autoDismiss: true,
           });
