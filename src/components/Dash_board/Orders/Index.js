@@ -44,7 +44,7 @@ function Index({ adduser }) {
             component={ItemForm}
           />
           <ProtectRoute
-            path='/dashboard/orders/view/assign-bunddle'
+            path='/dashboard/orders/view/load-pickup'
             component={Assignbuddle}
           />
           <ProtectRoute

@@ -218,9 +218,9 @@ function OrderViewF({ reportdata }) {
             <button
               style={{ width: '120px' }}
               onClick={() => {
-                history.push('/dashboard/orders/view/assign-bunddle');
+                history.push('/dashboard/orders/view/load-pickup');
               }}>
-              Assign a Bunddle
+              Load pickup
             </button>
           </div>
           <Divider
