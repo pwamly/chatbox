@@ -50,7 +50,7 @@ function Navbar() {
                 window.location.replace('/dashboard/orders');
               }}>
               <li>
-                <a href='#'>Orders</a>
+                <a href='#'>Orders </a>
               </li>
             </Link>
             <Link to='/dispatch'>

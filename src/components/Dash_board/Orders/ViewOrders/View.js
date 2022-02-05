@@ -6,11 +6,33 @@ import ItemModal from './ItemModal';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useGet, useGetList } from '../../../../hooks/index';
-import { getitemsbyid } from '../../../../client/client';
+import { getItemByorder } from '../../../../client/client';
 import { Divider } from '@mui/material';
 
 function OrderViewF({ reportdata }) {
-  const data = [];
+  const { orderid } = reportdata;
+
+  const {
+    results: rows,
+    loading,
+    refresh,
+  } = useGetList(getItemByorder, { orderid });
+
+  const statusColor = (status) => {
+    let color = 'none';
+    if (status == 'not picked') {
+      color = 'red';
+    }
+    if (status == 'picked') {
+      color = 'yello';
+    }
+    if (status == 'deliverd') {
+      color = 'green';
+    }
+
+    return { background: color };
+  };
+
   const history = useHistory();
   // const { results: rows, loading, refresh } = useGet('');
   // const { addToast } = useToasts();
@@ -237,6 +259,9 @@ function OrderViewF({ reportdata }) {
 
             <div className='ordertable'>
               <div className='tr'>
+                <div className='th'>
+                  <h3>Item Type</h3>
+                </div>
                 <div className='thd'>
                   <h3>Description</h3>
                 </div>
@@ -259,20 +284,25 @@ function OrderViewF({ reportdata }) {
                   <h3>Status</h3>
                 </div>
               </div>
-              {!data === [] ? (
-                data.map((row, index) => (
+
+              {rows.length !== 0 ? (
+                rows.map((row, index) => (
                   <div className='tr' id={index}>
-                    <div className='tdd'>{row.description}</div>
+                    <div className='td'>{row.itemtype}</div>
+                    <div className='tdd'>{row.note}</div>
                     <div className='td'>{row.units}</div>
                     <div className='td'>{row.weight}</div>
-                    <div className='td'>{row.tobepickeAt}</div>
-                    <div className='td'>{row.tobepickedBy}</div>
-                    <div className='td'>{row.Vehicle}</div>
-                    <div className='td'>{row.status}</div>
+                    <div className='td'>{row.description}</div>
+                    <div className='td'>{row.description}</div>
+                    <div className='td'>{row.vehicledetails}</div>
+                    <div className='td' style={statusColor(row.status)}>
+                      {row.status}
+                    </div>
                   </div>
                 ))
               ) : (
                 <div className='tr'>
+                  <div className='td'>NA</div>
                   <div className='tdd'>NA</div>
                   <div className='td'>NA</div>
                   <div className='td'>NA</div>

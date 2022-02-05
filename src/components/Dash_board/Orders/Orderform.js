@@ -194,7 +194,6 @@ function Regteam({
   };
 
   function selcust(data, selector) {
-    console.log('fffffffffffffffffffffff', data, selector);
     let newdata = data.reduce((acc, item) => {
       if (item.customerId === selector) {
         acc.push(item);

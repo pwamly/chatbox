@@ -152,6 +152,7 @@ padding: 10px 10px 0px 20px;
 .thd{
     width: 40%;
     border: 0.5px solid rgb(189, 179, 179);
+    background: rgb(243, 233, 233);
     margin-top: -1px;
     margin-left: -1px;
     margin-right: -1px;
@@ -162,6 +163,7 @@ padding: 10px 10px 0px 20px;
 .th{
     width: 12%;
     border: 0.5px solid rgb(189, 179, 179);
+    background: rgb(243, 233, 233);
     margin-top: -1px;
     margin-left: -1px;
     margin-right: -1px;

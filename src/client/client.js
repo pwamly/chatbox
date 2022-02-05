@@ -522,6 +522,31 @@ export const additem = async (data) => {
     return;
   }
 };
+
+export const getItemsAll = async () => {
+  try {
+    const itmes = await instance.get('/api/orders/items');
+    if (itmes) {
+      return itmes;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const getItemByorder = async ({ orderid }) => {
+  try {
+    const itmes = await instance.get(`/api/orders/items/${orderid}`);
+    if (itmes) {
+      return itmes;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+
+
 export const registerCustomer = async (data) => {
   try {
     const response = await instance.post('/api/register-customer', {

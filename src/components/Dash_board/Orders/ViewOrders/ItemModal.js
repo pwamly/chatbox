@@ -408,7 +408,7 @@ function Regteam({
         rows={3}
         maxRows={4}
         fullWidth
-        label='NOTE'
+        label='DESCRIPTION'
         margin='normal'
         inputRef={notef}
         variant='outlined'

@@ -10,7 +10,17 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
-import { addUser, editUser } from '../../../client/client';
+import { addUser, editUser, getBranches } from '../../../client/client';
+import { useGet, useGetList } from '../../../hooks/index';
+
+// ...................... for select ..............................
+
+import { useTheme } from '@mui/material/styles';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { InputLabel as inputlabels } from '@mui/material/InputLabel';
+import MenuItems from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+import Selects from '@mui/material/Select';
 
 const spinerStyle = {
   display: 'flex',
@@ -18,12 +28,69 @@ const spinerStyle = {
   gap: '12px',
 };
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 300,
+    },
+  },
+};
+
+function getStyles(name, customerData, theme) {
+  return {
+    fontWeight:
+      customerData.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
+//......................... TODO to be shiped to the config file
+
+const roles = [
+  {
+    id: 1,
+    name: 'Admin',
+  },
+  {
+    id: 2,
+    name: 'Accountant',
+  },
+  {
+    id: 3,
+    name: 'Driver',
+  },
+  {
+    id: 4,
+    name: 'Sales',
+  },
+  {
+    id: 5,
+    name: 'IT',
+  },
+];
+
 function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
   const [usrbranch, setCng] = useState('');
   const [usrrole, setRole] = useState('');
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+
+  // ........................... for select ..................
+
+  const theme = useTheme();
+  const [customerData, setcustomerData] = useState('');
+  const [cData, setCData] = useState('');
+  const [distdata, setDistdata] = useState('');
+  const [selebranch, setSelebranch] = useState('');
+  const [selerole, setSeleRole] = useState('');
+  const [pickdate, setPickdate] = useState(new Date().toGMTString());
+  const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
+  const { results: branchdata } = useGetList(getBranches);
 
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
@@ -41,7 +108,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
     phone = '',
     email = '',
     role = '',
-    branch = '',
+    branchId = '',
     pass = '',
     userid = '',
   } = teamdata;
@@ -63,9 +130,8 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   const handleOpen2 = () => {
     setOpen2(true);
   };
-  const handleChange2 = (event) => {
-    setRole(event.target.value);
-  };
+
+  // ................. for dropdeown..................
 
   async function handlesave() {
     try {
@@ -77,8 +143,8 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
           lastname: lsname.current.value,
           email: usremail.current.value,
           username: usremail.current.value,
-          branch: branch,
-          role: role,
+          branchId: selebranch,
+          role: selerole,
           phone: usrphone.current.value,
           password: usrpass.current.value,
         });
@@ -133,6 +199,26 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
     }
   }
 
+  //......................... for branch............
+
+  const handleChangeBranch = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setSelebranch(value);
+  };
+
+  //......................... for role............
+
+  const handleChangeRole = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setSeleRole(value);
+  };
+
   return (
     <Card
       variant='outlined '
@@ -144,11 +230,10 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
         fontFamily: 'sans-serif',
         transform: 'translate(-50%, -50%)',
         width: '35%',
-        minWidth: '300px',
+        minWidth: '80%',
         zIndex: '1',
         height: 'auto',
         borderRadius: '16px',
-        maxWidth: 300,
         padding: '20px',
         borderRadius: '16px',
         transition: '0.3s',
@@ -210,70 +295,60 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
       />
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'row',
           marginTop: '20px',
-          width: '300px',
-          gap: '100px',
+          width: '100%',
+          gap: '5%',
         }}>
-        <InputLabel id='label2' style={{ fontSize: '15px' }}>
-          {' '}
-          Branch
-        </InputLabel>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-label'>BRANCH</InputLabel>
         <Select
-          labelId='label'
-          id='select'
-          open={open}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          value={usrbranch}
-          placeholder='Branch'
-          onChange={handleChange}
-          defaultValue={branch}
-          ref={formref}>
-          {[
-            { branch: 'dar es salaam', id: 1 },
-            { branch: 'Mbeya', id: 2 },
-          ].map((e) => (
-            <MenuItem value={e.branch} id={e.id}>
-              {e.branch}{' '}
+          labelId='demo-multiple-name-labelreg'
+          id='demo-multiple-namereg'
+          value={selebranch}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangeBranch}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {branchdata.map((el) => (
+            <MenuItem
+              key={el.id}
+              value={el.branchId}
+              style={getStyles(roles, selebranch, theme)}>
+              {el.branchname}
             </MenuItem>
           ))}
-        </Select>{' '}
+        </Select>
       </div>
       <div
         style={{
-          display: 'flex',
-          flexDirection: 'row',
           marginTop: '20px',
-          width: '300px',
-          gap: '120px',
+          width: '100%',
+          gap: '5%',
         }}>
-        <InputLabel id='label2' style={{ fontSize: '15px' }}>
-          {' '}
-          Role
-        </InputLabel>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-label'>ROLE</InputLabel>
         <Select
-          labelId='labe2'
-          id='select2'
-          open={open2}
-          onClose={handleClose2}
-          onOpen={handleOpen2}
-          value={usrrole}
-          onChange={handleChange2}
-          defaultValue={role}
-          ref={formref}>
-          {[
-            { role: 'driver', id: 5 },
-            { role: 'accountant', id: 3 },
-          ].map((e) => (
-            <MenuItem value={e.role} id={e.id}>
-              {' '}
-              {e.role}{' '}
+          labelId='demo-multiple-name-labelreg'
+          id='demo-multiple-namereg'
+          value={selerole}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangeRole}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {roles.map((el) => (
+            <MenuItem
+              key={el.id}
+              value={el.name}
+              style={getStyles(roles, selerole, theme)}>
+              {el.name}
             </MenuItem>
           ))}
-        </Select>{' '}
-      </div>
+        </Select>
+      </div>{' '}
       <div
         style={{
           display: 'flex',
