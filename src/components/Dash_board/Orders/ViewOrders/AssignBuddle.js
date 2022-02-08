@@ -296,7 +296,7 @@ function Regteam({
     const {
       target: { value },
     } = event;
-    console.log('vccccccccccccccccccvvvvvvvvvvvvb', value);
+    console.log('', value);
 
     setItemtype(value);
   };
@@ -337,34 +337,16 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel> ASSIGN A BUNDDLE</FormLabel>
+      <FormLabel>LOAD PICKUP</FormLabel>
       <Divider
         fullWidth
         style={{
           background: 'gray',
           marginTop: '10px',
-          marginBottom: '10px',
+          marginBottom: '30px',
           height: '30px',
         }}
       />
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-end',
-        }}>
-        <Button
-          variant='contained'
-          width='sm'
-          style={{ marginTop: '20px' }}
-          onClick={() => {
-            dispatch({ type: EXIT_ADD_FORM });
-            history.goBack();
-          }}>
-          New Bundle{' '}
-        </Button>
-      </div>
-
       <div
         style={{
           marginTop: '20px',
@@ -372,7 +354,7 @@ function Regteam({
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>SELECT A BUNDDLE</InputLabel>
+        <InputLabel id='demo-multiple-name-label'>SELECT ITEM</InputLabel>
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
@@ -393,7 +375,29 @@ function Regteam({
           ))}
         </Select>
       </div>
-
+      <TextField
+        label='QUANTITY'
+        margin='normal'
+        inputRef={itemnamef}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={itemname}
+        ref={formref}
+      />{' '}
+      <TextField
+        multiline
+        rows={3}
+        maxRows={4}
+        fullWidth
+        label='NOTE'
+        margin='normal'
+        inputRef={notef}
+        variant='outlined'
+        autoComplete='off'
+        defaultValue={note}
+        ref={formref}
+      />
       <Divider
         fullWidth
         style={{
@@ -432,7 +436,7 @@ function Regteam({
             dispatch({ type: EXIT_ADD_FORM });
             history.goBack();
           }}>
-          Back
+          Close
         </Button>
       </div>
     </Card>

@@ -233,16 +233,16 @@ function OrderViewF({ reportdata }) {
             <button
               style={{ width: '120px' }}
               onClick={() => {
-                history.push('/dashboard/orders/view/unload-pickup');
+                history.push('/dashboard/orders/view/load-pickup');
               }}>
-              Unload Item
+              Load pickup
             </button>
             <button
               style={{ width: '120px' }}
               onClick={() => {
-                history.push('/dashboard/orders/view/load-pickup');
+                history.push('/dashboard/orders/view/unload-pickup');
               }}>
-              Load pickup
+              Unload Item
             </button>
           </div>
           <Divider

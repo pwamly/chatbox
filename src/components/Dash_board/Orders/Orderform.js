@@ -126,6 +126,7 @@ function Regteam({
   branchdata,
   saveedit,
   saveeditbtn,
+  profile,
 }) {
   const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
   const [usrbranch, setCng] = useState('');
@@ -215,13 +216,11 @@ function Regteam({
 
   async function handlesave() {
     try {
-      if (saveedit == 'add') {
-        console.log('hhhhhhhhhhhhhhhh');
+      if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
         let response = await addorder({
-          pickuptime: pickdate._i,
-          branchid: 1,
+          pickuptime: pickdate,
           expdlrtime: deliverydat._i,
           packagestreet: packstreet.current.value,
           custnote: custnote.current.value,
