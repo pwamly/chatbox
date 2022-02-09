@@ -315,7 +315,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
             <MenuItem
               key={el.id}
               value={el.branchId}
-              style={getStyles(roles, selebranch, theme)}>
+              style={getStyles(branchdata, selebranch, theme)}>
               {el.branchname}
             </MenuItem>
           ))}
@@ -333,7 +333,6 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
           value={selerole}
-          label='helloo'
           style={{ width: '100%' }}
           fullWidth
           onChange={handleChangeRole}

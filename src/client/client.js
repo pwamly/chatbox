@@ -285,7 +285,7 @@ export const getBranches = async () => {
 
 export const deleteBranch = async (id) => {
   try {
-    const response = await instance.delete(`/admin/delete-branch/${id}`);
+    const response = await instance.delete(`/admin/delete-branch/${id}`); // to do
 
     if (response) {
       return response;
@@ -305,6 +305,101 @@ export const getOrders = async () => {
     return { isSuccessful: false };
   }
 };
+
+//.............................. get drivers ..................
+
+export const getDrivers = async (param) => {
+  const { role } = param;
+  try {
+    const driver = await instance.get(`/api/usersByrole/${role}`);
+    if (driver) {
+      return driver;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const schedulePickup = async (data) => {
+  const { orderid } = data;
+  try {
+    const response = await instance.post(`/api/orders/schedule/${orderid}`, {
+      ...data,
+    });
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const scheduleDispatch = async (data) => {
+  const { orderid } = data;
+  try {
+    const response = await instance.post(
+      `/api/orders/scheduleDispatch/${orderid}`,
+      {
+        ...data,
+      }
+    );
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const deliverDispatch = async (data) => {
+  const { itemid } = data;
+  try {
+    const response = await instance.post(
+      `/api/orders/deliverDispatch/${itemid}`,
+      {
+        ...data,
+      }
+    );
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const loadPickup = async (data) => {
+  const { itemid } = data;
+  try {
+    const response = await instance.post(`/api/orders/loadpickup/${itemid}`, {
+      ...data,
+    });
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const unloadPickup = async (data) => {
+  const { itemid } = data;
+  try {
+    const response = await instance.post(`/api/orders/unloadpickup/${itemid}`, {
+      ...data,
+    });
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+
+
+
+
 
 export const getCustomers = async () => {
   try {

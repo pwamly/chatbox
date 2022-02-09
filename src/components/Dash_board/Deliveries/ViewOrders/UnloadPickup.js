@@ -11,9 +11,18 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
-import { addUser, additem, editUser } from '../../../../client/client';
+import {
+  addUser,
+  additem,
+  getItemByorder,
+  loadPickup,
+  unloadPickup,
+  editUser,
+} from '../../../../client/client';
 import { Divider } from '@mui/material';
 import '../order.css';
+import { useGetList } from '../../../../hooks/index';
+
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
@@ -26,10 +35,6 @@ import Selects from '@mui/material/Select';
 // .................... for select end.........................
 
 //  import Textdate from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import DateAdapter from '@mui/lab/AdapterMoment';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,83 +46,6 @@ const MenuProps = {
     },
   },
 };
-
-const customers = [
-  {
-    customerId: 'bdar-1',
-    customername: 'NMB KAWE',
-    customeraddress: 'P.O.BOX 56,KINONDONI,KAWE NALEWA STREET,MOBILE:2222229',
-  },
-  {
-    customerId: 'bdar-2',
-    customername: 'CRD MBEZI',
-    customeraddress: 'P.O.BOX 16,UBUNGO,MAGUFULI BUS STOP STREET,MOBILE:123444',
-  },
-];
-
-const consgigners = [
-  {
-    consignerid: 'nmb-dar-kinondoni-kawe-1',
-    ccompanyId: 'bdar-1',
-    cfname: 'Johny',
-    clname: 'kibweta',
-    cmobile: '+255673999',
-    cemail: 'kibwe@gmail.com',
-    crole: 'IT',
-    caddress: 'P.O.BOX 56,KINONDONI,KAWE NALEWA STREET,MOBILE:2222229',
-  },
-  {
-    consignerid: 'nmb-dar-kinondoni-kawe-2',
-    ccompanyId: 'bdar-1',
-    cfname: 'kulwa',
-    clname: 'magembe',
-    cmobile: '+2556739444',
-    cemail: 'magembe@gmail.com',
-    crole: 'accountant',
-    caddress: 'P.O.BOX 46,TEMEKE,KIWALENI STREET,MOBILE:23444',
-  },
-];
-
-const items = [
-  {
-    id: 1,
-    name: 'PC',
-  },
-  {
-    id: 2,
-    name: 'SEED',
-  },
-  {
-    id: 3,
-    name: 'FOOD',
-  },
-];
-
-const drivers = [
-  {
-    id: 1,
-    userid: '',
-    name: 'Ally mauya',
-  },
-  {
-    id: 1,
-    userid: '',
-    name: 'Johny peter',
-  },
-];
-
-const vehicles = [
-  {
-    id: 1,
-    userid: '',
-    name: 'ISSUZU',
-  },
-  {
-    id: 1,
-    userid: '',
-    name: 'TOYOTA',
-  },
-];
 
 function getStyles(name, customerData, theme) {
   return {
@@ -150,32 +78,43 @@ function Regteam({
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
+  const history = useHistory();
+  const {
+    orderid,
+    itemname,
+    itemtype,
+    units,
+    weight,
+    unloadnote,
+    unloadunits,
+  } = reportdata;
+
   // ........................... for select ..................
 
   const theme = useTheme();
   const [customerData, setcustomerData] = useState('');
   const [cData, setCData] = useState('');
   const [distdata, setDistdata] = useState('');
-  const [itemtypef, setItemtype] = useState('');
+  const [itemf, setItem] = useState('');
   const [driver, setDriver] = useState('');
   const [regdatap, setRegtdatap] = useState('');
   const [pickdate, setPickdate] = useState(new Date().toGMTString());
   const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
+  const { results: itemdata } = useGetList(getItemByorder, {
+    orderid: orderid,
+  });
 
   // ........... to be passed to form values ..........
   const formref = useRef();
-  const itemnamef = useRef();
+  const unloadunitsf = useRef();
   const unitsf = useRef();
   const weightf = useRef();
-  const notef = useRef();
+  const unloadnotef = useRef();
   const pickdat = useRef('');
 
   // ......................... to be passed to the form default...........
-
-  const history = useHistory();
-  const { orderid, itemname, itemtype, units, weight, note } = reportdata;
 
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -225,13 +164,10 @@ function Regteam({
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await additem({
-          orderid,
-          itemname: itemnamef.current.value,
-          units: unitsf.current.value,
-          weight: weightf.current.value,
-          note: notef.current.value,
-          itemtype: itemtypef,
+        let response = await unloadPickup({
+          unloadnote: unloadnotef.current.value,
+          unloadunits: unloadunitsf.current.value,
+          itemid: itemf,
         });
 
         if (response) {
@@ -292,13 +228,13 @@ function Regteam({
 
   //......................... for regions............
 
-  const handleChangesitemtype = (event) => {
+  const handleChangesitem = (event) => {
     const {
       target: { value },
     } = event;
     console.log('', value);
 
-    setItemtype(value);
+    setItem(value);
   };
 
   //......................... for districts............
@@ -337,7 +273,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>LOAD PICKUP</FormLabel>
+      <FormLabel>UNLOAD PICKUP</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -358,19 +294,19 @@ function Regteam({
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
-          value={itemtypef}
+          value={itemf}
           label='helloo'
           style={{ width: '100%' }}
           fullWidth
-          onChange={handleChangesitemtype}
+          onChange={handleChangesitem}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {items.map((el) => (
+          {itemdata.map((el) => (
             <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(items, itemtypef, theme)}>
-              {el.name}
+              key={el.itemid}
+              value={el.itemid}
+              style={getStyles(itemdata, itemf, theme)}>
+              {el.itemname}
             </MenuItem>
           ))}
         </Select>
@@ -378,11 +314,11 @@ function Regteam({
       <TextField
         label='QUANTITY'
         margin='normal'
-        inputRef={itemnamef}
+        inputRef={unloadunitsf}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={itemname}
+        defaultValue={unloadunits}
         ref={formref}
       />{' '}
       <TextField
@@ -392,10 +328,10 @@ function Regteam({
         fullWidth
         label='NOTE'
         margin='normal'
-        inputRef={notef}
+        inputRef={unloadnotef}
         variant='outlined'
         autoComplete='off'
-        defaultValue={note}
+        defaultValue={unloadnote}
         ref={formref}
       />
       <Divider

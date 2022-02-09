@@ -4,7 +4,7 @@ import BranchDash from './Table/Branchtable';
 import Adduser from './Orderform';
 import { connect } from 'react-redux';
 import { ADD_USER } from '../../../actions';
-import { ProtectRoute } from '../../../components/ProtectRoute';
+import { ProtectRoute } from '../../ProtectRoute';
 import Orderview from './ViewOrders/View';
 import ItemForm from './ViewOrders/ItemModal';
 import LoadPickup from './ViewOrders/LoadPickup';

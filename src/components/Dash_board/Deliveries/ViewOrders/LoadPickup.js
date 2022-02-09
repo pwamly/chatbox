@@ -16,7 +16,6 @@ import {
   additem,
   getItemByorder,
   loadPickup,
-  unloadPickup,
   editUser,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
@@ -79,15 +78,8 @@ function Regteam({
   const [open2, setOpen2] = useState(false);
 
   const history = useHistory();
-  const {
-    orderid,
-    itemname,
-    itemtype,
-    units,
-    weight,
-    unloadnote,
-    unloadunits,
-  } = reportdata;
+  const { orderid, itemname, itemtype, units, weight, loadnote, loadunits } =
+    reportdata;
 
   // ........................... for select ..................
 
@@ -108,10 +100,10 @@ function Regteam({
 
   // ........... to be passed to form values ..........
   const formref = useRef();
-  const unloadunitsf = useRef();
+  const loadunitsf = useRef();
   const unitsf = useRef();
   const weightf = useRef();
-  const unloadnotef = useRef();
+  const loadnotef = useRef();
   const pickdat = useRef('');
 
   // ......................... to be passed to the form default...........
@@ -164,9 +156,9 @@ function Regteam({
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await unloadPickup({
-          unloadnote: unloadnotef.current.value,
-          unloadunits: unloadunitsf.current.value,
+        let response = await loadPickup({
+          loadnote: loadnotef.current.value,
+          loadunits: loadunitsf.current.value,
           itemid: itemf,
         });
 
@@ -273,7 +265,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>UNLOAD PICKUP</FormLabel>
+      <FormLabel>LOAD PICKUP</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -314,11 +306,11 @@ function Regteam({
       <TextField
         label='QUANTITY'
         margin='normal'
-        inputRef={unloadunitsf}
+        inputRef={loadunitsf}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={unloadunits}
+        defaultValue={loadunits}
         ref={formref}
       />{' '}
       <TextField
@@ -328,10 +320,10 @@ function Regteam({
         fullWidth
         label='NOTE'
         margin='normal'
-        inputRef={unloadnotef}
+        inputRef={loadnotef}
         variant='outlined'
         autoComplete='off'
-        defaultValue={unloadnote}
+        defaultValue={loadnote}
         ref={formref}
       />
       <Divider
