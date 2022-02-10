@@ -26,6 +26,10 @@ const style = {
   },
 };
 
+const styleinp = {
+  fontSize: '300px',
+};
+
 const spinerStyle = {
   display: 'flex',
   flexDirection: 'rows',
@@ -59,6 +63,7 @@ function Login() {
           username: username.current.value,
           password: password.current.value,
         });
+
         if (response) {
           // formref.current.reset() to do clear form;
           setLoading(false);
@@ -81,7 +86,11 @@ function Login() {
       addToast('Failed', { appearance: 'error' });
     }
   }
-
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handle();
+    }
+  };
   function handlecheck() {
     setChecked(!checked);
   }
@@ -89,10 +98,12 @@ function Login() {
   return (
     <div className='login-form'>
       {/* <Card style={logomain}>
-      <img className="aimg" src={avatar} alt="" />
+      <img className="
+      aimg" src={avatar} alt="" />
      </Card> */}
       <Card variant='outlined' style={style}>
         <TextField
+          InputLabelProps={{ style: { fontSize: 15 } }}
           label='Email '
           margin='normal'
           inputRef={username}
@@ -100,9 +111,11 @@ function Login() {
           autoComplete='off'
           fullWidth
           ref={formref}
+          onKeyDown={handleKeyDown}
         />{' '}
         <TextField
           label='Password '
+          InputLabelProps={{ style: { fontSize: 15 } }}
           margin='normal'
           inputRef={password}
           type='password'
@@ -110,9 +123,10 @@ function Login() {
           autoComplete='off'
           fullWidth
           ref={formref}
+          onKeyDown={handleKeyDown}
         />{' '}
         <FormControlLabel
-          style={{ marginRight: '70px' }}
+          style={{ marginRight: '70px', fontSize: '100' }}
           fullWidth
           control={<Checkbox checked={checked} onChange={handlecheck} />}
           label='Remember me'

@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react';
-import UnloadDispatchDelivered from './ViewDispatch/UnloadDispatchDelivered';
 import { connect } from 'react-redux';
 import { ADD_USER } from '../../../actions';
 import { ProtectRoute } from '../../../components/ProtectRoute';
-import ScheduleDispatchDelivery from './ViewDispatch/ScheduleDispatchDelivery';
-import BranchDash from './Table/Branchtable';
-import View from './ViewDispatch/View';
+import DeliverOrder from './ViewDelivery/DeliverOrder';
+import Branchtable from './Table/Branchtable';
+import View from './ViewDelivery/View';
 import {
   Redirect,
   BrowserRouter as Router,
@@ -35,27 +34,22 @@ function Index({ adduser }) {
       <Router>
         <Switch>
           <ProtectRoute
-            path='/dashboard/dispatch/view'
+            path='/dashboard/delivery/view'
             exact
             component={View}
           />{' '}
           <ProtectRoute
-            path='/dashboard/dispatch'
+            path='/dashboard/delivery'
             exact
-            component={BranchDash}
+            component={Branchtable}
           />{' '}
           <ProtectRoute
-            path='/dashboard/dispatch/unload-dispatch'
-            component={UnloadDispatchDelivered}
-          />{' '}
-          <ProtectRoute
-            path='/dashboard/dispatch/schedule-dispatch-delivery'
+            path='/dashboard/deliver-order'
             exact
-            component={ScheduleDispatchDelivery}
+            component={DeliverOrder}
           />
         </Switch>{' '}
       </Router>{' '}
-      {/* {!adduser ? <BranchDash /> : <Adduser />}{' '} */}
     </div>
   );
 }

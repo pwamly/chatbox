@@ -18,25 +18,6 @@ function OrderViewF({ reportdata }) {
     refresh,
   } = useGetList(getItemByorder, { orderid });
 
-
-
-
-  function delay(delayInms) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(2);
-      }, delayInms);
-    });
-  }
-
-  async function reloadpagehandler() {
-    await delay(30000);
-    if (rows.length == 0) {
-      window.location.replace(`/dispatch`);
-    }
-  }
-  reloadpagehandler();
-
   const statusColor = (status) => {
     let color = 'none';
     if (status == 'not picked') {
@@ -181,29 +162,22 @@ function OrderViewF({ reportdata }) {
               </div>
             </div>
           </div>
-
           <div
             style={{
               width: '100%',
               paddingTop: '30px',
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: 'flex-end',
               paddingBottom: '20px',
+              paddingRight: '30px',
               gap: '30px',
             }}>
             <button
               style={{ width: '200px' }}
               onClick={() => {
-                history.push('/dashboard/dispatch/unload-dispatch');
+                history.push('/dashboard/deliver-order');
               }}>
-              Unload Delivered Dispatch
-            </button>
-            <button
-              style={{ width: '200px' }}
-              onClick={() => {
-                history.push('/dashboard/dispatch/schedule-dispatch-delivery');
-              }}>
-              Schedule Dispatch Delivery
+              Delivered Order
             </button>
           </div>
           <Divider

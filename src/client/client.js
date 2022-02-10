@@ -317,6 +317,17 @@ export const getDispatchedOrders = async () => {
   }
 };
 
+
+export const getDelivery = async () => {
+  try {
+    const branches = await instance.get('/api/deliveries');
+    if (branches) {
+      return branches;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
 //.............................. get drivers ..................
 
 export const getDrivers = async (param) => {
@@ -407,6 +418,33 @@ export const UnloadDispatchDelivered = async (data) => {
   }
 };
 
+export const deliveryScheduled = async (data) => {
+  const { orderid } = data;
+  try {
+    const response = await instance.post(`/api/scheduleDelivery/${orderid}`, {
+      ...data,
+    });
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const deliverItem = async (data) => {
+  const { itemid } = data;
+  try {
+    const response = await instance.post(`/api/delivery-item/${itemid}`, {
+      ...data,
+    });
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
 
 export const unloadPickup = async (data) => {
   const { itemid } = data;

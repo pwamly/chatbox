@@ -26,6 +26,7 @@ import {
   getUsers,
   deleteOrder,
   getDispatchedOrders,
+  getDelivery,
 } from '../../../../client/client';
 import {
   ADD_USER,
@@ -45,7 +46,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getDispatchedOrders);
+  const { results: rows, loading, refresh } = useGetList(getDelivery);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -64,7 +65,7 @@ function BasicTable({ adduser, dispatch }) {
             className='IconStyle'
             onClick={() => {
               dispatch({ type: SAVE_REPORT_DATA, payload: row });
-              history.push('/dashboard/dispatch/view');
+              history.push('/dashboard/delivery/view');
             }}
           />
         </Link>
@@ -78,8 +79,9 @@ function BasicTable({ adduser, dispatch }) {
     { label: 'From', show: true, name: 'consignername' },
     { label: 'Destination ', show: true, name: 'dregion' },
     { label: 'Consignee Name', show: true, name: 'consigneename' },
-    { label: 'Dispatched Time', show: true, name: 'scheduledDispatchtime' },
     { label: 'Expected Delivery Time', show: true, name: 'expdlrtime' },
+    { label: 'Scheduled Delivery Time', show: true, name: 'expdlrtime' },
+    { label: 'Delivered Time', show: true, name: 'orderdeliverytime' },
     { label: 'Status', show: true, name: 'orderStatus' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];

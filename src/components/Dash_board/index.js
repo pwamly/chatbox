@@ -9,6 +9,7 @@ import Team from "./Team/Index";
 import Branch from './branchs/Index';
 import Orders from './Orders/Index';
 import Dispatch from './Dispatch/Index';
+import Delivery from './Delivery/Index';
 import Customers from './Customers/Index';
 import Transporters from './Transporters/Index';
 import Vehicles from './Vehicle/Index';
@@ -87,14 +88,18 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
               {<Navbar props={initial} />}
               <Container className='dashboard'>
                 <Switch>
-                  <ProtectRoute path='/dashboard' exact component={Dashview} />{' '}
-                  <ProtectRoute path='/dashboard/employee' component={Team} />{' '}
-                  <ProtectRoute path='/dashboard/reports' component={Report} />{' '}
-                  <ProtectRoute path='/dashboard/branch' component={Branch} />{' '}
-                  <ProtectRoute path='/dashboard/orders' component={Orders} />{' '}
+                  <ProtectRoute path='/dashboard' exact component={Dashview} />
+                  <ProtectRoute path='/dashboard/employee' component={Team} />
+                  <ProtectRoute path='/dashboard/reports' component={Report} />
+                  <ProtectRoute path='/dashboard/branch' component={Branch} />
+                  <ProtectRoute path='/dashboard/orders' component={Orders} />
                   <ProtectRoute
                     path='/dashboard/dispatch'
                     component={Dispatch}
+                  />
+                  <ProtectRoute
+                    path='/dashboard/delivery'
+                    component={Delivery}
                   />
                   <ProtectRoute
                     path='/dashboard/customers'

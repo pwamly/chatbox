@@ -11,22 +11,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
-import {
-  addUser,
-  additem,
-  schedulePickup,
-  scheduleDispatch,
-  editUser,
-  getVehicles,
-  getUsers,
-  getDrivers,
-  getTransporters,
-  deliveryScheduled,
-} from '../../../../client/client';
+import { addUser, additem, editUser } from '../../../../client/client';
 import { Divider } from '@mui/material';
 import './order.css';
-import { useGetList } from '../../../../hooks/index';
-
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
@@ -55,6 +42,21 @@ const MenuProps = {
   },
 };
 
+const items = [
+  {
+    id: 1,
+    name: 'PC',
+  },
+  {
+    id: 2,
+    name: 'SEED',
+  },
+  {
+    id: 3,
+    name: 'FOOD',
+  },
+];
+
 function getStyles(name, customerData, theme) {
   return {
     fontWeight:
@@ -71,31 +73,67 @@ const spinerStyle = {
   gap: '12px',
 };
 
-function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
+function Regteam({
+  adduser,
+  teamdata,
+  dispatch,
+  branchdata,
+  reportdata,
+  saveedit,
+  saveeditbtn,
+}) {
   const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
+  const [usrbranch, setCng] = useState('');
+  const [usrrole, setRole] = useState('');
+  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
 
   // ........................... for select ..................
 
   const theme = useTheme();
+  const [customerData, setcustomerData] = useState('');
+  const [cData, setCData] = useState('');
+  const [distdata, setDistdata] = useState('');
+  const [itemtypef, setItemtype] = useState('');
+  const [driver, setDriver] = useState('');
+  const [regdatap, setRegtdatap] = useState('');
   const [pickdate, setPickdate] = useState(new Date().toGMTString());
+  const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
-  const { results: driverdata } = useGetList(getDrivers, { role: 'Driver' });
-  const { results: vehicledata } = useGetList(getVehicles);
-  const { results: transporterdata } = useGetList(getTransporters);
-  const [seledrive, setSeledriver] = useState('');
-  const [seletrans, setSeletrans] = useState('');
-  const [selevehicle, setSelevehicle] = useState('');
 
   // ........... to be passed to form values ..........
   const formref = useRef();
-  const pickupnotef = useRef();
-  const pickdat = useRef('');
-
+  const itemnamef = useRef();
+  const unitsf = useRef();
+  const weightf = useRef();
+  const notef = useRef();
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const { orderid, pickupnote } = reportdata;
+  const { orderid, itemname, itemtype, units, weight, note } = reportdata;
+
+  const handleChange = (event) => {
+    setCng(event.target.value);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+
+  const handleOpen2 = () => {
+    setOpen2(true);
+  };
+  const handleChange2 = (event) => {
+    setRole(event.target.value);
+  };
 
   function selcust(data, selector) {
     console.log('', data, selector);
@@ -108,17 +146,28 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
     return newdata[0];
   }
 
+  function selcons(data, selector) {
+    let newdata = data.reduce((acc, item) => {
+      if (item.consignerid === selector) {
+        acc.push(item);
+      }
+      return acc;
+    }, []);
+    return newdata[0];
+  }
+
   async function handlesave() {
     try {
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await deliveryScheduled({
+        let response = await additem({
           orderid,
-          deliveryschedulednote: pickupnotef.current.value,
-          deliveryDriverId: seledrive,
-          vehicleIdfordelivered: selevehicle,
-          deliveryscheduledtime: pickdate._i,
+          itemname: itemnamef.current.value,
+          units: unitsf.current.value,
+          weight: weightf.current.value,
+          note: notef.current.value,
+          itemtype: itemtypef,
         });
 
         if (response) {
@@ -161,13 +210,42 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
     }
   }
 
+  const handleChanges = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setcustomerData(value);
+  };
+
+  //......................... for customers............
+
+  const handleChangesc = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCData(value);
+  };
+
+  //......................... for regions............
+
+  const handleChangesitemtype = (event) => {
+    const {
+      target: { value },
+    } = event;
+    console.log('vccccccccccccccccccvvvvvvvvvvvvb', value);
+
+    setItemtype(value);
+  };
+
+  //......................... for districts............
+
   //......................... for regions package............
 
   const handleChangesvehicle = (event) => {
     const {
       target: { value },
     } = event;
-    setSelevehicle(value);
+    setRegtdatap(value);
   };
 
   //......................... for districts package............
@@ -176,15 +254,9 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
     const {
       target: { value },
     } = event;
-    setSeledriver(value);
+    setDriver(value);
   };
 
-  const handleChangestrans = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setSeletrans(value);
-  };
   //................................... for date time ............
 
   return (
@@ -201,7 +273,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>SCHEDULE DISPATCH DELIVERY</FormLabel>
+      <FormLabel>ITEM FORM</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -211,7 +283,16 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           height: '30px',
         }}
       />
-
+      <TextField
+        label='ITEM NAME'
+        margin='normal'
+        inputRef={itemnamef}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={itemname}
+        ref={formref}
+      />{' '}
       <div
         style={{
           marginTop: '20px',
@@ -219,89 +300,58 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>SELECT DRIVER</InputLabel>
+        <InputLabel id='demo-multiple-name-label'>ITEM TYPE</InputLabel>
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
-          value={seledrive}
+          value={itemtypef}
           label='helloo'
           style={{ width: '100%' }}
           fullWidth
-          onChange={handleChangesdriver}
+          onChange={handleChangesitemtype}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {driverdata.map((el) => (
+          {items.map((el) => (
             <MenuItem
-              key={el.userid}
-              value={el.userid}
-              style={getStyles(driverdata, seledrive, theme)}>
-              {el.fname}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>SELECT VEHICLE</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelreg'
-          id='demo-multiple-namere'
-          value={selevehicle}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesvehicle}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {vehicledata.map((el) => (
-            <MenuItem
-              key={el.vehicleid}
+              key={el.id}
               value={el.name}
-              style={getStyles(vehicledata, selevehicle, theme)}>
+              style={getStyles(items, itemtypef, theme)}>
               {el.name}
             </MenuItem>
           ))}
         </Select>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <DateTimePicker
-            renderInput={(props) => (
-              <TextField
-                label='Dispatch-date'
-                margin='normal'
-                inputRef={pickdat}
-                variant='outlined'
-                autoComplete='off'
-                fullWidth
-                {...props}
-              />
-            )}
-            label='Dispatch-date'
-            value={pickdate}
-            onChange={(newValue) => {
-              setPickdate(newValue);
-            }}
-          />
-        </LocalizationProvider>
-      </div>
-
+      <TextField
+        label='UNITS'
+        margin='normal'
+        inputRef={unitsf}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={units}
+        ref={formref}
+      />{' '}
+      <TextField
+        label='WEIGHT IN KG'
+        margin='normal'
+        inputRef={weightf}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={weight}
+        ref={formref}
+      />{' '}
       <TextField
         multiline
         rows={3}
         maxRows={4}
         fullWidth
-        label='NOTE'
+        label='DESCRIPTION'
         margin='normal'
-        inputRef={pickupnotef}
+        inputRef={notef}
         variant='outlined'
         autoComplete='off'
-        defaultValue={pickupnote}
+        defaultValue={note}
         ref={formref}
       />
       <Divider

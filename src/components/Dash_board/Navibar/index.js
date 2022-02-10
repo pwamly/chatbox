@@ -10,10 +10,7 @@ import { logout } from '../../../client/index';
 function Navbar() {
   const [showMediaIcons, setShowMediaIcons] = useState(false);
 
-  let history = useHistory();
-  // const [{ basket }, dispatch] = useStateValue();
-  // const basket;
-  // function dispatch(){}
+ 
 
   return (
     <div className='header'>
@@ -27,7 +24,6 @@ function Navbar() {
           </Link>
         </div>
 
-        {/* //////////////////////////////// */}
         <div
           className={
             showMediaIcons ? 'menu-link mobile-menu-link' : 'menu-link'
@@ -61,12 +57,15 @@ function Navbar() {
                 <a href='#'>Dispatch</a>
               </li>
             </Link>
-            <Link to='/delivery'>
+            <Link
+              onClick={() => {
+                window.location.replace('/dashboard/delivery');
+              }}>
               <li>
                 <a href='#'>Delivery</a>
               </li>
             </Link>
-            <Link to='/dashboard/reports'>
+            <Link to='#'>
               <li>
                 <a href='#'>Reports</a>
               </li>
@@ -86,15 +85,8 @@ function Navbar() {
                   </span>
                 </div>
               </Link>
-              {/* <Link to='/checkout'>
-                <div className='header__optionBasket'>
-                  <Signiout />
-                  <span className='header__optionLineTwo header__basketCount'></span>
-                </div>
-              </Link> */}
             </div>
 
-            {/* hamburget menu start  */}
             <div className='hamburger-menu'>
               <a href='#' onClick={() => setShowMediaIcons(!showMediaIcons)}>
                 <GiHamburgerMenu />
@@ -109,9 +101,7 @@ function Navbar() {
           background: '#f3f4f6',
           width: '100%',
           padding: '30px 10px 10px 40px',
-        }}>
-        {/* <span style={{ fontSize: '16px' }}>Dashboard</span>.......... to  */}
-      </nav>
+        }}></nav>
     </div>
   );
 }
