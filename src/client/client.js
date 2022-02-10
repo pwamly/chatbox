@@ -306,6 +306,17 @@ export const getOrders = async () => {
   }
 };
 
+export const getDispatchedOrders = async () => {
+  try {
+    const branches = await instance.get('/api/dispatchedOrders');
+    if (branches) {
+      return branches;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 //.............................. get drivers ..................
 
 export const getDrivers = async (param) => {
@@ -381,6 +392,21 @@ export const loadPickup = async (data) => {
     return { isSuccessful: false };
   }
 };
+
+export const UnloadDispatchDelivered = async (data) => {
+  const { itemid } = data;
+  try {
+    const response = await instance.post(`/api/unloaddispatch/${itemid}`, {
+      ...data,
+    });
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 
 export const unloadPickup = async (data) => {
   const { itemid } = data;

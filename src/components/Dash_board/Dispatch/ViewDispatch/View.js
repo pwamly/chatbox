@@ -218,48 +218,18 @@ function OrderViewF({ reportdata }) {
               gap: '30px',
             }}>
             <button
-              className='itmbutons'
-              style={{ width: '100px' }}
+              style={{ width: '200px' }}
               onClick={() => {
-                history.push('/dashboard/orders/view/add-item');
+                history.push('/dashboard/dispatch/unload-dispatch');
               }}>
-              Add Item
-            </button>
-
-            <button
-              style={{ width: '120px' }}
-              onClick={() => {
-                history.push('/dashboard/orders/view/schedule-pickup');
-              }}>
-              Schedule Pickup
+              Unload Delivered Dispatch
             </button>
             <button
-              style={{ width: '120px' }}
+              style={{ width: '200px' }}
               onClick={() => {
-                history.push('/dashboard/orders/view/load-pickup');
+                history.push('/dashboard/dispatch/schedule-dispatch-delivery');
               }}>
-              Load pickup
-            </button>
-            <button
-              style={{ width: '120px' }}
-              onClick={() => {
-                history.push('/dashboard/orders/view/unload-pickup');
-              }}>
-              Unload Item
-            </button>
-            <button
-              style={{ width: '120px' }}
-              onClick={() => {
-                history.push('/dashboard/orders/view/shedule-dispatch');
-              }}>
-              Schedule Dispatch
-            </button>
-            <button
-              style={{ width: '100px' }}
-              onClick={() => {
-                history.push('/dashboard/orders/view/deliver-dispatch');
-              }}>
-              Deliver Dispatch
+              Schedule Dispatch Delivery
             </button>
           </div>
           <Divider

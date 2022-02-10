@@ -14,12 +14,16 @@ import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
 import {
   addUser,
   additem,
-  getItemByorder,
-  loadPickup,
+  schedulePickup,
+  scheduleDispatch,
   editUser,
+  getVehicles,
+  getUsers,
+  getDrivers,
+  getTransporters,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
-import '../order.css';
+import './order.css';
 import { useGetList } from '../../../../hooks/index';
 
 // ...................... for select ..............................
@@ -34,6 +38,10 @@ import Selects from '@mui/material/Select';
 // .................... for select end.........................
 
 //  import Textdate from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import DateAdapter from '@mui/lab/AdapterMoment';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -62,73 +70,31 @@ const spinerStyle = {
   gap: '12px',
 };
 
-function Regteam({
-  adduser,
-  teamdata,
-  dispatch,
-  branchdata,
-  reportdata,
-  saveedit,
-  saveeditbtn,
-}) {
+function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
-  const [usrbranch, setCng] = useState('');
-  const [usrrole, setRole] = useState('');
-  const [open, setOpen] = useState(false);
-  const [open2, setOpen2] = useState(false);
-
-  const history = useHistory();
-  const { orderid, itemname, itemtype, units, weight, loadnote, loadunits } =
-    reportdata;
 
   // ........................... for select ..................
 
   const theme = useTheme();
-  const [customerData, setcustomerData] = useState('');
-  const [cData, setCData] = useState('');
-  const [distdata, setDistdata] = useState('');
-  const [itemf, setItem] = useState('');
-  const [driver, setDriver] = useState('');
-  const [regdatap, setRegtdatap] = useState('');
   const [pickdate, setPickdate] = useState(new Date().toGMTString());
-  const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
-  const { results: itemdata } = useGetList(getItemByorder, {
-    orderid: orderid,
-  });
+  const { results: driverdata } = useGetList(getDrivers, { role: 'Driver' });
+  const { results: vehicledata } = useGetList(getVehicles);
+  const { results: transporterdata } = useGetList(getTransporters);
+  const [seledrive, setSeledriver] = useState('');
+  const [seletrans, setSeletrans] = useState('');
+  const [selevehicle, setSelevehicle] = useState('');
 
   // ........... to be passed to form values ..........
   const formref = useRef();
-  const loadunitsf = useRef();
-  const unitsf = useRef();
-  const weightf = useRef();
-  const loadnotef = useRef();
+  const pickupnotef = useRef();
   const pickdat = useRef('');
 
   // ......................... to be passed to the form default...........
 
-  const handleChange = (event) => {
-    setCng(event.target.value);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose2 = () => {
-    setOpen2(false);
-  };
-
-  const handleOpen2 = () => {
-    setOpen2(true);
-  };
-  const handleChange2 = (event) => {
-    setRole(event.target.value);
-  };
+  const history = useHistory();
+  const { orderid, pickupnote } = reportdata;
 
   function selcust(data, selector) {
     console.log('', data, selector);
@@ -141,25 +107,18 @@ function Regteam({
     return newdata[0];
   }
 
-  function selcons(data, selector) {
-    let newdata = data.reduce((acc, item) => {
-      if (item.consignerid === selector) {
-        acc.push(item);
-      }
-      return acc;
-    }, []);
-    return newdata[0];
-  }
-
   async function handlesave() {
     try {
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await loadPickup({
-          loadnote: loadnotef.current.value,
-          loadunits: loadunitsf.current.value,
-          itemid: itemf,
+        let response = await scheduleDispatch({
+          orderid,
+          dispatchnote: pickupnotef.current.value,
+          dispatchDriverId: seledrive,
+          dispatchvehicleId: selevehicle,
+          transporterid: seletrans,
+          scheduledDispatchtime: pickdate._i,
         });
 
         if (response) {
@@ -202,42 +161,13 @@ function Regteam({
     }
   }
 
-  const handleChanges = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setcustomerData(value);
-  };
-
-  //......................... for customers............
-
-  const handleChangesc = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setCData(value);
-  };
-
-  //......................... for regions............
-
-  const handleChangesitem = (event) => {
-    const {
-      target: { value },
-    } = event;
-    console.log('', value);
-
-    setItem(value);
-  };
-
-  //......................... for districts............
-
   //......................... for regions package............
 
   const handleChangesvehicle = (event) => {
     const {
       target: { value },
     } = event;
-    setRegtdatap(value);
+    setSelevehicle(value);
   };
 
   //......................... for districts package............
@@ -246,9 +176,15 @@ function Regteam({
     const {
       target: { value },
     } = event;
-    setDriver(value);
+    setSeledriver(value);
   };
 
+  const handleChangestrans = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSeletrans(value);
+  };
   //................................... for date time ............
 
   return (
@@ -265,7 +201,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>LOAD PICKUP</FormLabel>
+      <FormLabel>SCHEDULE DISPATCH DELIVERY</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -275,6 +211,7 @@ function Regteam({
           height: '30px',
         }}
       />
+
       <div
         style={{
           marginTop: '20px',
@@ -282,37 +219,78 @@ function Regteam({
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>SELECT ITEM</InputLabel>
+        <InputLabel id='demo-multiple-name-label'>SELECT DRIVER</InputLabel>
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
-          value={itemf}
+          value={seledrive}
           label='helloo'
           style={{ width: '100%' }}
           fullWidth
-          onChange={handleChangesitem}
+          onChange={handleChangesdriver}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {itemdata.map((el) => (
+          {driverdata.map((el) => (
             <MenuItem
-              key={el.itemid}
-              value={el.itemid}
-              style={getStyles(itemdata, itemf, theme)}>
-              {el.itemname}
+              key={el.userid}
+              value={el.userid}
+              style={getStyles(driverdata, seledrive, theme)}>
+              {el.fname}
             </MenuItem>
           ))}
         </Select>
       </div>
-      <TextField
-        label='QUANTITY'
-        margin='normal'
-        inputRef={loadunitsf}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={loadunits}
-        ref={formref}
-      />{' '}
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-label'>SELECT VEHICLE</InputLabel>
+        <Select
+          labelId='demo-multiple-name-labelreg'
+          id='demo-multiple-namere'
+          value={selevehicle}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangesvehicle}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {vehicledata.map((el) => (
+            <MenuItem
+              key={el.vehicleid}
+              value={el.name}
+              style={getStyles(vehicledata, selevehicle, theme)}>
+              {el.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>
+        <LocalizationProvider dateAdapter={DateAdapter}>
+          <DateTimePicker
+            renderInput={(props) => (
+              <TextField
+                label='Dispatch-date'
+                margin='normal'
+                inputRef={pickdat}
+                variant='outlined'
+                autoComplete='off'
+                fullWidth
+                {...props}
+              />
+            )}
+            label='Dispatch-date'
+            value={pickdate}
+            onChange={(newValue) => {
+              setPickdate(newValue);
+            }}
+          />
+        </LocalizationProvider>
+      </div>
+
       <TextField
         multiline
         rows={3}
@@ -320,10 +298,10 @@ function Regteam({
         fullWidth
         label='NOTE'
         margin='normal'
-        inputRef={loadnotef}
+        inputRef={pickupnotef}
         variant='outlined'
         autoComplete='off'
-        defaultValue={loadnote}
+        defaultValue={pickupnote}
         ref={formref}
       />
       <Divider

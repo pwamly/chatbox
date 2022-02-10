@@ -53,7 +53,10 @@ function Navbar() {
                 <a href='#'>Orders </a>
               </li>
             </Link>
-            <Link to='/dispatch'>
+            <Link
+              onClick={() => {
+                window.location.replace('/dashboard/dispatch');
+              }}>
               <li>
                 <a href='#'>Dispatch</a>
               </li>

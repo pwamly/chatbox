@@ -16,10 +16,11 @@ import {
   additem,
   getItemByorder,
   loadPickup,
+  UnloadDispatchDelivered,
   editUser,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
-import '../order.css';
+import './order.css';
 import { useGetList } from '../../../../hooks/index';
 
 // ...................... for select ..............................
@@ -156,9 +157,9 @@ function Regteam({
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await loadPickup({
-          loadnote: loadnotef.current.value,
-          loadunits: loadunitsf.current.value,
+        let response = await UnloadDispatchDelivered({
+          unloadeddispatchnotes: loadnotef.current.value,
+          unloadeddispatchunits: loadunitsf.current.value,
           itemid: itemf,
         });
 
@@ -265,7 +266,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>DELIVER DISPATCH</FormLabel>
+      <FormLabel>UNLOAD DISPATCH</FormLabel>
       <Divider
         fullWidth
         style={{

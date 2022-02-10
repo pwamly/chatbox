@@ -22,7 +22,11 @@ import { useGet, useGetList } from '../../../../hooks/index';
 import { connect } from 'react-redux';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import { getUsers, deleteOrder, getOrders } from '../../../../client/client';
+import {
+  getUsers,
+  deleteOrder,
+  getDispatchedOrders,
+} from '../../../../client/client';
 import {
   ADD_USER,
   EDIT_USER,
@@ -41,7 +45,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getOrders);
+  const { results: rows, loading, refresh } = useGetList(getDispatchedOrders);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -60,44 +64,24 @@ function BasicTable({ adduser, dispatch }) {
             className='IconStyle'
             onClick={() => {
               dispatch({ type: SAVE_REPORT_DATA, payload: row });
-              history.push('orders/view');
+              history.push('/dashboard/dispatch/view');
             }}
           />
         </Link>
-        <Link>
-          {' '}
-          <ImPencil
-            className='IconStyle'
-            onClick={() => {
-              console.log('', row);
-              dispatch({ type: SAVE_BRANCH_DATA, payload: row });
-              history.push('/dashboard/orders/create-user');
-            }}
-          />
-        </Link>
-
-        <FaTrash
-          id='trash'
-          className='IconStyle'
-          onClick={() => {
-            handledelete(row);
-          }}
-        />
       </div>
     ),
     []
   );
   let history = useHistory();
   const columns = [
-    // { label: 'Order Id', show: true, name: 'orderid' },
     { label: 'Customer Name', show: true, name: 'customername' },
     { label: 'Package Location Steet', show: true, name: 'pstreet' },
     { label: 'Consigner Name', show: true, name: 'consignername' },
     { label: 'Destination ', show: true, name: 'dregion' },
     { label: 'Consignee Name', show: true, name: 'consigneename' },
-    { label: 'Pick up Time', show: true, name: 'pickuptime' },
+    { label: 'Dispatched Time', show: true, name: 'scheduledDispatchtime' },
     { label: 'Expected Delivery Time', show: true, name: 'expdlrtime' },
-    { label: 'Customer Notes', show: true, name: 'customernotes' },
+    { label: 'Status', show: true, name: 'orderStatus' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
@@ -188,7 +172,6 @@ function BasicTable({ adduser, dispatch }) {
                   flexDirection: 'row',
                   textDecoration: 'none !important',
                 }}>
-                <AddIcon className='plus' onClick={handleAdduser} />
                 <Pagination.First onClick={() => ''} disabled={true} />
                 <Pagination.Prev
                   onClick={() => 'goToPage(currentPage - 1)'}
