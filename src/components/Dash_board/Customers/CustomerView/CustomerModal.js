@@ -11,7 +11,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
-import { addUser, addorder, editUser } from '../../../../client/client';
+import {
+  addUser,
+  addorder,
+  editUser,
+  addcondignor,
+} from '../../../../client/client';
 import { Divider } from '@mui/material';
 import './customerview.css';
 // import useTheme from '../CustomerView/customerview.css';
@@ -153,27 +158,21 @@ function Regteam({
   // ........... to be passed to form values ..........
 
   const formref = useRef();
-  const pickdat = useRef('');
-  const deliverydate = useRef('');
-  const packstreet = useRef('');
-  const custnote = useRef('');
-  const pkgnotes = useRef('');
-  const distnstreet = useRef();
-  const dtnnote = useRef();
-  const congneename = useRef();
-  const congneephone = useRef();
+  const fullnamef = useRef('');
+  const emailf = useRef('');
+  const phonef = useRef('');
+  const nidanof = useRef('');
+
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
+
   const {
-    customernotes = '',
-    pstreet = '',
-    consignername = '',
-    pnotes = '',
-    dstreet = '',
-    dnotes = '',
-    consigneephone = '',
-    consigneename = '',
+    fullname = '',
+    email = '',
+    phone = '',
+    nidano = '',
+    customerid = '',
   } = reportdata;
 
   const handleChange = (event) => {
@@ -221,24 +220,15 @@ function Regteam({
 
   async function handlesave() {
     try {
-      if (saveedit == 'add') {
+      if (saveedit == 'save') {
         setLoading(true);
-        // formref.current.reset();
-        let response = await addorder({
-          pickuptime: pickdate._i,
-          expdlrtime: deliverydat._i,
-          packagestreet: packstreet.current.value,
-          custnote: custnote.current.value,
-          packagenotes: pkgnotes.current.value,
-          destinationstreet: distnstreet.current.value,
-          customerData: selcust(customers, customerData),
-          consignerdata: selcons(consgigners, cData),
-          Packagedistdata: distdata,
-          packageRegionData: regdata,
-          destinationData: distdatap,
-          destinationRegionData: regdatap,
-          destinationnotes: dtnnote.current.value,
-          consigneename: congneename.current.value,
+
+        let response = await addcondignor({
+          fullname: fullnamef.current.value,
+          customerid: customerid,
+          email: emailf.current.value,
+          phone: phonef.current.value,
+          nidano: nidanof.current.value,
         });
 
         if (response) {
@@ -257,21 +247,7 @@ function Regteam({
       }
       if (saveedit == 'edit') {
         setLoading(true);
-        // formref.current.reset();
-        let response = await editUser({
-          pickuptime: pickdat.current.value,
-          expdlrtime: deliverydate.current.value,
-          pstreet: packstreet.current.value,
-          custnote: custnote.current.value,
-          pnotes: pkgnotes.current.value,
-          dstreet: distnstreet.current.value,
-          customerData: customerData,
-          cData: cData,
-          distdata: distdata,
-          regdata: regdata,
-          distdatap: distdatap,
-          regdatap: regdatap,
-        });
+        let response = await editUser({});
 
         if (response) {
           console.log(response);
@@ -288,7 +264,7 @@ function Regteam({
         return;
       }
     } catch (error) {
-      console.log(error);
+      console.log('ooooooooooooooooo', error);
       setLoading(false);
       addToast('Failed', { appearance: 'error' });
     }
@@ -374,69 +350,41 @@ function Regteam({
       <TextField
         label='FULL NAME'
         margin='normal'
-        inputRef={distnstreet}
+        inputRef={fullnamef}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={dstreet}
+        defaultValue={fullname}
         ref={formref}
       />{' '}
       <TextField
         label='EMAIL'
         margin='normal'
-        inputRef={distnstreet}
+        inputRef={emailf}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={dstreet}
+        defaultValue={email}
         ref={formref}
       />{' '}
       <TextField
         label='PHONE'
         margin='normal'
-        inputRef={distnstreet}
+        inputRef={phonef}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={dstreet}
+        defaultValue={phone}
         ref={formref}
       />{' '}
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>EMPLOYEE</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelreg'
-          id='demo-multiple-namereg'
-          value={regdata}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesreg}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {regions.map((el) => (
-            <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(regions, regdata, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
       <TextField
         label='NIDA NO'
         margin='normal'
-        inputRef={distnstreet}
+        inputRef={nidanof}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={dstreet}
+        defaultValue={nidano}
         ref={formref}
       />{' '}
       <div

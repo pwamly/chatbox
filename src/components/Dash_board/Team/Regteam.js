@@ -73,6 +73,19 @@ const roles = [
   },
 ];
 
+
+
+function validatePassword(pw) {
+  console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', pw);
+  return (
+    /[A-Z]/.test(pw) &&
+    /[a-z]/.test(pw) &&
+    /[0-9]/.test(pw) &&
+    /[^A-Za-z0-9]/.test(pw) &&
+    pw.length > 7
+  );
+}
+
 function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
   const [usrbranch, setCng] = useState('');
@@ -101,6 +114,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   const usremail = useRef('');
   const signature = useRef('');
   const usrpass = useRef('');
+  const usrpassc = useRef('');
 
   const {
     fname = '',
@@ -134,34 +148,59 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   // ................. for dropdeown..................
 
   async function handlesave() {
+    if (
+      (usrpass.current.value === '') |
+      (usrphone.current.value === '') |
+      (usremail.current.value === '') |
+      (usrphone.current.value === '') |
+      (selebranch == '') |
+      (selerole == '')
+    ) {
+      setLoading(false);
+      addToast('Fill all fields', {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    }
     try {
       if (saveedit == 'add') {
         setLoading(true);
-        // formref.current.reset();
-        let response = await addUser({
-          firstname: fsname.current.value,
-          lastname: lsname.current.value,
-          email: usremail.current.value,
-          username: usremail.current.value,
-          branchId: selebranch,
-          role: selerole,
-          phone: usrphone.current.value,
-          password: usrpass.current.value,
-        });
 
-        if (response) {
-          console.log(response);
+        if (!validatePassword(usrpass.current.value)) {
           setLoading(false);
-          addToast(' User Added successfully', {
-            appearance: 'success',
+          addToast(' Password not strong', {
+            appearance: 'error',
             autoDismiss: true,
           });
-          // window.location.replace(`/dashboard/employee`);
+
+          return;
+        } else {
+          let response = await addUser({
+            firstname: fsname.current.value,
+            lastname: lsname.current.value,
+            email: usremail.current.value,
+            username: usremail.current.value,
+            branchId: selebranch,
+            role: selerole,
+            phone: usrphone.current.value,
+            password: usrpass.current.value,
+          });
+
+          if (response) {
+            console.log(response);
+            setLoading(false);
+            addToast(' User Added successfully', {
+              appearance: 'success',
+              autoDismiss: true,
+            });
+            // window.location.replace(`/dashboard/employee`);
+            return;
+          }
+          setLoading(false);
+          addToast('Updated!', { appearance: 'warning' });
           return;
         }
-        setLoading(false);
-        addToast('Updated!', { appearance: 'warning' });
-        return;
       }
       if (saveedit == 'edit') {
         setLoading(true);
@@ -293,6 +332,15 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
         defaultValue={pass}
         ref={formref}
       />
+      {/* <TextField
+        label='Comfirm Password'
+        margin='normal'
+        inputRef={usrpassc}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        ref={formref}
+      /> */}
       <div
         style={{
           marginTop: '20px',

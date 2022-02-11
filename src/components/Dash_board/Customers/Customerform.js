@@ -211,8 +211,9 @@ function Regteam({
   }
 
   async function handlesave() {
+   
     try {
-      if (saveedit == 'add') {
+      if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
         let response = await registerCustomer({
@@ -253,7 +254,6 @@ function Regteam({
           street: cstreet.current.value,
           address: address.current.value,
         });
-
         if (response) {
           console.log(response);
           setLoading(false);

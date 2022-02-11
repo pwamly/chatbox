@@ -6,11 +6,20 @@ import ItemModal from './CustomerModal';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FaEye, FaRegEye, FaTrash, FaPrint } from 'react-icons/fa';
+import { useGet, useGetList } from '../../../../hooks/index';
 import { ImPencil } from 'react-icons/im';
+import { getconsignors } from '../../../../client/client';
 
 function OrderView({ reportdata }) {
   const data = [];
+  const { customerid } = reportdata;
   const history = useHistory();
+  const {
+    results: rows,
+    loading,
+    refresh,
+  } = useGetList(getconsignors, { customerid });
+
   const data1 = [
     {
       description: `Device name DESKTOP-7EVV1T3 Processor Intel(R) Core(TM)
@@ -143,34 +152,25 @@ function OrderView({ reportdata }) {
                 <div className='th'>
                   <h3>Phone</h3>
                 </div>
-                <div className='th'>
-                  <h3>Employee</h3>
-                </div>
+
                 <div className='th'>
                   <h3>NIDA</h3>
                 </div>
-                <div className='th'>
-                  <h3>Actions</h3>
-                </div>
               </div>
-              {!data === [] ? (
-                data.map((row, index) => (
+              {rows.length !== 0 ? (
+                rows.map((row, index) => (
                   <div className='tr' id={index}>
                     <div className='td'>{index + 1}</div>
-                    <div className='tdd'>{row.description}</div>
-                    <div className='td'>{row.units}</div>
-                    <div className='td'>{row.weight}</div>
-                    <div className='td'>{row.tobepickeAt}</div>
-                    <div className='td'>{row.tobepickedBy}</div>
-                    <div className='td'>{row.Vehicle}</div>
-                    <div className='td'>{row.status}</div>
+                    <div className='td'>{row.fullname}</div>
+                    <div className='td'>{row.email}</div>
+                    <div className='td'>{row.phone}</div>
+                    <div className='td'>{row.nidano}</div>
                   </div>
                 ))
               ) : (
                 <div className='tr'>
                   <div className='td'>0</div>
                   <div className='tdd'>NA</div>
-                  <div className='td'>NA</div>
                   <div className='td'>NA</div>
                   <div className='td'>NA</div>
                   <div className='td'>NA</div>

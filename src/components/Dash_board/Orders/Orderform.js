@@ -13,6 +13,9 @@ import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
 import { addUser, addorder, editUser } from '../../../client/client';
 import { Divider } from '@mui/material';
 import './order.css';
+import { getUsers, getCustomers, getconsignors } from '../../../client/client';
+import { useGet, useGetList } from '../../../hooks/index';
+
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
@@ -41,42 +44,6 @@ const MenuProps = {
   },
 };
 
-const customers = [
-  {
-    customerId: 'bdar-1',
-    customername: 'NMB KAWE',
-    customeraddress: 'P.O.BOX 56,KINONDONI,KAWE NALEWA STREET,MOBILE:2222229',
-  },
-  {
-    customerId: 'bdar-2',
-    customername: 'CRD MBEZI',
-    customeraddress: 'P.O.BOX 16,UBUNGO,MAGUFULI BUS STOP STREET,MOBILE:123444',
-  },
-];
-
-const consgigners = [
-  {
-    consignerid: 'nmb-dar-kinondoni-kawe-1',
-    ccompanyId: 'bdar-1',
-    cfname: 'Johny',
-    clname: 'kibweta',
-    cmobile: '+255673999',
-    cemail: 'kibwe@gmail.com',
-    crole: 'IT',
-    caddress: 'P.O.BOX 56,KINONDONI,KAWE NALEWA STREET,MOBILE:2222229',
-  },
-  {
-    consignerid: 'nmb-dar-kinondoni-kawe-2',
-    ccompanyId: 'bdar-1',
-    cfname: 'kulwa',
-    clname: 'magembe',
-    cmobile: '+2556739444',
-    cemail: 'magembe@gmail.com',
-    crole: 'accountant',
-    caddress: 'P.O.BOX 46,TEMEKE,KIWALENI STREET,MOBILE:23444',
-  },
-];
-
 const regions = [
   {
     id: 1,
@@ -103,10 +70,10 @@ const districts = [
   { id: 1, regionid: 3, name: 'Arumeru', regionname: 'Arusha' },
 ];
 
-function getStyles(name, customerData, theme) {
+function getStyles(name, customer_Data, theme) {
   return {
     fontWeight:
-      customerData.indexOf(name) === -1
+      customer_Data.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -137,8 +104,9 @@ function Regteam({
   // ........................... for select ..................
 
   const theme = useTheme();
-  const [customerData, setcustomerData] = useState('');
+  const [customer_Data, setcustomerData] = useState('');
   const [cData, setCData] = useState('');
+  const [customeriscons, setCustomeriscons] = useState('');
   const [distdata, setDistdata] = useState('');
   const [regdata, setRegtdata] = useState('');
   const [distdatap, setDistdatap] = useState('');
@@ -147,6 +115,13 @@ function Regteam({
   const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
+
+  const { results: rows, loading: loadin, refresh } = useGetList(getCustomers);
+  const {
+    results: rowscon,
+    loading: loadinco,
+    refresh: refreshn,
+  } = useGetList(getconsignors, { customerid: customeriscons });
 
   // ........... to be passed to form values ..........
 
@@ -194,26 +169,6 @@ function Regteam({
     setRole(event.target.value);
   };
 
-  function selcust(data, selector) {
-    let newdata = data.reduce((acc, item) => {
-      if (item.customerId === selector) {
-        acc.push(item);
-      }
-      return acc;
-    }, []);
-    return newdata[0];
-  }
-
-  function selcons(data, selector) {
-    let newdata = data.reduce((acc, item) => {
-      if (item.consignerid === selector) {
-        acc.push(item);
-      }
-      return acc;
-    }, []);
-    return newdata[0];
-  }
-
   async function handlesave() {
     try {
       if (saveedit == 'save') {
@@ -226,8 +181,8 @@ function Regteam({
           custnote: custnote.current.value,
           packagenotes: pkgnotes.current.value,
           destinationstreet: distnstreet.current.value,
-          customerData: selcust(customers, customerData),
-          consignerdata: selcons(consgigners, cData),
+          customerid: customer_Data,
+          consignerid: cData,
           Packagedistdata: distdata,
           packageRegionData: regdata,
           destinationData: distdatap,
@@ -260,7 +215,7 @@ function Regteam({
           custnote: custnote.current.value,
           pnotes: pkgnotes.current.value,
           dstreet: distnstreet.current.value,
-          customerData: customerData,
+          customerData: customer_Data,
           cData: cData,
           distdata: distdata,
           regdata: regdata,
@@ -289,14 +244,18 @@ function Regteam({
     }
   }
 
+  //............
+
   const handleChanges = (event) => {
     const {
       target: { value },
     } = event;
     setcustomerData(value);
+    console.log('.>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', value.customeri);
+    setCustomeriscons(value.customerid);
   };
 
-  //......................... for customers............
+  //......................... for consigers............
 
   const handleChangesc = (event) => {
     const {
@@ -383,18 +342,18 @@ function Regteam({
         <Select
           labelId='demo-multiple-name-label'
           id='demo-multiple-name'
-          value={customerData}
+          value={customer_Data}
           label='helloo'
           style={{ width: '85%' }}
           onChange={handleChanges}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {customers.map((el) => (
+          {rows.map((el) => (
             <MenuItem
               key={el.customerId}
-              value={el.customerId}
-              style={getStyles(customers, customerData, theme)}>
-              {el.customername}
+              value={el.customerid}
+              style={getStyles(rows, customer_Data, theme)}>
+              {el.fname + '' + el.lname}
             </MenuItem>
           ))}
         </Select>
@@ -418,12 +377,12 @@ function Regteam({
           onChange={handleChangesc}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {consgigners.map((el) => (
+          {rowscon.map((el) => (
             <MenuItem
-              key={el.consignerid}
-              value={el.consignerid}
-              style={getStyles(consgigners, cData, theme)}>
-              {el.cfname + ' ' + el.clname}
+              key={el.consginerid}
+              value={el.consginerid}
+              style={getStyles(rowscon, cData, theme)}>
+              {el.fullname}
             </MenuItem>
           ))}
         </Select>

@@ -63,7 +63,7 @@ cursor: pointer;
 
 }
 .th{
-    width: 12%;
+    width: 20%;
     border: 0.5px solid rgb(189, 179, 179);
     margin-top: -1px;
     margin-left: -1px;
@@ -85,7 +85,7 @@ cursor: pointer;
 }
 
 .td{
-    width: 12%;
+    width: 20%;
     border: 0.5px solid rgb(189, 179, 179);
     margin-top: -1px;
     margin-left: -1px;

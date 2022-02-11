@@ -666,6 +666,21 @@ export const addorder = async (data) => {
   }
 };
 
+export const addcondignor = async (data) => {
+  const { customerid } = data;
+  try {
+    const response = await instance.post(`/api/register-consignor`, {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const additem = async (data) => {
   try {
     const response = await instance.post('/api/orders/add-item', {
@@ -704,8 +719,6 @@ export const getItemByorder = async ({ orderid }) => {
   }
 };
 
-
-
 export const registerCustomer = async (data) => {
   try {
     const response = await instance.post('/api/register-customer', {
@@ -719,6 +732,32 @@ export const registerCustomer = async (data) => {
     return { isSuccessful: false };
   }
 };
+
+export const registerConsignor = async (data) => {
+  try {
+    const response = await instance.post('/api/register-consignor', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const getconsignors = async ({ customerid }) => {
+  try {
+    const consignors = await instance.get(`/api/consignors`);
+    if (consignors) {
+      return consignors;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 
 export const registerTransporter = async (data) => {
   try {
