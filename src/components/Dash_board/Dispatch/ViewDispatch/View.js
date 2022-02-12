@@ -29,13 +29,7 @@ function OrderViewF({ reportdata }) {
     });
   }
 
-  async function reloadpagehandler() {
-    await delay(30000);
-    if (rows.length == 0) {
-      window.location.replace(`/dispatch`);
-    }
-  }
-  reloadpagehandler();
+
 
   const statusColor = (status) => {
     let color = 'none';
@@ -191,20 +185,26 @@ function OrderViewF({ reportdata }) {
               paddingBottom: '20px',
               gap: '30px',
             }}>
-            <button
-              style={{ width: '200px' }}
-              onClick={() => {
-                history.push('/dashboard/dispatch/unload-dispatch');
-              }}>
-              Unload Delivered Dispatch
-            </button>
-            <button
-              style={{ width: '200px' }}
-              onClick={() => {
-                history.push('/dashboard/dispatch/schedule-dispatch-delivery');
-              }}>
-              Schedule Dispatch Delivery
-            </button>
+            {!reportdata.dispatchunloaded && (
+              <button
+                style={{ width: '200px' }}
+                onClick={() => {
+                  history.push('/dashboard/dispatch/unload-dispatch');
+                }}>
+                Unload Delivered Dispatch
+              </button>
+            )}
+            {!reportdata.deliveryscheduled && (
+              <button
+                style={{ width: '200px' }}
+                onClick={() => {
+                  history.push(
+                    '/dashboard/dispatch/schedule-dispatch-delivery'
+                  );
+                }}>
+                Schedule Dispatch Delivery
+              </button>
+            )}
           </div>
           <Divider
             fullWidth

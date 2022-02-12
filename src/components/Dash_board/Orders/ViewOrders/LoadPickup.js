@@ -160,6 +160,7 @@ function Regteam({
           loadnote: loadnotef.current.value,
           loadunits: loadunitsf.current.value,
           itemid: itemf,
+          orderid: orderid,
         });
 
         if (response) {

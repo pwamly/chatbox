@@ -172,13 +172,15 @@ function OrderViewF({ reportdata }) {
               paddingRight: '30px',
               gap: '30px',
             }}>
-            <button
-              style={{ width: '200px' }}
-              onClick={() => {
-                history.push('/dashboard/deliver-order');
-              }}>
-              Delivered Order
-            </button>
+            {reportdata.orderStatus !== 'Delivered' && (
+              <button
+                style={{ width: '200px' }}
+                onClick={() => {
+                  history.push('/dashboard/deliver-order');
+                }}>
+                Delivered Order
+              </button>
+            )}
           </div>
           <Divider
             fullWidth

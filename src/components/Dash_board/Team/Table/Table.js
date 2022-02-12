@@ -82,7 +82,6 @@ function BasicTable({ adduser, dispatch }) {
     { label: 'Phone ', show: true, name: 'phone' },
     { label: 'Email', show: true, name: 'email' },
     { label: 'Role', show: true, name: 'role' },
-    { label: 'Branch ID', show: true, name: 'branchId' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
