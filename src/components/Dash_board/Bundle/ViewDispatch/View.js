@@ -18,6 +18,14 @@ function OrderViewF({ reportdata }) {
     refresh,
   } = useGetList(getItemByorder, { orderid });
 
+  function delay(delayInms) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(2);
+      }, delayInms);
+    });
+  }
+
   const statusColor = (status) => {
     let color = 'none';
     if (status == 'not picked') {
@@ -77,24 +85,12 @@ function OrderViewF({ reportdata }) {
           </div>
           <div className='toform'>
             <div className='consignordetails'>
-              <h3 className='csngtitle'>From (Consignor)</h3>
+              <h3 className='csngtitle'>From (Branch)</h3>
               <div className='cdetails'>
-                <h2 className='clabel'>Full Name:</h2>
+                <h2 className='clabel'>Branch Name:</h2>
                 <span className='cvalue'>
                   {' '}
                   {reportdata.consignername ? reportdata.consignername : 'NA'}
-                </span>
-              </div>
-              <div className='cdetails'>
-                <h2 className='clabel'>Company Name:</h2>
-                <span className='cvalue'>
-                  {reportdata.customername ? reportdata.customername : 'NA'}
-                </span>
-              </div>
-              <div className='cdetails'>
-                <h2 className='clabel'>Physical Address:</h2>
-                <span className='cvalue'>
-                  {reportdata.cmpnaddress ? reportdata.cmpnaddress : 'NA'}
                 </span>
               </div>
               <div className='cdetails'>
@@ -112,32 +108,20 @@ function OrderViewF({ reportdata }) {
                 </span>
               </div>{' '}
               <div className='cdetails'>
-                <h2 className='clabel'>Pick Up Date:</h2>
+                <h2 className='clabel'>Bundle Dispatch Date:</h2>
+
                 <span className='cvalue'>
-                  {reportdata.pickuptime ? reportdata.pickuptime : 'NA'}
+                  {' '}
+                  {reportdata.expdlrtime ? reportdata.expdlrtime : 'NA'}
                 </span>
               </div>
             </div>
             <div className='consignordetails'>
-              <h1 className='csngtitle'>TO (Consignee)</h1>
+              <h1 className='csngtitle'>TO (Branch)</h1>
               <div className='cdetails'>
-                <h2 className='clabel'>Full Name:</h2>
+                <h2 className='clabel'>Branch Name:</h2>
                 <span className='cvalue'>
                   {reportdata.consigneename ? reportdata.consigneename : 'NA'}
-                </span>
-              </div>
-              <div className='cdetails'>
-                <h2 className='clabel'>Company Name:</h2>
-                <span className='cvalue'>
-                  {' '}
-                  {reportdata.customername ? reportdata.customername : 'NA'}
-                </span>
-              </div>
-              <div className='cdetails'>
-                <h2 className='clabel'>Physical Address:</h2>
-                <span className='cvalue'>
-                  {' '}
-                  {reportdata.cneaddress ? reportdata.cneaddress : 'NA'}
                 </span>
               </div>
               <div className='cdetails'>
@@ -153,7 +137,7 @@ function OrderViewF({ reportdata }) {
                 </span>
               </div>{' '}
               <div className='cdetails'>
-                <h2 className='clabel'>EXP Delivery Date:</h2>
+                <h2 className='clabel'>Bundle Dispatch Date Delivery Date:</h2>
 
                 <span className='cvalue'>
                   {' '}
@@ -162,6 +146,7 @@ function OrderViewF({ reportdata }) {
               </div>
             </div>
           </div>
+
           <div
             style={{
               width: '100%',
@@ -169,85 +154,20 @@ function OrderViewF({ reportdata }) {
               display: 'flex',
               justifyContent: 'center',
               paddingBottom: '20px',
+              gap: '30px',
             }}>
-            {!reportdata.pickupScheduled && (
-              <button
-                className='btn btn-primary'
-                style={{
-                  width: '14%',
-                  fontWeight: 'bold',
-                  background: 'yellow',
-                }}
-                onClick={() => {
-                  history.push('/dashboard/orders/view/add-item');
-                }}>
-                Add Item
-              </button>
-            )}
-            {!reportdata.pickupScheduled && (
-              <button
-                className='btn btn-primary'
-                style={{
-                  width: '17%',
-                  fontWeight: 'bold',
-                  background: 'yellow',
-                }}
-                onClick={() => {
-                  history.push('/dashboard/orders/view/schedule-pickup');
-                }}>
-                Schedule Pickup
-              </button>
-            )}
-            {!reportdata.pickupLoaded && (
-              <button
-                className='btn btn-primary'
-                style={{
-                  width: '15%',
-                  fontWeight: 'bold',
-                  background: 'yellow',
-                }}
-                onClick={() => {
-                  history.push('/dashboard/orders/view/load-pickup');
-                }}>
-                Load pickup
-              </button>
-            )}
-            {!reportdata.pickupUnloaded && (
-              <button
-                className='btn btn-primary'
-                style={{
-                  width: '13%',
-                  fontWeight: 'bold',
-                  background: 'yellow',
-                }}
-                onClick={() => {
-                  history.push('/dashboard/orders/view/unload-pickup');
-                }}>
-                Unload Item
-              </button>
-            )}{' '}
             {reportdata.pickupUnloaded && (
               <button
-                className='btn btn-primary'
-                style={{
-                  width: '13%',
-                  fontWeight: 'bold',
-                  background: 'yellow',
-                }}
+                style={{ width: '120px' }}
                 onClick={() => {
-                  history.push('/dashboard/orders/view/create-bundle');
+                  history.push('dashboard/bundles/view/add-order');
                 }}>
-                Create Bundle
+                Add order
               </button>
             )}
             {!reportdata.dispatchScheduled && (
               <button
-                className='btn btn-primary'
-                style={{
-                  width: '18%',
-                  fontWeight: 'bold',
-                  background: 'yellow',
-                }}
+                style={{ width: '120px' }}
                 onClick={() => {
                   history.push('/dashboard/orders/view/shedule-dispatch');
                 }}>
@@ -256,12 +176,7 @@ function OrderViewF({ reportdata }) {
             )}
             {reportdata.orderStatus !== 'Dispatched' && (
               <button
-                className='btn btn-primary'
-                style={{
-                  width: '18%',
-                  background: 'yellow',
-                  fontWeight: 'bold',
-                }}
+                style={{ width: '100px' }}
                 onClick={() => {
                   history.push('/dashboard/orders/view/deliver-dispatch');
                 }}>
@@ -278,31 +193,31 @@ function OrderViewF({ reportdata }) {
           />
           <div className='Orderdetails'>
             <div className='ordermaintitle'>
-              <h3 style={{ width: '30%' }}>Order Items</h3>
+              <h3 style={{ width: '30%' }}>Orders</h3>
             </div>
 
             <div className='ordertable'>
               <div className='tr'>
                 <div className='th'>
-                  <h3>Item Type</h3>
+                  <h3>Customer Name</h3>
                 </div>
                 <div className='thd'>
-                  <h3>Description</h3>
+                  <h3>Package Location</h3>
                 </div>
                 <div className='th'>
-                  <h3>Units</h3>
+                  <h3>Consignor Name</h3>
                 </div>
                 <div className='th'>
-                  <h3>Weight in Kg</h3>
+                  <h3>Destination</h3>
                 </div>
                 <div className='th'>
-                  <h3>To be picked At</h3>
+                  <h3>Consignee</h3>
                 </div>
                 <div className='th'>
-                  <h3>To be picked By</h3>
+                  <h3>Dispatch Date</h3>
                 </div>
                 <div className='th'>
-                  <h3>Vehicle</h3>
+                  <h3>Expected Delivered Date</h3>
                 </div>
                 <div className='th'>
                   <h3>Status</h3>

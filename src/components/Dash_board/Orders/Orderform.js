@@ -662,8 +662,8 @@ function Regteam({
         }}>
         <Button
           variant='contained'
+          className='btn btn-block'
           width='sm'
-          color='primary'
           style={{ marginTop: '20px' }}
           onClick={handlesave}>
           {loading ? (
@@ -675,9 +675,11 @@ function Regteam({
           )}{' '}
         </Button>{' '}
         <Button
+          background='red'
           variant='contained'
+          className='btn btn-block'
           width='sm'
-          style={{ marginTop: '20px' }}
+          style={{ marginTop: '20px', background: 'yellow' }}
           onClick={() => dispatch({ type: EXIT_ADD_FORM })}>
           Close
         </Button>

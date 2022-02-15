@@ -15,11 +15,11 @@ function Navbar() {
   return (
     <div className='header'>
       <nav className='main-nav'>
-        <div className='logo'>
-          <Link to='/'>
+        <div className='logo-sga'>
+          <Link to='/dashboard'>
             <h2>
-              <span>S</span>
-              <span>GA</span>
+              {/* <span>S</span> */}
+              <span className='sga-sub-log'>SGA Courier Department System</span>
             </h2>
           </Link>
         </div>
@@ -35,11 +35,6 @@ function Navbar() {
                 <a href='#'>Dashboard</a>
               </li>
             </Link>
-            <Link to='/sga'>
-              <li>
-                <a href='#'>SGA</a>
-              </li>
-            </Link>
             <Link
               onClick={() => {
                 // history.push('/dashboard/orders');
@@ -47,6 +42,15 @@ function Navbar() {
               }}>
               <li>
                 <a href='#'>Orders </a>
+              </li>
+            </Link>
+            <Link
+              onClick={() => {
+                // history.push('/dashboard/orders');
+                window.location.replace('/dashboard/bundles');
+              }}>
+              <li>
+                <a href='#'>Bundles</a>
               </li>
             </Link>
             <Link

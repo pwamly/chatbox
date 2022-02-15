@@ -10,6 +10,7 @@ import Branch from './branchs/Index';
 import Orders from './Orders/Index';
 import Dispatch from './Dispatch/Index';
 import Delivery from './Delivery/Index';
+import Bundle from './Bundle/Index';
 import Customers from './Customers/Index';
 import Transporters from './Transporters/Index';
 import Vehicles from './Vehicle/Index';
@@ -113,6 +114,7 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
                     path='/dashboard/vehicles'
                     component={Vehicles}
                   />{' '}
+                  <ProtectRoute path='/dashboard/bundles' component={Bundle} />{' '}
                 </Switch>{' '}
               </Container>{' '}
             </Router>{' '}

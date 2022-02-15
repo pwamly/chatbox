@@ -76,7 +76,7 @@ const roles = [
 
 
 function validatePassword(pw) {
-  console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', pw);
+  console.log('', pw);
   return (
     /[A-Z]/.test(pw) &&
     /[a-z]/.test(pw) &&

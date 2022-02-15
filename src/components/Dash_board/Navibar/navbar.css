@@ -6,7 +6,6 @@
   box-sizing: border-box;
   font-family: "Jost", sans-serif;
   font-size: small;
-  /* color: rgb(74, 116, 194); */
   color: rgb(17, 16, 16);
 }
 
@@ -48,14 +47,19 @@ li {
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
 }
 
-.logo {
+.logo-sga {
   display: grid;
-  /* background-color: #3b5998; */
+   /* background-color: #3b5998;  */
   grid-column: 2/3;
   justify-content: start;
   align-items: center;
 }
+.sga-sub-log{
+  color:red !important;
+  font-size: 18px;
+  
 
+}
 .menu-link {
   grid-column: 3/4;
 }
