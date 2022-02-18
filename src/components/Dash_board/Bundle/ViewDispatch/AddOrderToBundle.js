@@ -25,6 +25,7 @@ import {
   getBranches,
   getOrders,
   createBundle,
+  updateBundle,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
 import './order.css';
@@ -106,8 +107,15 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const { orderid, pickupnote, bundlename, dregion, pregion, orderStatus } =
-    reportdata;
+  const {
+    orderid,
+    pickupnote,
+    bundlename,
+    dregion,
+    pregion,
+    orderStatus,
+    bundleid,
+  } = reportdata;
 
   function selcust(data, selector) {
     console.log('', data, selector);
@@ -121,7 +129,6 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   }
 
   const statusColor = {};
-
   async function handlesave() {
     try {
       if (saveedit == 'save') {
@@ -149,7 +156,10 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
       if (saveedit == 'edit') {
         setLoading(true);
         // formref.current.reset();
-        let response = await editUser({});
+        let response = await updateBundle({
+          bundleid: bundleid,
+          ordertobebundled: orderlist,
+        });
 
         if (response) {
           console.log(response);
@@ -202,10 +212,9 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
     const {
       target: { value },
     } = event;
-    const { region, branchId } = value;
-    setTo(region);
-    setSeletrans(region);
-    filterBranch(rowsdata, region);
+    setTo(value);
+    setSeletrans(value);
+    filterBranch(rowsdata, value);
   };
 
   function handlecheck(val, data) {
@@ -249,6 +258,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
         label='BUNDLE NAME'
         margin='normal'
         inputRef={bundlenamef}
+        // disabled={1} for disabling fields
         variant='outlined'
         autoComplete='off'
         fullWidth
@@ -278,7 +288,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           {branchdt.map((el) => (
             <MenuItem
               key={el.branchId}
-              value={{ region: el.region, branchId: el.branchId }}
+              value={el.region}
               style={getStyles(branchdt, seletrans, theme)}>
               {el.branchname}
             </MenuItem>

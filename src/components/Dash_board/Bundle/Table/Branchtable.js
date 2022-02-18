@@ -27,6 +27,7 @@ import {
   deleteOrder,
   getDispatchedOrders,
   getBundle,
+  deleteBundle,
 } from '../../../../client/client';
 import {
   ADD_USER,
@@ -35,6 +36,7 @@ import {
   SAVE_REPORT_DATA,
   SAVE_BRANCH_DATA,
   CLEAR_BRANCH_DATA,
+  EDIT_BUNDLE_DATA,
 } from '../../../../actions';
 import './tableteam.css';
 import { ROW_SELECT_SINGLE } from 'react-bootstrap-table-next';
@@ -69,6 +71,25 @@ function BasicTable({ adduser, dispatch }) {
             }}
           />
         </Link>
+        <Link>
+          {' '}
+          <ImPencil
+            className='IconStyle'
+            onClick={() => {
+              console.log('', row);
+              dispatch({ type: EDIT_BUNDLE_DATA, payload: row });
+              history.push('/dashboard/bundles/edit-bundle');
+            }}
+          />
+        </Link>
+
+        <FaTrash
+          id='trash'
+          className='IconStyle'
+          onClick={() => {
+            handledelete(row);
+          }}
+        />
       </div>
     ),
     []
@@ -86,14 +107,14 @@ function BasicTable({ adduser, dispatch }) {
   const classes = useStyles();
   const handleAdduser = () => {
     dispatch({ type: CLEAR_BRANCH_DATA });
-    window.location.replace('/dashboard/bundles/create-bundle');
+    history.push('/dashboard/bundles/create-bundle');
   };
 
   async function handledelete(row) {
-    const { orderid } = row;
+    const { bundleid } = row;
     try {
       setLoadingdel(true);
-      let response = await deleteOrder(orderid);
+      let response = await deleteBundle(bundleid);
 
       if (response) {
         setLoadingdel(false);
@@ -101,7 +122,7 @@ function BasicTable({ adduser, dispatch }) {
           appearance: 'success',
           autoDismiss: true,
         });
-        window.location.replace('/dashboard/orders');
+        window.location.replace('/dashboard/bundles');
         return;
       }
       setLoadingdel(false);

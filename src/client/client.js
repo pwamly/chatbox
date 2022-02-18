@@ -318,6 +318,18 @@ export const getDispatchedOrders = async () => {
 };
 
 
+export const getBundledOrders = async (param) => {
+  const { bundleid } = param;
+  try {
+    const orders = await instance.get(`/api/bundled-orders/${bundleid}`);
+    if (orders) {
+      return orders;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
 export const getDelivery = async () => {
   try {
     const branches = await instance.get('/api/deliveries');
@@ -361,6 +373,40 @@ export const scheduleDispatch = async (data) => {
   try {
     const response = await instance.post(
       `/api/orders/scheduleDispatch/${orderid}`,
+      {
+        ...data,
+      }
+    );
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const scheduleBundleDispatch = async (data) => {
+  const { bundleid } = data;
+  try {
+    const response = await instance.post(
+      `/api/bundle/scheduleDispatch/<${bundleid}`,
+      {
+        ...data,
+      }
+    );
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const deliverbundle = async (data) => {
+  const { bundleid } = data;
+  try {
+    const response = await instance.post(
+      `/api/bundle/deliver-bundle/${bundleid}`,
       {
         ...data,
       }
@@ -459,11 +505,6 @@ export const unloadPickup = async (data) => {
     return { isSuccessful: false };
   }
 };
-
-
-
-
-
 
 export const getCustomers = async () => {
   try {
@@ -758,7 +799,6 @@ export const getconsignors = async ({ customerid }) => {
   }
 };
 
-
 export const registerTransporter = async (data) => {
   try {
     const response = await instance.post('/api/register-transporter', {
@@ -772,7 +812,6 @@ export const registerTransporter = async (data) => {
     return { isSuccessful: false };
   }
 };
-
 
 export const registerVehicle = async (data) => {
   try {
@@ -788,11 +827,7 @@ export const registerVehicle = async (data) => {
   }
 };
 
-
-
 // ............. auth functions..........
-
-
 
 export const createBundle = async (data) => {
   try {
@@ -819,6 +854,31 @@ export const getBundle = async () => {
   }
 };
 
+export const updateBundle = async (data) => {
+  try {
+    const response = await instance.put(`/api/edit-bundle/${data.bundleid}`, {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const deleteBundle = async (id) => {
+  try {
+    const response = await instance.delete(`/api/delete-bundle/${id}`);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
 
 
 /**

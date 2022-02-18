@@ -21,3 +21,4 @@ export const CLEAR_BRANCH_DATA = 'CLEAR_BRANCH_DATA';
 export const SHOW_HISTORY_TABLE = "SHOW_HISTORY_TABLE";
 export const SHOW_PDF = "SHOW_PDF";
 export const DASH_BPARD = 'DASH_BPARD';
+export const EDIT_BUNDLE_DATA = 'EDIT_BUNDLE_DATA';

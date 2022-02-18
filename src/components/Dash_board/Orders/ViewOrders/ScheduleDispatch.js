@@ -94,7 +94,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const { orderid, pickupnote } = reportdata;
+  const { orderid, pickupnote, bundleid } = reportdata;
 
   function selcust(data, selector) {
     console.log('', data, selector);
@@ -119,6 +119,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           dispatchvehicleId: selevehicle,
           transporterid: seletrans,
           scheduledDispatchtime: pickdate._i,
+          bundleid: bundleid,
         });
 
         if (response) {

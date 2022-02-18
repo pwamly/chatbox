@@ -19,6 +19,7 @@ import {
   SAVE_PROFILE_DATA,
   CLEAR_REPORT_DATA,
   SHOW_HISTORY_TABLE,
+  EDIT_BUNDLE_DATA,
   SHOW_PDF,
   DASH_BPARD,
   SAVE_BRANCH_DATA,
@@ -125,6 +126,16 @@ function reducer(state, action) {
   if (action.type === SAVE_REPORT_DATA) {
     if (action.payload) {
       return { ...state, reportdata: { ...action.payload } };
+    }
+  }
+
+  if (action.type === EDIT_BUNDLE_DATA) {
+    if (action.payload) {
+      return {
+        ...state,
+        saveedit: 'edit',
+        reportdata: { ...action.payload, saveedit: 'edit' },
+      };
     }
   }
 

@@ -5,6 +5,9 @@ import { ProtectRoute } from '../../../components/ProtectRoute';
 import BranchDash from './Table/Branchtable';
 import View from './ViewDispatch/View';
 import AddorderToBundle from './ViewDispatch/AddOrdertoBundle';
+import ScheduleDispatch from './ViewDispatch/ScheduleDispatch';
+import DeliverDispatch from './ViewDispatch/DeliverDispatch';
+
 import {
   Redirect,
   BrowserRouter as Router,
@@ -48,7 +51,22 @@ function Index({ adduser }) {
             path='/dashboard/bundles/create-bundle'
             exact
             component={AddorderToBundle}
-          />{' '}
+          />
+          <ProtectRoute
+            path='/dashboard/bundles/schedule-dispatch'
+            exact
+            component={ScheduleDispatch}
+          />
+          <ProtectRoute
+            path='/dashboard/bundles/edit-bundle'
+            exact
+            component={AddorderToBundle}
+          />
+          <ProtectRoute
+            path='/dashboard/bundles/deliver-dispatch'
+            exact
+            component={DeliverDispatch}
+          />
         </Switch>{' '}
       </Router>{' '}
       {/* {!adduser ? <BranchDash /> : <Adduser />}{' '} */}

@@ -6,17 +6,35 @@ import ItemModal from './ItemModal';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useGet, useGetList } from '../../../../hooks/index';
-import { getItemByorder } from '../../../../client/client';
+import { useToasts } from 'react-toast-notifications';
+
+import {
+  getItemByorder,
+  getOrders,
+  deliverbundle,
+  getBundledOrders,
+} from '../../../../client/client';
 import { Divider } from '@mui/material';
 
-function OrderViewF({ reportdata }) {
-  const { orderid } = reportdata;
+import {
+  ADD_USER,
+  EDIT_USER,
+  CLEAR_PROFILE_DATA,
+  SAVE_REPORT_DATA,
+  SAVE_BRANCH_DATA,
+  CLEAR_BRANCH_DATA,
+  EDIT_BUNDLE_DATA,
+} from '../../../../actions';
 
-  const {
-    results: rows,
-    loading,
-    refresh,
-  } = useGetList(getItemByorder, { orderid });
+function OrderViewF({ reportdata, dispatch }) {
+  const { addToast } = useToasts();
+
+  const { bundleid } = reportdata;
+  const [loading, setLoading] = useState(false);
+
+  const { results: rows, refresh } = useGetList(getBundledOrders, {
+    bundleid: bundleid,
+  });
 
   function delay(delayInms) {
     return new Promise((resolve) => {
@@ -24,6 +42,28 @@ function OrderViewF({ reportdata }) {
         resolve(2);
       }, delayInms);
     });
+  }
+
+  async function handledeliver() {
+    setLoading(true);
+    // formref.current.reset();
+    let response = await deliverbundle({
+      bundleid: bundleid,
+    });
+
+    if (response) {
+      console.log(response);
+      setLoading(false);
+      addToast(' Item Added successfully', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+      // window.location.replace(`/dashboard/employee`);
+      return;
+    }
+    setLoading(false);
+    addToast('Failed!', { appearance: 'error' });
+    return;
   }
 
   const statusColor = (status) => {
@@ -156,20 +196,15 @@ function OrderViewF({ reportdata }) {
               paddingBottom: '20px',
               gap: '30px',
             }}>
-            {reportdata.pickupUnloaded && (
-              <button
-                style={{ width: '120px' }}
-                onClick={() => {
-                  history.push('dashboard/bundles/view/add-order');
-                }}>
-                Add order
-              </button>
-            )}
             {!reportdata.dispatchScheduled && (
               <button
                 style={{ width: '120px' }}
                 onClick={() => {
-                  history.push('/dashboard/orders/view/shedule-dispatch');
+                  history.push('/dashboard/bundles/schedule-dispatch');
+                  dispatch({
+                    type: SAVE_REPORT_DATA,
+                    payload: { bundleid: bundleid },
+                  });
                 }}>
                 Schedule Dispatch
               </button>
@@ -178,7 +213,7 @@ function OrderViewF({ reportdata }) {
               <button
                 style={{ width: '100px' }}
                 onClick={() => {
-                  history.push('/dashboard/orders/view/deliver-dispatch');
+                  handledeliver();
                 }}>
                 Deliver Dispatch
               </button>
@@ -227,15 +262,15 @@ function OrderViewF({ reportdata }) {
               {rows.length !== 0 ? (
                 rows.map((row, index) => (
                   <div className='tr' id={index}>
-                    <div className='td'>{row.itemtype}</div>
-                    <div className='tdd'>{row.note}</div>
-                    <div className='td'>{row.units}</div>
-                    <div className='td'>{row.weight}</div>
-                    <div className='td'>{row.description}</div>
-                    <div className='td'>{row.description}</div>
-                    <div className='td'>{row.vehicledetails}</div>
-                    <div className='td' style={statusColor(row.status)}>
-                      {row.status}
+                    <div className='td'>{row.customername}</div>
+                    <div className='tdd'>{row.pregion}</div>
+                    <div className='td'>{row.consignername}</div>
+                    <div className='td'>{row.dregion}</div>
+                    <div className='td'>{row.consigneename}</div>
+                    <div className='td'>{row.scheduledDispatchtime}</div>
+                    <div className='td'>{row.expdlrtime}</div>
+                    <div className='td' style={statusColor(row.orderStatus)}>
+                      {row.orderStatus}
                     </div>
                   </div>
                 ))

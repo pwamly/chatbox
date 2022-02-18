@@ -15,13 +15,12 @@ import {
   addUser,
   additem,
   schedulePickup,
-  scheduleDispatch,
+  scheduleBundleDispatch,
   editUser,
   getVehicles,
   getUsers,
   getDrivers,
   getTransporters,
-  deliveryScheduled,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
 import './order.css';
@@ -95,7 +94,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const { orderid, pickupnote } = reportdata;
+  const { orderid, pickupnote, bundleid } = reportdata;
 
   function selcust(data, selector) {
     console.log('', data, selector);
@@ -113,12 +112,14 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await deliveryScheduled({
+        let response = await scheduleBundleDispatch({
           orderid,
-          deliveryschedulednote: pickupnotef.current.value,
-          deliveryDriverId: seledrive,
-          vehicleIdfordelivered: selevehicle,
-          deliveryscheduledtime: pickdate._i,
+          dispatchnote: pickupnotef.current.value,
+          dispatchDriverId: seledrive,
+          dispatchvehicleId: selevehicle,
+          transporterid: seletrans,
+          scheduledDispatchtime: pickdate._i,
+          bundleid: bundleid,
         });
 
         if (response) {
@@ -201,7 +202,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>SCHEDULE DISPATCH DELIVERY</FormLabel>
+      <FormLabel>SCHEDULE DISPATCH</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -211,7 +212,36 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           height: '30px',
         }}
       />
-
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-label'>
+          SELECT TRANSPORTER
+        </InputLabel>
+        <Select
+          labelId='demo-multiple-name-labelreg'
+          id='demo-multiple-namereg'
+          value={seletrans}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangestrans}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {transporterdata.map((el) => (
+            <MenuItem
+              key={el.transporterid}
+              value={el.transporterid}
+              style={getStyles(transporterdata, seletrans, theme)}>
+              {el.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
       <div
         style={{
           marginTop: '20px',

@@ -38,26 +38,22 @@ export const useGetList = (onGet, params) => {
         setLoading(true);
         onGet({ page: currentPage, sort, q: searchQuery, ...filters, ...params })
             .then((response) => {
-                console.log(
-                  'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',
-                  response
-                );
-                setResults(response.data);
-                setPages(response.pagination.totalPages);
-                setTotal(response.total);
-                if (currentPage > 1) {
-                  setHavePreviousPage(true);
-                } else {
-                  setHavePreviousPage(false);
-                }
+              setResults(response.data);
+              setPages(response.pagination.totalPages);
+              setTotal(response.total);
+              if (currentPage > 1) {
+                setHavePreviousPage(true);
+              } else {
+                setHavePreviousPage(false);
+              }
 
-                if (currentPage < response.pagination.totalPages) {
-                  setHaveNextPage(true);
-                } else {
-                  setHaveNextPage(false);
-                }
+              if (currentPage < response.pagination.totalPages) {
+                setHaveNextPage(true);
+              } else {
+                setHaveNextPage(false);
+              }
 
-                setLoading(false);
+              setLoading(false);
             })
             .catch((error) => {
                 setLoading(false);

@@ -20,7 +20,7 @@ import {
   editUser,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
-import '../order.css';
+import './order.css';
 import { useGetList } from '../../../../hooks/index';
 
 // ...................... for select ..............................

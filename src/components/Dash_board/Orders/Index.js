@@ -12,7 +12,6 @@ import SchedulePickup from './ViewOrders/SchedulePickup';
 import UnloadPickup from './ViewOrders/UnloadPickup';
 import ScheduleDispatch from './ViewOrders/ScheduleDispatch';
 import DeliverDispatch from './ViewOrders/DeliverDispatch';
-import CreateBundle from './ViewOrders/AddOrdertoBundle';
 
 import {
   Redirect,
@@ -21,7 +20,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
-function Index({ adduser }) {
+function Index({ adduser, bundleid }) {
   return (
     <div
       style={{
@@ -61,10 +60,6 @@ function Index({ adduser }) {
           <ProtectRoute
             path='/dashboard/orders/view/shedule-dispatch'
             component={ScheduleDispatch}
-          />
-          <ProtectRoute
-            path='/dashboard/orders/view/create-bundle'
-            component={CreateBundle}
           />
           <ProtectRoute
             path='/dashboard/orders/view/deliver-dispatch'
