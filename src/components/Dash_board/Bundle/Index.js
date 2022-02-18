@@ -4,7 +4,7 @@ import { ADD_USER } from '../../../actions';
 import { ProtectRoute } from '../../../components/ProtectRoute';
 import BranchDash from './Table/Branchtable';
 import View from './ViewDispatch/View';
-import createBundle from './ViewDispatch/AddOrdertoBundle';
+import CreateBundle from './ViewDispatch/AddOrdertoBundle';
 import ScheduleDispatch from './ViewDispatch/ScheduleDispatch';
 import DeliverDispatch from './ViewDispatch/DeliverDispatch';
 
@@ -50,7 +50,7 @@ function Index({ adduser }) {
           <ProtectRoute
             path='/dashboard/bundles/create-bundle'
             exact
-            component={createBundle}
+            component={CreateBundle}
           />
           <ProtectRoute
             path='/dashboard/bundles/schedule-dispatch'
@@ -60,7 +60,7 @@ function Index({ adduser }) {
           <ProtectRoute
             path='/dashboard/bundles/edit-bundle'
             exact
-            component={createBundle}
+            component={CreateBundle}
           />
           <ProtectRoute
             path='/dashboard/bundles/deliver-dispatch'
