@@ -26,6 +26,7 @@ import {
   getUsers,
   deleteOrder,
   getDispatchedOrders,
+  getBundle,
 } from '../../../../client/client';
 import {
   ADD_USER,
@@ -45,7 +46,7 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getDispatchedOrders);
+  const { results: rows, loading, refresh } = useGetList(getBundle);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -74,18 +75,18 @@ function BasicTable({ adduser, dispatch }) {
   );
   let history = useHistory();
   const columns = [
-    { label: 'Bundle Serial Number', show: true, name: 'customername' },
-    { label: 'From', show: true, name: 'consignername' },
-    { label: 'Destination ', show: true, name: 'dregion' },
-    { label: 'Status', show: true, name: 'orderStatus' },
-    { label: 'Created', show: true, name: 'orderStatus' },
+    { label: 'Bundle Serial Number', show: true, name: 'bundlename' },
+    { label: 'From', show: true, name: 'bundlefrom' },
+    { label: 'Destination ', show: true, name: 'bundleto' },
+    { label: 'Status', show: true, name: 'status' },
+    { label: 'Created', show: true, name: 'created' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 
   const classes = useStyles();
   const handleAdduser = () => {
     dispatch({ type: CLEAR_BRANCH_DATA });
-    history.push('/dashboard/orders/create-user');
+    window.location.replace('/dashboard/bundles/create-bundle');
   };
 
   async function handledelete(row) {
@@ -124,7 +125,6 @@ function BasicTable({ adduser, dispatch }) {
           style={{
             border: 'none',
             padding: 'auto',
-            width: '80%',
           }}>
           <TableHead style={{ background: 'rgb(241, 239, 239)' }}>
             <TableRow>
@@ -170,6 +170,7 @@ function BasicTable({ adduser, dispatch }) {
                   flexDirection: 'row',
                   textDecoration: 'none !important',
                 }}>
+                <AddIcon className='plus' onClick={handleAdduser} />
                 <Pagination.First onClick={() => ''} disabled={true} />
                 <Pagination.Prev
                   onClick={() => 'goToPage(currentPage - 1)'}

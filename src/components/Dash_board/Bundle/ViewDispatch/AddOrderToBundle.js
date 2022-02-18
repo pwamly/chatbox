@@ -11,14 +11,20 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
+import Checkbox from '@mui/material/Checkbox';
 import {
   addUser,
   additem,
   schedulePickup,
+  scheduleDispatch,
   editUser,
   getVehicles,
   getUsers,
   getDrivers,
+  getTransporters,
+  getBranches,
+  getOrders,
+  createBundle,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
 import './order.css';
@@ -73,24 +79,35 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
 
   // ........................... for select ..................
 
+  const [orderlist, setOrderList] = useState([]);
+
+  let listofOrders = [];
+
   const theme = useTheme();
   const [pickdate, setPickdate] = useState(new Date().toGMTString());
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
-  const { results: driverdata } = useGetList(getDrivers, { role: 'Driver' });
-  const { results: vehicledata } = useGetList(getVehicles);
-  const [seledrive, setSeledriver] = useState('');
-  const [selevehicle, setSelevehicle] = useState('');
+  // const { results: driverdata } = useGetList(getDrivers, { role: 'Driver' });
 
+  const { results: rowsdata } = useGetList(getOrders);
+
+  const { results: branchdt } = useGetList(getBranches);
+  const [seledrive, setSeledriver] = useState('');
+  const [seletrans, setSeletrans] = useState('');
+  const [selevehicle, setSelevehicle] = useState('');
+  const { results: vehicledata } = useGetList(getBranches);
+  const [to, setTo] = useState('');
+  const [rows, setRows] = useState(rowsdata);
   // ........... to be passed to form values ..........
   const formref = useRef();
   const pickupnotef = useRef();
-  const pickdat = useRef('');
+  const bundlenamef = useRef('');
 
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const { orderid, pickupnote } = reportdata;
+  const { orderid, pickupnote, bundlename, dregion, pregion, orderStatus } =
+    reportdata;
 
   function selcust(data, selector) {
     console.log('', data, selector);
@@ -103,17 +120,17 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
     return newdata[0];
   }
 
+  const statusColor = {};
+
   async function handlesave() {
     try {
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await schedulePickup({
-          orderid,
-          pickupnote: pickupnotef.current.value,
-          driverId: seledrive,
-          vehicleId: selevehicle,
-          scheduledPickuptime: pickdate._i, // note this value is from usestate not userf form
+        let response = await createBundle({
+          ordertobebundled: orderlist,
+          bundlename: bundlenamef.current.value,
+          bundleto: to,
         });
 
         if (response) {
@@ -123,7 +140,6 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
             appearance: 'success',
             autoDismiss: true,
           });
-          // window.location.replace(`/dashboard/employee`);
           return;
         }
         setLoading(false);
@@ -174,8 +190,37 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
     setSeledriver(value);
   };
 
-  //................................... for date time ............
+  function filterBranch(data, region) {
+    let neworders = data.filter(function (el) {
+      return el.dregion == region;
+    });
+    setRows(neworders);
+    return neworders;
+  }
 
+  const handleChangestrans = (event) => {
+    const {
+      target: { value },
+    } = event;
+    const { region, branchId } = value;
+    setTo(region);
+    setSeletrans(region);
+    filterBranch(rowsdata, region);
+  };
+
+  function handlecheck(val, data) {
+    if (val.ischecked) {
+      listofOrders = [...orderlist, data];
+      setOrderList(listofOrders);
+    } else {
+      listofOrders = orderlist.filter(function (returnableObjects) {
+        return returnableObjects.orderid !== data.orderid;
+      });
+      setOrderList(listofOrders);
+    }
+  }
+  //................................... for date time ............
+  console.log('all data...................', orderlist);
   return (
     <Card
       variant='outlined '
@@ -190,7 +235,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>ADD ORDER TO BUNDLE</FormLabel>
+      <FormLabel> CREATE BUNDLE</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -200,6 +245,16 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           height: '30px',
         }}
       />
+      <TextField
+        label='BUNDLE NAME'
+        margin='normal'
+        inputRef={bundlenamef}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={bundlename}
+        ref={formref}
+      />{' '}
       <div
         style={{
           marginTop: '20px',
@@ -207,23 +262,25 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>SELECT ORDER</InputLabel>
+        <InputLabel id='demo-multiple-name-label'>
+          DESTINATION BRANCH
+        </InputLabel>
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
-          value={seledrive}
+          value={seletrans}
           label='helloo'
           style={{ width: '100%' }}
           fullWidth
-          onChange={handleChangesdriver}
+          onChange={handleChangestrans}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {driverdata.map((el) => (
+          {branchdt.map((el) => (
             <MenuItem
-              key={el.userid}
-              value={el.userid}
-              style={getStyles(driverdata, seledrive, theme)}>
-              {el.fname}
+              key={el.branchId}
+              value={{ region: el.region, branchId: el.branchId }}
+              style={getStyles(branchdt, seletrans, theme)}>
+              {el.branchname}
             </MenuItem>
           ))}
         </Select>
@@ -235,6 +292,70 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
+      </div>
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+      </div>
+      <div className='Orderdetails'>
+        <div className='ordermaintitle'>
+          <h3 style={{ width: '30%' }}>Orders</h3>
+        </div>
+
+        <div className='ordertable'>
+          <div className='tr'>
+            <div className='th'>
+              <h3>SN</h3>
+            </div>
+            <div className='thd'>
+              <h3>Description</h3>
+            </div>
+
+            <div className='th'>
+              <h3>Total Units in KG</h3>
+            </div>
+            <div className='th'>
+              <h3>To</h3>
+            </div>
+
+            <div className='th'>
+              <h3>Select</h3>
+            </div>
+          </div>
+
+          {rows.length !== 0 ? (
+            rows.map((row, index) => (
+              <div className='tr' id={index}>
+                <div className='td'>{index + 1}</div>
+                <div className='tdd'>{row.customernotes}</div>
+                <div className='td'></div>
+                <div className='td'>{row.dregion}</div>
+                <div className='td'>
+                  <Checkbox
+                    id={index}
+                    onChange={(e) => {
+                      console.log(row);
+                      handlecheck({ ischecked: e.target.checked }, row);
+                    }}
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '30px',
+              }}>
+              No Orders found for that destination
+            </div>
+          )}
+        </div>
       </div>
       <div
         style={{
@@ -257,6 +378,16 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
             `${saveeditbtn}`
           )}{' '}
         </Button>{' '}
+        <Button
+          variant='contained'
+          width='sm'
+          style={{ marginTop: '20px' }}
+          onClick={() => {
+            dispatch({ type: EXIT_ADD_FORM });
+            history.goBack();
+          }}>
+          Close
+        </Button>
       </div>
     </Card>
   );

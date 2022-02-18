@@ -4,7 +4,7 @@ import { ADD_USER } from '../../../actions';
 import { ProtectRoute } from '../../../components/ProtectRoute';
 import BranchDash from './Table/Branchtable';
 import View from './ViewDispatch/View';
-import AddorderToBundle from './ViewDispatch/AddOrderToBundle';
+import AddorderToBundle from './ViewDispatch/AddOrdertoBundle';
 import {
   Redirect,
   BrowserRouter as Router,
@@ -45,7 +45,7 @@ function Index({ adduser }) {
             component={BranchDash}
           />{' '}
           <ProtectRoute
-            path='/dashboard/bundles/view/add-order'
+            path='/dashboard/bundles/create-bundle'
             exact
             component={AddorderToBundle}
           />{' '}

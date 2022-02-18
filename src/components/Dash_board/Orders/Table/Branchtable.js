@@ -97,7 +97,7 @@ function BasicTable({ adduser, dispatch }) {
     { label: 'Consignee Name', show: true, name: 'consigneename' },
     { label: 'Pick up Time', show: true, name: 'pickuptime' },
     { label: 'Expected Delivery Time', show: true, name: 'expdlrtime' },
-    { label: 'Customer Notes', show: true, name: 'customernotes' },
+    { label: 'Status', show: true, name: 'orderStatus' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
 

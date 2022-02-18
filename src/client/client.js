@@ -792,6 +792,35 @@ export const registerVehicle = async (data) => {
 
 // ............. auth functions..........
 
+
+
+export const createBundle = async (data) => {
+  try {
+    const response = await instance.post('/api/create-bandle', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const getBundle = async () => {
+  try {
+    const bundles = await instance.get(`/api/bundles`);
+    if (bundles) {
+      return bundles;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+
+
 /**
  * @function prepareParams
  * @name prepareParams

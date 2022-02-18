@@ -226,20 +226,6 @@ function OrderViewF({ reportdata }) {
                 Unload Item
               </button>
             )}{' '}
-            {reportdata.pickupUnloaded && (
-              <button
-                className='btn btn-primary'
-                style={{
-                  width: '13%',
-                  fontWeight: 'bold',
-                  background: 'yellow',
-                }}
-                onClick={() => {
-                  history.push('/dashboard/orders/view/create-bundle');
-                }}>
-                Create Bundle
-              </button>
-            )}
             {!reportdata.dispatchScheduled && (
               <button
                 className='btn btn-primary'

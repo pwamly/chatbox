@@ -24,6 +24,7 @@ import {
   getTransporters,
   getBranches,
   getOrders,
+  createBundle,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
 import '../order.css';
@@ -99,12 +100,13 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   // ........... to be passed to form values ..........
   const formref = useRef();
   const pickupnotef = useRef();
-  const pickdat = useRef('');
+  const bundlenamef = useRef('');
 
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const { orderid, pickupnote } = reportdata;
+  const { orderid, pickupnote, bundlename, dregion, pregion, orderStatus } =
+    reportdata;
 
   function selcust(data, selector) {
     console.log('', data, selector);
@@ -119,31 +121,17 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
 
   const statusColor = {};
 
-  // useEffect(() => {
-  //   async function fetchorders() {
-  //     const neworders = rowsdata.map((el) => {
-  //       if (el.dregion == seletrans.region) {
-  //         console.log(' checking error ', el.dregion, seletrans.region);
-  //         return el;
-  //       }
-  //     });
-  //     setRows(neworders);
-  //   }
-  //   fetchorders();
-  // }, [seletrans]);
-
   async function handlesave() {
     try {
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await scheduleDispatch({
-          orderid,
-          dispatchnote: pickupnotef.current.value,
-          dispatchDriverId: seledrive,
-          dispatchvehicleId: selevehicle,
-          transporterid: seletrans,
-          scheduledDispatchtime: pickdate._i,
+        let response = await createBundle({
+          ordertobebundled: orderlist,
+          bundlename: bundlenamef.current.value,
+          to: dregion,
+          from: pregion,
+          status: orderStatus,
         });
 
         if (response) {
@@ -257,6 +245,16 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           height: '30px',
         }}
       />
+      <TextField
+        label='BUNDLE NAME'
+        margin='normal'
+        inputRef={bundlenamef}
+        variant='outlined'
+        autoComplete='off'
+        fullWidth
+        defaultValue={bundlename}
+        ref={formref}
+      />{' '}
       <div
         style={{
           marginTop: '20px',
