@@ -4,7 +4,7 @@ import { ADD_USER } from '../../../actions';
 import { ProtectRoute } from '../../../components/ProtectRoute';
 import BranchDash from './Table/Branchtable';
 import View from './ViewDispatch/View';
-import CreateBundle from './ViewDispatch/AddOrdertoBundle';
+// import CreateBundle from './ViewDispatch/AddOrdertoBundle';
 import ScheduleDispatch from './ViewDispatch/ScheduleDispatch';
 import DeliverDispatch from './ViewDispatch/DeliverDispatch';
 
@@ -47,21 +47,21 @@ function Index({ adduser }) {
             exact
             component={BranchDash}
           />{' '}
-          <ProtectRoute
+          {/* <ProtectRoute
             path='/dashboard/bundles/create-bundle'
             exact
             component={CreateBundle}
-          />
+          /> */}
           <ProtectRoute
             path='/dashboard/bundles/schedule-dispatch'
             exact
             component={ScheduleDispatch}
           />
-          <ProtectRoute
+          {/* <ProtectRoute
             path='/dashboard/bundles/edit-bundle'
             exact
             component={CreateBundle}
-          />
+          /> */}
           <ProtectRoute
             path='/dashboard/bundles/deliver-dispatch'
             exact
