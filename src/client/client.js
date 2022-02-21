@@ -852,6 +852,60 @@ export const createBundle = async (data) => {
   }
 };
 
+
+export const registerRegion = async (data) => {
+  try {
+    const response = await instance.post('/api/add-regions', {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const getRegions = async () => {
+  try {
+    const bundles = await instance.get(`/api/regions`);
+    if (bundles) {
+      return bundles;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const updateRegion = async (data) => {
+  try {
+    const response = await instance.put(`/api/update-region/${data.regionid}`, {
+      ...data,
+    });
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+export const deleteRegion = async (id) => {
+  try {
+    const response = await instance.delete(`/api/delete-region/${id}`);
+
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    return { isSuccessful: false };
+  }
+};
+
+
+
 export const getBundle = async () => {
   try {
     const bundles = await instance.get(`/api/bundles`);

@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { ADD_USER } from '../../../actions';
-import { ProtectRoute } from '../../../components/ProtectRoute';
+import { ProtectRoute } from '../../ProtectRoute';
 import BranchDash from './Table/Branchtable';
 import View from './ViewDispatch/View';
-import CreateBundle from './ViewDispatch/CreateBundle';
+import AddRegions from './ViewDispatch/AddRegion';
 import ScheduleDispatch from './ViewDispatch/ScheduleDispatch';
 import DeliverDispatch from './ViewDispatch/DeliverDispatch';
 
@@ -14,16 +14,6 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
-
-// function Index({ adduser }) {
-//   return (
-//     <div style={{ height: '600px' }}>{!adduser ? <Table /> : <Adduser />} </div>
-//   );
-// }
-// const MapStateToprops = (store) => {
-//   return { ...store };
-// };
-// export default connect(MapStateToprops)(Index);
 
 function Index({ adduser }) {
   return (
@@ -37,20 +27,14 @@ function Index({ adduser }) {
       <Router>
         <Switch>
           <ProtectRoute
-            path='/dashboard/bundles'
+            path='/dashboard/settings'
             exact
             component={BranchDash}
           />{' '}
-          <ProtectRoute path='/dashboard/bundles/view' exact component={View} />{' '}
           <ProtectRoute
-            path='/dashboard/bundles'
+            path='/dashboard/settings/add-regions'
             exact
-            component={BranchDash}
-          />
-          <ProtectRoute
-            path='/dashboard/bundles/create-bundle'
-            exact
-            component={CreateBundle}
+            component={AddRegions}
           />
           <ProtectRoute
             path='/dashboard/bundles/schedule-dispatch'
@@ -60,7 +44,7 @@ function Index({ adduser }) {
           <ProtectRoute
             path='/dashboard/bundles/edit-bundle'
             exact
-            component={CreateBundle}
+            component={AddRegions}
           />
           <ProtectRoute
             path='/dashboard/bundles/deliver-dispatch'

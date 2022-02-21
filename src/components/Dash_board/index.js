@@ -11,6 +11,7 @@ import Orders from './Orders/Index';
 import Dispatch from './Dispatch/Index';
 import Delivery from './Delivery/Index';
 import Bundle from './Bundle/Index';
+import Settings from './Setting/Index';
 import Customers from './Customers/Index';
 import Transporters from './Transporters/Index';
 import Vehicles from './Vehicle/Index';
@@ -78,7 +79,7 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
               flexDirection: 'column',
             }}>
             <Router>
-              {<Navbar props={initial} />}
+              <Navbar props={initial} />
               <Container className='dashboard'>
                 <Switch>
                   <ProtectRoute path='/dashboard' exact component={Dashview} />
@@ -107,6 +108,10 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
                     component={Vehicles}
                   />{' '}
                   <ProtectRoute path='/dashboard/bundles' component={Bundle} />{' '}
+                  <ProtectRoute
+                    path='/dashboard/settings'
+                    component={Settings}
+                  />{' '}
                 </Switch>{' '}
               </Container>{' '}
             </Router>{' '}

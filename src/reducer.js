@@ -6,6 +6,7 @@ import {
   REMOVE_USER,
   EXIT_ADD_FORM,
   EXIT_EDIT_USER,
+  EXIT_EDIT_REGION,
   ADD_USER_FORM,
   CLEAR_PROFILE_DATA,
   CLEAR_BRANCH_DATA,
@@ -130,6 +131,16 @@ function reducer(state, action) {
   }
 
   if (action.type === EDIT_BUNDLE_DATA) {
+    if (action.payload) {
+      return {
+        ...state,
+        saveedit: 'edit',
+        reportdata: { ...action.payload, saveedit: 'edit' },
+      };
+    }
+  }
+
+  if (action.type === EXIT_EDIT_REGION) {
     if (action.payload) {
       return {
         ...state,

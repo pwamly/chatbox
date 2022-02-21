@@ -42,6 +42,7 @@ function Index({ id, title, image, price, rating, profile }) {
     <div className='dashview'>
       {dataadimindata && (
         <div
+          // style={{ background: 'yellow' }}
           className='product'
           onClick={() => history.push('/dashboard/branch')}>
           <HomeWorkIcon

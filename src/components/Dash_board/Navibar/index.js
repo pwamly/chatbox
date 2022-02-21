@@ -1,16 +1,33 @@
 import './navbar.css';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import React, { useState } from 'react';
+
 // import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import Signiout from '@material-ui/icons/ExitToApp';
 import { Link, useHistory } from 'react-router-dom';
 import { logout } from '../../../client/index';
 import { connect } from 'react-redux';
-
+import SettingsIcon from '@mui/icons-material/Settings';
 // import { useStateValue } from './StateProvider';
+import { SvgIcon } from '@mui/material';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
 
 function Navbar({ profile }) {
+
+  const history = useHistory();
   const [showMediaIcons, setShowMediaIcons] = useState(false);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div className='header'>
@@ -74,6 +91,47 @@ function Navbar({ profile }) {
                 <a href='#'>Reports</a>
               </li>
             </Link>
+            <Link>
+              <li></li>
+            </Link>
+
+            <div>
+              <Button
+                aria-controls='simple-menu'
+                aria-haspopup='true'
+                onClick={handleClick}>
+                {profile.initial}
+              </Button>
+              <Menu
+                id='simple-menu'
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}>
+                <MenuItem id='profile'
+                  onClick={() => {
+                    // handle profile
+                    handleClose();
+                  }}>
+                  Profile
+                </MenuItem>
+                <MenuItem id='settings'
+                  onClick={() => {
+                    // handle profile
+                  window.location.replace('dashboard/settings');
+                    handleClose();
+                  }}>
+                  Settings
+                </MenuItem>
+                <MenuItem id='logout'
+                  onClick={() => {
+                    logout()
+                    handleClose();
+                  }}>
+                  <Signiout /> Logout
+                </MenuItem>
+              </Menu>
+            </div>
           </ul>
         </div>
 
@@ -82,11 +140,7 @@ function Navbar({ profile }) {
             <div className='header__nav'>
               <Link to='/login'>
                 <div className='header__option'>
-                  <span
-                    className='header__optionLineTwo'
-                    onClick={() => logout()}>
-                    {profile.initial} <Signiout />
-                  </span>
+                  <span className='header__optionLineTwo'></span>
                 </div>
               </Link>
             </div>
