@@ -46,8 +46,12 @@ const MenuProps = {
 
 const regions = [
   {
-    id: 1,
+    id: 4,
     name: 'kigoma',
+  },
+  {
+    id: 1,
+    name: 'Dar es salaam',
   },
   {
     id: 2,
@@ -62,18 +66,18 @@ const regions = [
 const districts = [
   {
     id: 1,
-    regionid: 1,
+    regionid: 4,
     regionname: 'kigoma',
     name: 'Uvinza',
   },
   { id: 1, regionid: 2, regionname: 'Mwanza', name: 'Igoma' },
-  { id: 1, regionid: 3, name: 'Arumeru', regionname: 'Arusha' },
+  { id: 1, regionid: 1, name: 'Arumeru', regionname: 'Ilala' },
 ];
 
-function getStyles(name, customer_Data, theme) {
+function getStyles(name, customerId, theme) {
   return {
     fontWeight:
-      customer_Data.indexOf(name) === -1
+      customerId.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -104,9 +108,8 @@ function Regteam({
   // ........................... for select ..................
 
   const theme = useTheme();
-  const [customer_Data, setcustomerData] = useState('');
+  const [customerId, setCustomerId] = useState('');
   const [cData, setCData] = useState('');
-  const [customeriscons, setCustomeriscons] = useState('');
   const [distdata, setDistdata] = useState('');
   const [regdata, setRegtdata] = useState('');
   const [distdatap, setDistdatap] = useState('');
@@ -121,7 +124,9 @@ function Regteam({
     results: rowscon,
     loading: loadinco,
     refresh: refreshn,
-  } = useGetList(getconsignors, { customerid: customeriscons });
+  } = useGetList(getconsignors);
+
+  const [rowcons, setRowcons] = useState([]);
 
   // ........... to be passed to form values ..........
 
@@ -140,7 +145,6 @@ function Regteam({
   const {
     customernotes = '',
     pstreet = '',
-    consignername = '',
     pnotes = '',
     dstreet = '',
     dnotes = '',
@@ -149,24 +153,6 @@ function Regteam({
   } = branchdata;
   const handleChange = (event) => {
     setCng(event.target.value);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose2 = () => {
-    setOpen2(false);
-  };
-
-  const handleOpen2 = () => {
-    setOpen2(true);
-  };
-  const handleChange2 = (event) => {
-    setRole(event.target.value);
   };
 
   async function handlesave() {
@@ -181,7 +167,7 @@ function Regteam({
           custnote: custnote.current.value,
           packagenotes: pkgnotes.current.value,
           destinationstreet: distnstreet.current.value,
-          customerid: customer_Data,
+          customerid: customerId,
           consignerid: cData,
           Packagedistdata: distdata,
           packageRegionData: regdata,
@@ -215,7 +201,7 @@ function Regteam({
           custnote: custnote.current.value,
           pnotes: pkgnotes.current.value,
           dstreet: distnstreet.current.value,
-          customerData: customer_Data,
+          customerData: customerId,
           cData: cData,
           distdata: distdata,
           regdata: regdata,
@@ -245,14 +231,20 @@ function Regteam({
   }
 
   //............
+  function filterBranch(customerid, rowscon) {
+    let neworders = rowscon.filter(function (el) {
+      return el.customerid == customerid;
+    });
+    return neworders;
+  }
 
   const handleChanges = (event) => {
     const {
       target: { value },
     } = event;
-    setcustomerData(value);
-    console.log('.>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', value.customeri);
-    setCustomeriscons(value.customerid);
+    setCustomerId(value);
+    const data = filterBranch(value, rowscon);
+    setRowcons(data);
   };
 
   //......................... for consigers............
@@ -342,7 +334,7 @@ function Regteam({
         <Select
           labelId='demo-multiple-name-label'
           id='demo-multiple-name'
-          value={customer_Data}
+          value={customerId}
           label='helloo'
           style={{ width: '85%' }}
           onChange={handleChanges}
@@ -350,9 +342,9 @@ function Regteam({
           MenuProps={MenuProps}>
           {rows.map((el) => (
             <MenuItem
-              key={el.customerId}
+              key={el.customerid}
               value={el.customerid}
-              style={getStyles(rows, customer_Data, theme)}>
+              style={getStyles(rows, customerId, theme)}>
               {el.fname + '' + el.lname}
             </MenuItem>
           ))}
@@ -366,7 +358,6 @@ function Regteam({
           width: '100%',
           gap: '5%',
         }}>
-        {/* <span style={{ widith: '12%' }}>Consigner Name : </span> */}
         <InputLabel id='demo-multiple-name-label'>Consigner Name</InputLabel>
         <Select
           labelId='demo-multiple-name-label2'
@@ -377,14 +368,15 @@ function Regteam({
           onChange={handleChangesc}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {rowscon.map((el) => (
-            <MenuItem
-              key={el.consginerid}
-              value={el.consginerid}
-              style={getStyles(rowscon, cData, theme)}>
-              {el.fullname}
-            </MenuItem>
-          ))}
+          {rowcons &&
+            rowcons.map((el) => (
+              <MenuItem
+                key={el.consginerid}
+                value={el.consginerid}
+                style={getStyles(rowcons, cData, theme)}>
+                {el.fullname}
+              </MenuItem>
+            ))}
         </Select>
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>

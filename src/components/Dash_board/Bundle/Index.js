@@ -57,11 +57,11 @@ function Index({ adduser }) {
             exact
             component={ScheduleDispatch}
           />
-          {/* <ProtectRoute
+          <ProtectRoute
             path='/dashboard/bundles/edit-bundle'
             exact
             component={CreateBundle}
-          /> */}
+          />
           <ProtectRoute
             path='/dashboard/bundles/deliver-dispatch'
             exact

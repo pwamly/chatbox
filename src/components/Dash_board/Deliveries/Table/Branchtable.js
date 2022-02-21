@@ -104,7 +104,7 @@ function BasicTable({ adduser, dispatch }) {
   const classes = useStyles();
   const handleAdduser = () => {
     dispatch({ type: CLEAR_BRANCH_DATA });
-    history.push('/dashboard/orders/create-user');
+    history.push('/dashboard/orders/create-order');
   };
 
   async function handledelete(row) {

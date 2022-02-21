@@ -20,52 +20,6 @@ function OrderView({ reportdata }) {
     refresh,
   } = useGetList(getconsignors, { customerid });
 
-  const data1 = [
-    {
-      description: `Device name DESKTOP-7EVV1T3 Processor Intel(R) Core(TM)
-    i5-10210U CPU @ 1.60GHz 2.11 GHz Installed RAM 8.00 GB (7.83
-    GB usable) Device ID 93C045AA-D1A9-4554-8C40-16B048EF3BD9
-    Product ID 00330-71401-74740-AAOEM System type 64-bit
-    operating system, x64-based processor Pen and touch No pen or
-    touch input is available for this display`,
-      units: 18,
-      weight: 200,
-      tobepickeAt: 'Wed, 12 Jan 2022 18:00:25 GMT',
-      tobepickedBy: 'Juma Rajabu',
-      Vehicle: 'Toyota pick up,pltno DPT 1232',
-      status: 'Not picked',
-    },
-    {
-      description: `Device name DESKTOP-7EVV1T3 Processor Intel(R) Core(TM)
-    i5-10210U CPU @ 1.60GHz 2.11 GHz Installed RAM 8.00 GB (7.83
-    GB usable) Device ID 93C045AA-D1A9-4554-8C40-16B048EF3BD9
-    Product ID 00330-71401-74740-AAOEM System type 64-bit
-    operating system, x64-based processor Pen and touch No pen or
-    touch input is available for this display`,
-      units: 1,
-      weight: 1200,
-      tobepickeAt: 'Wed, 12 Jan 2022 18:00:25 GMT',
-      tobepickedBy: 'Juma Rajabu',
-      Vehicle: 'Toyota pick up,pltno DPT 1232',
-      status: 'Not picked',
-    },
-    {
-      description: `Device name DESKTOP-7EVV1T3 Processor Intel(R) Core(TM)
-    i5-10210U CPU @ 1.60GHz 2.11 GHz Installed RAM 8.00 GB (7.83
-    GB usable) Device ID 93C045AA-D1A9-4554-8C40-16B048EF3BD9
-    Product ID 00330-71401-74740-AAOEM System type 64-bit
-    operating system, x64-based processor Pen and touch No pen or
-    touch input is available for this display`,
-      units: 180,
-      weight: 2000,
-      tobepickeAt: 'Wed, 12 Jan 2022 18:00:25 GMT',
-      tobepickedBy: 'Juma Rajabu',
-      Vehicle: 'Toyota pick up,pltno DPT 1232',
-      status: 'Not picked',
-    },
-  ];
-
-  console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuu', reportdata);
 
   return (
     <>

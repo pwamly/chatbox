@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Table from './Table/Branchtable';
 import BranchDash from './Table/Branchtable';
-import Adduser from './Orderform';
+import CreateOrder from './Orderform';
 import { connect } from 'react-redux';
 import { ADD_USER } from '../../../actions';
 import { ProtectRoute } from '../../../components/ProtectRoute';
@@ -33,8 +33,8 @@ function Index({ adduser, bundleid }) {
         <Switch>
           <ProtectRoute path='/dashboard/orders' exact component={BranchDash} />{' '}
           <ProtectRoute
-            path='/dashboard/orders/create-user'
-            component={Adduser}
+            path='/dashboard/orders/create-order'
+            component={CreateOrder}
           />{' '}
           <ProtectRoute
             path='/dashboard/orders/view'

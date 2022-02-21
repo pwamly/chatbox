@@ -790,10 +790,19 @@ export const registerConsignor = async (data) => {
 
 export const getconsignors = async ({ customerid }) => {
   try {
-    const consignors = await instance.get(`/api/consignors`);
+    if (customerid) {
+      const consignors = await instance.get(`/api/consignors/${customerid}`);
+      if (consignors) {
+        return consignors;
+      }
+    }
+
+    const consignors = await instance.get('/api/consignors');
     if (consignors) {
       return consignors;
     }
+   
+
   } catch (error) {
     return { isSuccessful: false };
   }
