@@ -5,12 +5,12 @@ import React, { useState } from 'react';
 import Signiout from '@material-ui/icons/ExitToApp';
 import { Link, useHistory } from 'react-router-dom';
 import { logout } from '../../../client/index';
+import { connect } from 'react-redux';
+
 // import { useStateValue } from './StateProvider';
 
-function Navbar() {
+function Navbar({ profile }) {
   const [showMediaIcons, setShowMediaIcons] = useState(false);
-
- 
 
   return (
     <div className='header'>
@@ -85,7 +85,7 @@ function Navbar() {
                   <span
                     className='header__optionLineTwo'
                     onClick={() => logout()}>
-                    SW <Signiout />
+                    {profile.initial} <Signiout />
                   </span>
                 </div>
               </Link>
@@ -109,4 +109,8 @@ function Navbar() {
     </div>
   );
 }
-export default Navbar;
+const MapStateToprops = (store) => {
+  return { ...store };
+};
+
+export default connect(MapStateToprops)(Navbar);

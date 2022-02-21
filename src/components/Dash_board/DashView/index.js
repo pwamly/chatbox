@@ -6,14 +6,16 @@ import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
 import BusinessIcon from '@mui/icons-material/Business';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import { connect } from 'react-redux';
+
 // import { useStateValue } from "./StateProvider";
 
-function Index({ id, title, image, price, rating }) {
+function Index({ id, title, image, price, rating, profile }) {
   let history = useHistory();
 
-  //   const [{ basket }, dispatch] = useStateValue();
+  const { branches, vehicles, customers, transporters, employes } =
+    profile.dashData || {};
 
-  //   console.log("this is basket >>> ", basket);
   const dataadimindata = {
     branches: '6',
     employe: 5,
@@ -49,7 +51,7 @@ function Index({ id, title, image, price, rating }) {
           />
           <p className='product__title'>Branches</p>
           <p className='product__price'>
-            <small>{dataadimindata.branches}</small>
+            <small>{branches}</small>
             <strong>{price}</strong>
           </p>
         </div>
@@ -66,7 +68,7 @@ function Index({ id, title, image, price, rating }) {
 
           <p className='product__title'>Employee</p>
           <p className='product__price'>
-            <small>{dataadimindata.employe}</small>
+            <small>{employes}</small>
             <strong>{price}</strong>
             <br />
           </p>
@@ -83,7 +85,7 @@ function Index({ id, title, image, price, rating }) {
           />
           <p className='product__title'>Customers</p>
           <p className='product__price'>
-            <small>{dataadimindata.customers}</small>
+            <small>{customers}</small>
             <strong>{price}</strong>
             <br />
           </p>
@@ -100,7 +102,7 @@ function Index({ id, title, image, price, rating }) {
           />
           <p className='product__title'>Vehicle</p>
           <p className='product__price'>
-            <small>{dataadimindata.vehicle}</small>
+            <small>{vehicles}</small>
             <strong>{price}</strong>
             <br />
           </p>
@@ -117,7 +119,7 @@ function Index({ id, title, image, price, rating }) {
           />
           <p className='product__title'>Transporters</p>
           <p className='product__price'>
-            <small>{dataadimindata.Transporters}</small>
+            <small>{transporters}</small>
             <strong>{price}</strong>
             <br />
           </p>
@@ -127,4 +129,8 @@ function Index({ id, title, image, price, rating }) {
   );
 }
 
-export default Index;
+const MapStateToprops = (store) => {
+  return { ...store };
+};
+
+export default connect(MapStateToprops)(Index);

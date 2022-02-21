@@ -37,18 +37,11 @@ const { getProfile } = httpActions;
 
 function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
   let initial;
-  const vendorId = getUserId();
-  const { result: user, loading, refresh } = useGet(vendorId, getProfile);
-  const {
-    fname,
-    lname,
-    email,
-    username,
-    phone,
-    userRole,
-    signature,
-    branchId,
-  } = user || {};
+  const userid = getUserId();
+  const { result: user, loading, refresh } = useGet(userid, getProfile);
+
+  const { fname, lname, email, username, phone, userRole, branchId, dashData } =
+    user || {};
 
   if (fname && lname) {
     initial = `${fname} ${lname}`
@@ -57,7 +50,6 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
       .join('')
       .toUpperCase();
   }
-
   useEffect(() => {
     dispatch({
       type: SAVE_INITIAL_DATA,
@@ -70,7 +62,7 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
         userRole,
         branchId,
         initial,
-        signature,
+        dashData,
       },
     });
   }, [user]);
