@@ -47,7 +47,10 @@ function Navbar({ profile }) {
           }>
           {/* <div className="menu-link"> */}
           <ul>
-            <Link to='/dashboard'>
+            <Link
+              onClick={() => {
+                window.location.replace('/dashboard');
+              }}>
               <li>
                 <a href='#'>Dashboard</a>
               </li>
@@ -108,24 +111,27 @@ function Navbar({ profile }) {
                 keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}>
-                <MenuItem id='profile'
+                <MenuItem
+                  id='profile'
                   onClick={() => {
                     // handle profile
                     handleClose();
                   }}>
                   Profile
                 </MenuItem>
-                <MenuItem id='settings'
+                <MenuItem
+                  id='settings'
                   onClick={() => {
                     // handle profile
-                  window.location.replace('dashboard/settings');
+                    window.location.replace('dashboard/settings');
                     handleClose();
                   }}>
                   Settings
                 </MenuItem>
-                <MenuItem id='logout'
+                <MenuItem
+                  id='logout'
                   onClick={() => {
-                    logout()
+                    logout();
                     handleClose();
                   }}>
                   <Signiout /> Logout

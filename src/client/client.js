@@ -172,6 +172,8 @@ export const editOrder = async (payload) => {
   return false;
 };
 
+
+
 export const logout = async () => {
   localStorage.clear();
   window.location.replace(`/`);
@@ -258,9 +260,12 @@ export const getAllhistory = async (data) => {
   }
 };
 
-export const getUsers = async () => {
+export const getUsers = async (param) => {
+  const { page, q, sort } = param;
   try {
-    const users = await instance.get('/api/users');
+    const users = await instance.get(
+      `/api/users?page=${page}&sort=${sort}&q=${q}`
+    );
     if (users) {
       return users;
     }
@@ -271,9 +276,12 @@ export const getUsers = async () => {
 
 // ............................. new services  2022 ...........................
 
-export const getBranches = async () => {
+export const getBranches = async (param) => {
+  const { page, q, sort } = param;
   try {
-    const branches = await instance.get('/admin/branches');
+    const branches = await instance.get(
+      `/admin/branches?page=${page}&sort=${sort}&q=${q}`
+    );
     if (branches) {
       return branches;
     }
@@ -281,7 +289,6 @@ export const getBranches = async () => {
     return { isSuccessful: false };
   }
 };
-
 
 export const deleteBranch = async (id) => {
   try {
@@ -295,9 +302,12 @@ export const deleteBranch = async (id) => {
   }
 };
 
-export const getOrders = async () => {
+export const getOrders = async (param) => {
+  const { page, q, sort } = param;
   try {
-    const branches = await instance.get('/api/orders');
+    const branches = await instance.get(
+      `/api/orders?page=${page}&sort=${sort}&q=${q}`
+    );
     if (branches) {
       return branches;
     }
@@ -306,9 +316,13 @@ export const getOrders = async () => {
   }
 };
 
-export const getDispatchedOrders = async () => {
+export const getDispatchedOrders = async (param) => {
+  const { page, q, sort } = param;
+
   try {
-    const branches = await instance.get('/api/dispatchedOrders');
+    const branches = await instance.get(
+      `/api/dispatchedOrders?page=${page}&sort=${sort}&q=${q}`
+    );
     if (branches) {
       return branches;
     }
@@ -316,7 +330,6 @@ export const getDispatchedOrders = async () => {
     return { isSuccessful: false };
   }
 };
-
 
 export const getBundledOrders = async (param) => {
   const { bundleid } = param;
@@ -330,9 +343,12 @@ export const getBundledOrders = async (param) => {
   }
 };
 
-export const getDelivery = async () => {
+export const getDelivery = async (param) => {
+  const { page, q, sort } = param;
   try {
-    const branches = await instance.get('/api/deliveries');
+    const branches = await instance.get(
+      `/api/deliveries?page=${page}&sort=${sort}&q=${q}`
+    );
     if (branches) {
       return branches;
     }
@@ -340,6 +356,7 @@ export const getDelivery = async () => {
     return { isSuccessful: false };
   }
 };
+
 //.............................. get drivers ..................
 
 export const getDrivers = async (param) => {
@@ -506,9 +523,12 @@ export const unloadPickup = async (data) => {
   }
 };
 
-export const getCustomers = async () => {
+export const getCustomers = async (param) => {
+  const { page, sort, q } = param;
   try {
-    const customers = await instance.get('/api/customers');
+    const customers = await instance.get(
+      `/api/customers?page=${page}&sort=${sort}&q=${q}`
+    );
     if (customers) {
       return customers;
     }
@@ -517,9 +537,13 @@ export const getCustomers = async () => {
   }
 };
 
-export const getTransporters = async () => {
+export const getTransporters = async (param) => {
+  const { page, sort, q } = param;
+
   try {
-    const customers = await instance.get('/api/transporters');
+    const customers = await instance.get(
+      `/api/transporters?page=${page}&sort=${sort}&q=${q}`
+    );
     if (customers) {
       return customers;
     }
@@ -528,9 +552,12 @@ export const getTransporters = async () => {
   }
 };
 
-export const getVehicles = async () => {
+export const getVehicles = async (param) => {
   try {
-    const vehicles = await instance.get('/api/vehicles');
+    const { page, sort, q } = param;
+    const vehicles = await instance.get(
+      `/api/vehicles?page=${page}&sort=${sort}&q=${q}`
+    );
     if (vehicles) {
       return vehicles;
     }
@@ -801,8 +828,6 @@ export const getconsignors = async ({ customerid }) => {
     if (consignors) {
       return consignors;
     }
-   
-
   } catch (error) {
     return { isSuccessful: false };
   }
@@ -851,7 +876,6 @@ export const createBundle = async (data) => {
     return { isSuccessful: false };
   }
 };
-
 
 export const registerRegion = async (data) => {
   try {
@@ -904,11 +928,13 @@ export const deleteRegion = async (id) => {
   }
 };
 
+export const getBundle = async (param) => {
+  const { page, q, sort } = param;
 
-
-export const getBundle = async () => {
   try {
-    const bundles = await instance.get(`/api/bundles`);
+    const bundles = await instance.get(
+      `/api/bundles?page=${page}&sort=${sort}&q=${q}`
+    );
     if (bundles) {
       return bundles;
     }
@@ -916,6 +942,11 @@ export const getBundle = async () => {
     return { isSuccessful: false };
   }
 };
+
+
+
+
+
 
 export const updateBundle = async (data) => {
   try {

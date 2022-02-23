@@ -34,31 +34,44 @@ export const useGetList = (onGet, params) => {
     const [shouldRefresh, setShouldRefresh] = useState(false);
     const [filters, filterBy] = useState(null);
 
+   
+
+
     useEffect(() => {
-        setLoading(true);
-        onGet({ page: currentPage, sort, q: searchQuery, ...filters, ...params })
-            .then((response) => {
-              setResults(response.data);
-              setPages(response.pagination.totalPages);
-              setTotal(response.total);
-              if (currentPage > 1) {
-                setHavePreviousPage(true);
-              } else {
-                setHavePreviousPage(false);
-              }
+      setLoading(true);
+      onGet({ page: currentPage, sort, q: searchQuery, ...filters, ...params })
+        .then((response) => {
+          setResults(response.data);
+          const {
+            currentpage,
+            has_next,
+            has_prev,
+            next_page,
+            prev_page,
+            totalItems,
+            totalPages,
+          } = response.pagination;
 
-              if (currentPage < response.pagination.totalPages) {
-                setHaveNextPage(true);
-              } else {
-                setHaveNextPage(false);
-              }
+          setPages(totalPages);
+          setTotal(totalItems);
+          if (has_prev > 1) {
+            setHavePreviousPage(true);
+          } else {
+            setHavePreviousPage(false);
+          }
 
-              setLoading(false);
-            })
-            .catch((error) => {
-                setLoading(false);
-                addToast(error.message, { appearance: "error" });
-            });
+          if (currentPage < response.pagination.totalPages) {
+            setHaveNextPage(true);
+          } else {
+            setHaveNextPage(false);
+          }
+
+          setLoading(false);
+        })
+        .catch((error) => {
+          setLoading(false);
+          addToast(error.message, { appearance: 'error' });
+        });
     }, [currentPage, sort, filters, searchQuery, shouldRefresh]);
 
     const refresh = useCallback(() => setShouldRefresh(!shouldRefresh), [

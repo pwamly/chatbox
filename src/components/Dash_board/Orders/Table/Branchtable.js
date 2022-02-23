@@ -41,7 +41,19 @@ const useStyles = makeStyles({
 });
 
 function BasicTable({ adduser, dispatch }) {
-  const { results: rows, loading, refresh } = useGetList(getOrders);
+  const {
+    results: rows,
+    loading,
+    refresh,
+    currentPage,
+    pages,
+    havePreviousPage,
+    haveNextPage,
+    setCurrentPage,
+    total,
+    setTotal,
+  } = useGetList(getOrders);
+
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -186,19 +198,30 @@ function BasicTable({ adduser, dispatch }) {
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
-                  textDecoration: 'none !important',
+                  // textDecoration: 'none !important',
                 }}>
                 <AddIcon className='plus' onClick={handleAdduser} />
-                <Pagination.First onClick={() => ''} disabled={true} />
+                <Pagination.First
+                  disabled={!havePreviousPage}
+                  onClick={() => setCurrentPage(1)}
+                />
+
                 <Pagination.Prev
-                  onClick={() => 'goToPage(currentPage - 1)'}
-                  disabled={true}
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={!havePreviousPage}
                 />
                 <Pagination.Next
-                  onClick={() => ' goToPage(currentPage + 1)'}
-                  disabled={true}
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={!haveNextPage}
                 />
-                <Pagination.Last onClick={() => 'goToPage(pages)'} />
+                <Pagination.Last
+                  onClick={() => setCurrentPage(pages)}
+                  disabled={pages > currentPage ? false : true}
+                />
+
+                <span>
+                  Page: {currentPage} out of {pages}
+                </span>
               </Pagination>
             </div>
           </caption>
