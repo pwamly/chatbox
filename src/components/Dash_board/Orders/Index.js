@@ -35,7 +35,7 @@ function Index({ adduser, bundleid }) {
           <ProtectRoute
             path='/dashboard/orders/create-order'
             component={CreateOrder}
-          />{' '}
+          />
           <ProtectRoute
             path='/dashboard/orders/view'
             exact

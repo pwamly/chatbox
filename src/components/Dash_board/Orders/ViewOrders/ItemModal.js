@@ -49,20 +49,13 @@ const MenuProps = {
 const items = [
   {
     id: 1,
-    name: 'PC',
+    name: 'Box',
   },
   {
     id: 2,
-    name: 'SEED',
-  },
-  {
-    id: 3,
-    name: 'FOOD',
+    name: 'Parcel	',
   },
 ];
-
-
-
 
 function getStyles(name, customerData, theme) {
   return {
@@ -118,7 +111,7 @@ function Regteam({
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const { orderid, itemname, itemtype, units, weight, note } = reportdata;
+  const { orderid, itemname, itemtype, units, weight, note } = reportdata || {};
 
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -169,7 +162,7 @@ function Regteam({
         setLoading(true);
         // formref.current.reset();
         let response = await additem({
-          orderid,
+          orderid: orderid,
           itemname: itemnamef.current.value,
           units: unitsf.current.value,
           weight: weightf.current.value,

@@ -16,6 +16,16 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { useToasts } from 'react-toast-notifications';
+
+// for search ......................
+import { Breakpoint, BreakpointProvider } from 'react-socks';
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+
+
+
 import Paper from '@material-ui/core/Paper';
 import Pagination from 'react-bootstrap/Pagination';
 import { useGet, useGetList } from '../../../../hooks/index';
@@ -55,10 +65,21 @@ function BasicTable({ adduser, dispatch }) {
     haveNextPage,
     setCurrentPage,
     total,
-    setTotal,
+    setTotal,sortBy,
+    searchBy
   } = useGetList(getCustomers);
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
+
+  // ........... for search ..................................
+
+const [paramsSearch, setSearch] = useState("");
+const [paramsStatus, setExpire] = useState("");
+const [paramsDate, setDateparam] = useState("");
+const [opendate, setOpendate] = useState(false);
+const [openstatus, setOpenstatus] = useState(false);
+const [status, setStatus] = useState("");
+
   const Actions = useCallback(
     (row) => (
       <div
@@ -85,7 +106,6 @@ function BasicTable({ adduser, dispatch }) {
           <ImPencil
             className='IconStyle'
             onClick={() => {
-              console.log('xxxxxxxxxxxxxxxxxxxx', row);
               dispatch({ type: SAVE_BRANCH_DATA, payload: row });
               history.push('/dashboard/customers/edit');
             }}
@@ -109,7 +129,6 @@ function BasicTable({ adduser, dispatch }) {
     { label: 'Email', show: true, name: 'email' },
     { label: 'Phone', show: true, name: 'phone' },
     { label: 'Address', show: true, name: 'generaladdress' },
-    { label: 'Consignors', show: true, name: 'consignorsno' },
     { label: 'Registered At', show: true, name: 'created' },
     { name: 'formatter', label: 'Actions', show: true, formatter: Actions },
   ];
@@ -143,6 +162,34 @@ function BasicTable({ adduser, dispatch }) {
     }
   }
 
+
+
+// for search......................................................
+
+  
+const handleClosedate = () => {
+  setOpendate(false);
+};
+
+const handleOpendate = () => {
+  setOpendate(true);
+};
+//..
+const handleChangestatus = (event) => {
+  setStatus(event.target.value);
+};
+
+const handleClosestatus = () => {
+  setOpenstatus(false);
+};
+
+const handleOpenstatus = () => {
+  setOpenstatus(true);
+};
+
+
+
+
   return (
     <div className='table-wrapper'>
       <TableContainer
@@ -150,6 +197,142 @@ function BasicTable({ adduser, dispatch }) {
         style={{
           border: 'none',
         }}>
+        <Breakpoint small down>
+          <div
+            style={{
+              height: 'fit-content',
+              marginBottom: '30px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '30px',
+            }}>
+            <TextField
+              id='search '
+              style={{
+                height: '10px !important',
+                margin: 'auto',
+                variant: 'contained',
+                width: '300px',
+              }}
+              label='Search by eg Tracking Id '
+              margin='normal'
+              onChange={(e) => {
+                setLoadingdel(true);
+                searchBy(e.target.value);
+              }}
+              variant='outlined'
+              autoComplete='off'
+              width='sm'
+            />{' '}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                margin: 'auto',
+                gap: '5px',
+                border: '1px solid grey',
+                width: '300px',
+                height: '50px',
+              }}>
+              {' '}
+              <InputLabel style={{ padding: '15px' }} id='label'>
+                Filter By Date
+              </InputLabel>
+              <Select
+                labelId='label'
+                id='selectdate'
+                open={opendate}
+                onClose={handleClosedate}
+                onOpen={handleOpendate}
+                onChange={(e) => setDateparam({ day: e.target.value })}>
+                <MenuItem value='day'>Today</MenuItem>
+                <MenuItem value='week'>This week</MenuItem>
+                <MenuItem value='month'>This month</MenuItem>
+              </Select>
+            </div>
+          
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                width: 'fit-content',
+                margin: 'auto',
+                gap: '20px',
+                height: '50px',
+              }}></div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                margin: 'auto',
+                width: 'fit-content',
+                gap: '20px',
+              }}></div>
+          </div>
+        </Breakpoint>
+        <Breakpoint medium up>
+          <div
+            style={{
+              height: '50px',
+              width: '100%',
+              marginBottom: '30px',
+              display: 'flex',
+              flexDirection: 'row',
+              gap: '30px',
+            }}>
+            <TextField
+              id='search'
+              style={{ height: '10px !important', marginLeft: '20px' }}
+              label='Search by eg phone, email,name '
+              margin='normal'
+              onChange={(e) => {
+                setLoadingdel(true);
+                searchBy(e.target.value);
+              }}
+              variant='outlined'
+              autoComplete='off'
+              width='sm'
+            />{' '}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginTop: '35px',
+                gap: '20px',
+              }}>
+              {' '}
+              <InputLabel style={{ paddingTop: '3px' }} id='label'>
+                Filter By Created Date
+              </InputLabel>
+              <Select
+                labelId='label'
+                id='selectdate'
+                open={opendate}
+                onClose={handleClosedate}
+                onOpen={handleOpendate}
+                onChange={(e) => sortBy({ day: e.target.value })}>
+                <MenuItem value='day'>Today</MenuItem>
+                <MenuItem value='week'>This week</MenuItem>
+                <MenuItem value='month'>This month</MenuItem>
+              </Select>
+            </div>
+           
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginTop: '35px',
+                gap: '20px',
+              }}></div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginTop: '35px',
+                gap: '20px',
+              }}></div>
+          </div>
+        </Breakpoint>
         <Table
           className={classes.table}
           aria-label='simple table'

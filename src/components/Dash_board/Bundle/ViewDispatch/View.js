@@ -191,8 +191,9 @@ function OrderViewF({ reportdata, dispatch }) {
             style={{
               width: '100%',
               paddingTop: '30px',
+              paddingRight: '10px',
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: 'flex-end',
               paddingBottom: '20px',
               gap: '30px',
             }}>

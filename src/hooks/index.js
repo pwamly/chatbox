@@ -30,16 +30,23 @@ export const useGetList = (onGet, params) => {
     const [haveNextPage, setHaveNextPage] = useState(false);
     const [havePreviousPage, setHavePreviousPage] = useState(false);
     const [sort, sortBy] = useState(null);
-    const [searchQuery, searchBy] = useState(undefined);
+    const [sortdate, sortByDate] = useState(null);
+    const [sortstatus, sortByStatus] = useState(null);
+    const [searchQuery, searchBy] = useState('');
     const [shouldRefresh, setShouldRefresh] = useState(false);
     const [filters, filterBy] = useState(null);
 
-   
-
-
     useEffect(() => {
       setLoading(true);
-      onGet({ page: currentPage, sort, q: searchQuery, ...filters, ...params })
+      onGet({
+        page: currentPage,
+        sort,
+        q: searchQuery,
+        ...filters,
+        ...params,
+        date: sortdate,
+        status: sortstatus,
+      })
         .then((response) => {
           setResults(response.data);
           const {
@@ -50,22 +57,17 @@ export const useGetList = (onGet, params) => {
             prev_page,
             totalItems,
             totalPages,
-          } = response.pagination;
+          } = response.pagination || {};
 
           setPages(totalPages);
           setTotal(totalItems);
-          if (has_prev > 1) {
-            setHavePreviousPage(true);
-          } else {
-            setHavePreviousPage(false);
+          if (has_prev) {
+            setHavePreviousPage(has_prev);
           }
 
-          if (currentPage < response.pagination.totalPages) {
-            setHaveNextPage(true);
-          } else {
-            setHaveNextPage(false);
+          if (has_next) {
+            setHaveNextPage(has_next);
           }
-
           setLoading(false);
         })
         .catch((error) => {
@@ -74,23 +76,26 @@ export const useGetList = (onGet, params) => {
         });
     }, [currentPage, sort, filters, searchQuery, shouldRefresh]);
 
-    const refresh = useCallback(() => setShouldRefresh(!shouldRefresh), [
-        shouldRefresh,
-    ]);
+    const refresh = useCallback(
+      () => setShouldRefresh(!shouldRefresh),
+      [shouldRefresh]
+    );
     return {
-        results,
-        pages,
-        currentPage,
-        havePreviousPage,
-        haveNextPage,
-        loading,
-        total,
-        setTotal,
-        setCurrentPage,
-        sortBy,
-        searchBy,
-        refresh,
-        filterBy,
+      results,
+      pages,
+      currentPage,
+      havePreviousPage,
+      haveNextPage,
+      loading,
+      total,
+      setTotal,
+      setCurrentPage,
+      sortBy,
+      searchBy,
+      refresh,
+      filterBy,
+      sortByDate,
+      sortByStatus,
     };
 };
 

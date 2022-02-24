@@ -303,10 +303,10 @@ export const deleteBranch = async (id) => {
 };
 
 export const getOrders = async (param) => {
-  const { page, q, sort } = param;
+  const { page, q, sort, date, status } = param;
   try {
     const branches = await instance.get(
-      `/api/orders?page=${page}&sort=${sort}&q=${q}`
+      `/api/orders?page=${page}&sort=${sort}&q=${q}&date=${date}&status=${status}`
     );
     if (branches) {
       return branches;
@@ -356,6 +356,10 @@ export const getDelivery = async (param) => {
     return { isSuccessful: false };
   }
 };
+
+
+
+
 
 //.............................. get drivers ..................
 

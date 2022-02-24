@@ -19,6 +19,15 @@ import { useToasts } from 'react-toast-notifications';
 import Paper from '@material-ui/core/Paper';
 import Pagination from 'react-bootstrap/Pagination';
 import { useGet, useGetList } from '../../../../hooks/index';
+
+
+// for search ......................
+import { Breakpoint, BreakpointProvider } from 'react-socks';
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+
 import { connect } from 'react-redux';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
@@ -53,10 +62,21 @@ function BasicTable({ adduser, dispatch }) {
     pages,
     havePreviousPage,
     haveNextPage,
-    setCurrentPage,
+    setCurrentPage,sortBy,
     total,
-    setTotal,
+    setTotal,searchBy
   } = useGetList(getDispatchedOrders);
+
+  
+// ........... for search ..................................
+
+const [paramsSearch, setSearch] = useState("");
+const [paramsStatus, setExpire] = useState("");
+const [paramsDate, setDateparam] = useState("");
+const [opendate, setOpendate] = useState(false);
+const [openstatus, setOpenstatus] = useState(false);
+const [status, setStatus] = useState("");
+
   const { addToast } = useToasts();
   const [loadingdel, setLoadingdel] = useState(false);
   const Actions = useCallback(
@@ -86,9 +106,9 @@ function BasicTable({ adduser, dispatch }) {
   let history = useHistory();
   const columns = [
     { label: 'Customer Name', show: true, name: 'customername' },
-    { label: 'From', show: true, name: 'consignername' },
+    { label: 'Tracking No', show: true, name: 'trackingNo' },
+    { label: 'Consigner Name', show: true, name: 'consignername' },
     { label: 'Destination ', show: true, name: 'dregion' },
-    { label: 'Consignee Name', show: true, name: 'consigneename' },
     { label: 'Dispatched Time', show: true, name: 'scheduledDispatchtime' },
     { label: 'Expected Delivery Time', show: true, name: 'expdlrtime' },
     { label: 'Status', show: true, name: 'orderStatus' },
@@ -100,6 +120,31 @@ function BasicTable({ adduser, dispatch }) {
     dispatch({ type: CLEAR_BRANCH_DATA });
     history.push('/dashboard/orders/create-user');
   };
+
+
+  // for search......................................................
+
+  
+  const handleClosedate = () => {
+    setOpendate(false);
+  };
+
+  const handleOpendate = () => {
+    setOpendate(true);
+  };
+  //..
+  const handleChangestatus = (event) => {
+    setStatus(event.target.value);
+  };
+
+  const handleClosestatus = () => {
+    setOpenstatus(false);
+  };
+
+  const handleOpenstatus = () => {
+    setOpenstatus(true);
+  };
+
 
   async function handledelete(row) {
     const { orderid } = row;
@@ -126,6 +171,191 @@ function BasicTable({ adduser, dispatch }) {
 
   return (
     <div className='table-wrapper'>
+      <Breakpoint small down>
+        <div
+          style={{
+            height: 'fit-content',
+            marginBottom: '30px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '30px',
+          }}>
+          <TextField
+            id='search '
+            style={{
+              height: '10px !important',
+              margin: 'auto',
+              variant: 'contained',
+              width: '300px',
+            }}
+            label='Search by eg Tracking Id '
+            margin='normal'
+            onChange={(e) => {
+              setLoadingdel(true);
+              searchBy(e.target.value);
+            }}
+            variant='outlined'
+            autoComplete='off'
+            width='sm'
+          />{' '}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              margin: 'auto',
+              gap: '5px',
+              border: '1px solid grey',
+              width: '300px',
+              height: '50px',
+            }}>
+            {' '}
+            <InputLabel style={{ padding: '15px' }} id='label'>
+              Filter By Date
+            </InputLabel>
+            <Select
+              labelId='label'
+              id='selectdate'
+              open={opendate}
+              onClose={handleClosedate}
+              onOpen={handleOpendate}
+              onChange={(e) => setDateparam({ day: e.target.value })}>
+              <MenuItem value='day'>Today</MenuItem>
+              <MenuItem value='week'>This week</MenuItem>
+              <MenuItem value='month'>This month</MenuItem>
+            </Select>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              border: '1px solid grey',
+              width: '300px',
+              height: '50px',
+              margin: 'auto',
+              gap: '30px',
+            }}>
+            {' '}
+            <InputLabel style={{ padding: '15px' }} id='label'>
+              Filter By Order Status
+            </InputLabel>
+            <Select
+              labelId='label'
+              id='selectstatus'
+              open={openstatus}
+              onClose={handleClosestatus}
+              onOpen={handleOpenstatus}
+              onChange={(e) => setExpire({ status: e.target.value })}>
+              <MenuItem value='Delivered'>Delivered</MenuItem>
+              <MenuItem value='Dispatched'>Dispatched</MenuItem>
+              <MenuItem value='Picked'>Picked</MenuItem>
+              <MenuItem value='Unloaded'>Unloaded</MenuItem>
+            </Select>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: 'fit-content',
+              margin: 'auto',
+              gap: '20px',
+              height: '50px',
+            }}></div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              margin: 'auto',
+              width: 'fit-content',
+              gap: '20px',
+            }}></div>
+        </div>
+      </Breakpoint>
+      <Breakpoint medium up>
+        <div
+          style={{
+            height: '50px',
+            width: '100%',
+            marginBottom: '30px',
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '30px',
+          }}>
+          <TextField
+            id='search'
+            style={{ height: '10px !important', marginLeft: '20px' }}
+            label='Search by eg Tracking Id '
+            margin='normal'
+            onChange={(e) => {
+              setLoadingdel(true);
+              searchBy(e.target.value);
+            }}
+            variant='outlined'
+            autoComplete='off'
+            width='sm'
+          />{' '}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: '35px',
+              gap: '20px',
+            }}>
+            {' '}
+            <InputLabel style={{ paddingTop: '3px' }} id='label'>
+              Filter By Date
+            </InputLabel>
+            <Select
+              labelId='label'
+              id='selectdate'
+              open={opendate}
+              onClose={handleClosedate}
+              onOpen={handleOpendate}
+              onChange={(e) => sortBy({ day: e.target.value })}>
+              <MenuItem value='day'>Today</MenuItem>
+              <MenuItem value='week'>This week</MenuItem>
+              <MenuItem value='month'>This month</MenuItem>
+            </Select>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: '35px',
+              gap: '20px',
+            }}>
+            {' '}
+            <InputLabel style={{ paddingTop: '3px' }} id='label'>
+              Filter By Order Status
+            </InputLabel>
+            <Select
+              labelId='label'
+              id='selectstatus'
+              open={openstatus}
+              onClose={handleClosestatus}
+              onOpen={handleOpenstatus}
+              onChange={(e) => setExpire({ status: e.target.value })}>
+              <MenuItem value='Delivered'>Delivered</MenuItem>
+              <MenuItem value='Dispatched'>Dispatched</MenuItem>
+              <MenuItem value='Picked'>Picked</MenuItem>
+              <MenuItem value='Unloaded'>Unloaded</MenuItem>
+            </Select>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: '35px',
+              gap: '20px',
+            }}></div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              marginTop: '35px',
+              gap: '20px',
+            }}></div>
+        </div>
+      </Breakpoint>
       <TableContainer
         component={Paper}
         style={{

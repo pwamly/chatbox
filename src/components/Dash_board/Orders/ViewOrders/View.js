@@ -198,7 +198,7 @@ function OrderViewF({ reportdata }) {
                 Schedule Pickup
               </button>
             )}
-            {!reportdata.pickupLoaded && (
+            {!reportdata.pickupLoaded && reportdata.pickupScheduled && (
               <button
                 className='btn btn-primary'
                 style={{
@@ -212,7 +212,7 @@ function OrderViewF({ reportdata }) {
                 Load pickup
               </button>
             )}
-            {!reportdata.pickupUnloaded && (
+            {!reportdata.pickupUnloaded && reportdata.pickupLoaded && (
               <button
                 className='btn btn-primary'
                 style={{
@@ -226,7 +226,7 @@ function OrderViewF({ reportdata }) {
                 Unload Item
               </button>
             )}{' '}
-            {!reportdata.dispatchScheduled && (
+            {!reportdata.dispatchScheduled && reportdata.pickupUnloaded && (
               <button
                 className='btn btn-primary'
                 style={{
@@ -240,20 +240,21 @@ function OrderViewF({ reportdata }) {
                 Schedule Dispatch
               </button>
             )}
-            {reportdata.orderStatus !== 'Dispatched' && (
-              <button
-                className='btn btn-primary'
-                style={{
-                  width: '18%',
-                  background: 'yellow',
-                  fontWeight: 'bold',
-                }}
-                onClick={() => {
-                  history.push('/dashboard/orders/view/deliver-dispatch');
-                }}>
-                Deliver Dispatch
-              </button>
-            )}
+            {reportdata.orderStatus !== 'Dispatched' &&
+              reportdata.dispatchScheduled && (
+                <button
+                  className='btn btn-primary'
+                  style={{
+                    width: '18%',
+                    background: 'yellow',
+                    fontWeight: 'bold',
+                  }}
+                  onClick={() => {
+                    history.push('/dashboard/orders/view/deliver-dispatch');
+                  }}>
+                  Deliver Dispatch
+                </button>
+              )}
           </div>
           <Divider
             fullWidth

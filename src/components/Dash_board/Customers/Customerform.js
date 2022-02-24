@@ -30,6 +30,8 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import DateAdapter from '@mui/lab/AdapterMoment';
+import { useGet, useGetList } from '../../../hooks/index';
+import { getUsers, deleteOrder, getRegions } from '../../../client/index';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,68 +43,6 @@ const MenuProps = {
     },
   },
 };
-
-const customers = [
-  {
-    customerId: 'bdar-1',
-    customername: 'NMB KAWE',
-    customeraddress: 'P.O.BOX 56,KINONDONI,KAWE NALEWA STREET,MOBILE:2222229',
-  },
-  {
-    customerId: 'bdar-2',
-    customername: 'CRD MBEZI',
-    customeraddress: 'P.O.BOX 16,UBUNGO,MAGUFULI BUS STOP STREET,MOBILE:123444',
-  },
-];
-
-const consgigners = [
-  {
-    consignerid: 'nmb-dar-kinondoni-kawe-1',
-    ccompanyId: 'bdar-1',
-    cfname: 'Johny',
-    clname: 'kibweta',
-    cmobile: '+255673999',
-    cemail: 'kibwe@gmail.com',
-    crole: 'IT',
-    caddress: 'P.O.BOX 56,KINONDONI,KAWE NALEWA STREET,MOBILE:2222229',
-  },
-  {
-    consignerid: 'nmb-dar-kinondoni-kawe-2',
-    ccompanyId: 'bdar-1',
-    cfname: 'kulwa',
-    clname: 'magembe',
-    cmobile: '+2556739444',
-    cemail: 'magembe@gmail.com',
-    crole: 'accountant',
-    caddress: 'P.O.BOX 46,TEMEKE,KIWALENI STREET,MOBILE:23444',
-  },
-];
-
-const regions = [
-  {
-    id: 1,
-    name: 'kigoma',
-  },
-  {
-    id: 2,
-    name: 'Mwanza',
-  },
-  {
-    id: 3,
-    name: 'Arusha',
-  },
-];
-
-const districts = [
-  {
-    id: 1,
-    regionid: 1,
-    regionname: 'kigoma',
-    name: 'Uvinza',
-  },
-  { id: 1, regionid: 2, regionname: 'Mwanza', name: 'Igoma' },
-  { id: 1, regionid: 3, name: 'Arumeru', regionname: 'Arusha' },
-];
 
 function getStyles(name, customerData, theme) {
   return {
@@ -137,7 +77,7 @@ function Regteam({
   const history = useHistory();
 
   // ......................... to be passed to the form default...........
-
+  const { results: rows } = useGetList(getRegions);
   const {
     fname = '',
     lname = '',
@@ -211,7 +151,6 @@ function Regteam({
   }
 
   async function handlesave() {
-   
     try {
       if (saveedit == 'save') {
         setLoading(true);
@@ -378,23 +317,22 @@ function Regteam({
           onChange={handleChangesreg}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {regions.map((el) => (
+          {rows.map((el) => (
             <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(regions, regdata, theme)}>
-              {el.name}
+              key={el.region}
+              value={el.region}
+              style={getStyles(rows, regdata, theme)}>
+              {el.region}
             </MenuItem>
           ))}
         </Select>
       </div>
-      <div
+      {/* <div
         style={{
           marginTop: '20px',
           width: '100%',
           gap: '5%',
         }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
         <InputLabel id='demo-multiple-name-label'>District</InputLabel>
         <Select
           labelId='demo-multiple-name-label2'
@@ -415,7 +353,7 @@ function Regteam({
             </MenuItem>
           ))}
         </Select>
-      </div>
+      </div> */}
       <div
         style={{
           marginTop: '20px',

@@ -13,7 +13,12 @@ import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
 import { addUser, addorder, editUser } from '../../../client/client';
 import { Divider } from '@mui/material';
 import './order.css';
-import { getUsers, getCustomers, getconsignors } from '../../../client/client';
+import {
+  getUsers,
+  getCustomers,
+  getconsignors,
+  getRegions,
+} from '../../../client/client';
 import { useGet, useGetList } from '../../../hooks/index';
 
 // ...................... for select ..............................
@@ -43,36 +48,6 @@ const MenuProps = {
     },
   },
 };
-
-const regions = [
-  {
-    id: 4,
-    name: 'kigoma',
-  },
-  {
-    id: 1,
-    name: 'Dar es salaam',
-  },
-  {
-    id: 2,
-    name: 'Mwanza',
-  },
-  {
-    id: 3,
-    name: 'Arusha',
-  },
-];
-
-const districts = [
-  {
-    id: 1,
-    regionid: 4,
-    regionname: 'kigoma',
-    name: 'Uvinza',
-  },
-  { id: 1, regionid: 2, regionname: 'Mwanza', name: 'Igoma' },
-  { id: 1, regionid: 1, name: 'Arumeru', regionname: 'Ilala' },
-];
 
 function getStyles(name, customerId, theme) {
   return {
@@ -104,6 +79,7 @@ function Regteam({
   const [usrrole, setRole] = useState('');
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const { results: rowz } = useGetList(getRegions);
 
   // ........................... for select ..................
 
@@ -464,12 +440,12 @@ function Regteam({
           onChange={handleChangesreg}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {regions.map((el) => (
+          {rowz.map((el) => (
             <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(regions, regdata, theme)}>
-              {el.name}
+              key={el.region}
+              value={el.region}
+              style={getStyles(rowz, regdata, theme)}>
+              {el.region}
             </MenuItem>
           ))}
         </Select>
@@ -479,29 +455,7 @@ function Regteam({
           marginTop: '20px',
           width: '100%',
           gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>District</InputLabel>
-        <Select
-          labelId='demo-multiple-name-label2'
-          id='demo-multiple-name2'
-          value={distdata}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesdis}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {districts.map((el) => (
-            <MenuItem
-              key={el.consignerid}
-              value={el.name}
-              style={getStyles(districts, distdata, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
+        }}></div>
       <TextField
         label='Street'
         margin='normal'
@@ -555,12 +509,12 @@ function Regteam({
           onChange={handleChangesregp}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {regions.map((el) => (
+          {rowz.map((el) => (
             <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(regions, regdatap, theme)}>
-              {el.name}
+              key={el.region}
+              value={el.region}
+              style={getStyles(rowz, regdatap, theme)}>
+              {el.region}
             </MenuItem>
           ))}
         </Select>
@@ -572,26 +526,6 @@ function Regteam({
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-labelp'>District</InputLabel>
-        <Select
-          labelId='demo-multiple-name-label2p'
-          id='demo-multiple-name2p'
-          value={distdatap}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesdisp}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {districts.map((el) => (
-            <MenuItem
-              key={el.consignerid}
-              value={el.name}
-              style={getStyles(districts, distdatap, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
       </div>
       <TextField
         label='Street'
