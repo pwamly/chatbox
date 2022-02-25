@@ -24,7 +24,7 @@ function OrderViewF({ reportdata }) {
       color = 'red';
     }
     if (status == 'picked') {
-      color = 'yellow';
+      color = 'red';
     }
     if (status == 'picked and unloaded') {
       color = 'rgb(191, 240, 94)';
@@ -167,8 +167,10 @@ function OrderViewF({ reportdata }) {
               width: '100%',
               paddingTop: '30px',
               display: 'flex',
-              justifyContent: 'center',
+              justifyContent: 'flex-end',
               paddingBottom: '20px',
+              gap: '20px',
+              paddingRight: '20px',
             }}>
             {!reportdata.pickupScheduled && (
               <button
@@ -176,7 +178,9 @@ function OrderViewF({ reportdata }) {
                 style={{
                   width: '14%',
                   fontWeight: 'bold',
-                  background: 'yellow',
+                  background: 'red',
+                  height: '30px',
+                  borderRadius: '6px',
                 }}
                 onClick={() => {
                   history.push('/dashboard/orders/view/add-item');
@@ -190,7 +194,8 @@ function OrderViewF({ reportdata }) {
                 style={{
                   width: '17%',
                   fontWeight: 'bold',
-                  background: 'yellow',
+                  background: 'red',
+                  borderRadius: '6px',
                 }}
                 onClick={() => {
                   history.push('/dashboard/orders/view/schedule-pickup');
@@ -204,7 +209,8 @@ function OrderViewF({ reportdata }) {
                 style={{
                   width: '15%',
                   fontWeight: 'bold',
-                  background: 'yellow',
+                  background: 'red',
+                  borderRadius: '6px',
                 }}
                 onClick={() => {
                   history.push('/dashboard/orders/view/load-pickup');
@@ -218,7 +224,8 @@ function OrderViewF({ reportdata }) {
                 style={{
                   width: '13%',
                   fontWeight: 'bold',
-                  background: 'yellow',
+                  background: 'red',
+                  borderRadius: '6px',
                 }}
                 onClick={() => {
                   history.push('/dashboard/orders/view/unload-pickup');
@@ -232,7 +239,8 @@ function OrderViewF({ reportdata }) {
                 style={{
                   width: '18%',
                   fontWeight: 'bold',
-                  background: 'yellow',
+                  background: 'red',
+                  borderRadius: '6px',
                 }}
                 onClick={() => {
                   history.push('/dashboard/orders/view/shedule-dispatch');
@@ -246,8 +254,9 @@ function OrderViewF({ reportdata }) {
                   className='btn btn-primary'
                   style={{
                     width: '18%',
-                    background: 'yellow',
+                    background: 'red',
                     fontWeight: 'bold',
+                    borderRadius: '6px',
                   }}
                   onClick={() => {
                     history.push('/dashboard/orders/view/deliver-dispatch');

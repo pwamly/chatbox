@@ -30,3 +30,8 @@ ul {
 .plus {
     color: blue;
 }
+
+.pdfbtn:hover{
+    cursor: pointer;
+    background: rgb(204, 199, 199);
+}

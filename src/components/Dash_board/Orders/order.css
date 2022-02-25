@@ -1,5 +1,5 @@
 .itemadded{ display: flex; flex-direction: row; gap: 15px ;background:#f3f4f6}
-.btn {
+.cbtn {
 
     display: inline-block;
   
@@ -45,11 +45,19 @@
   .btn-block {
   
     display: block;
-    color: rgb(251, 255, 12) !important ;
-
+    color: red !important ;
     width: 30%;
   
   }
+
+  .btn-block{
+border-radius: 14px !important;  }
+
+ .btn-havor:hover{
+   cursor: pointer;
+   background: rgb(167, 66, 66) !important;
+  }
+
 
 @media screen and (max-width: 550px) {
     .itemadded{ display: flex; flex-direction: column; gap: 15px ;background:#f3f4f6}

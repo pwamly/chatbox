@@ -194,3 +194,9 @@ padding: 10px 10px 0px 20px;
 
 
 }
+
+.btn:hover{
+cursor: pointer;
+background: rgb(167, 66, 66) !important;
+}
+

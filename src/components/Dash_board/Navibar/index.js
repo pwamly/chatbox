@@ -13,9 +13,9 @@ import { SvgIcon } from '@mui/material';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import avatar from '../../../assets/demologo.png';
 
 function Navbar({ profile }) {
-
   const history = useHistory();
   const [showMediaIcons, setShowMediaIcons] = useState(false);
 
@@ -28,6 +28,15 @@ function Navbar({ profile }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const logomain = {
+    background: 'none',
+    width: '100px',
+    height: '100px',
+    padding: '20px',
+    backgroundColor: 'none',
+    margin: 'auto',
+    borderStyle: 'none !important',
+  };
 
   return (
     <div className='header'>
@@ -36,7 +45,15 @@ function Navbar({ profile }) {
           <Link to='/dashboard'>
             <h2>
               {/* <span>S</span> */}
-              <span className='sga-sub-log'>SGA Courier Department System</span>
+              {/* <span className='sga-sub-log'>SGA Courier Department System</span> */}
+              <div style={logomain}>
+                <img
+                  className='
+      aimg'
+                  src={avatar}
+                  alt=''
+                />
+              </div>
             </h2>
           </Link>
         </div>

@@ -11,7 +11,7 @@ import { login } from '../../../client/client';
 import { useToasts } from 'react-toast-notifications';
 import Spinner from '../../Spinner/Spiner';
 import './form.css';
-import avatar from '../../../assets/coca.png';
+import avatar from '../../../assets/demologo.png';
 
 const style = {
   width: '400px',
@@ -38,11 +38,13 @@ const spinerStyle = {
 
 const logomain = {
   background: 'none',
-  width: '100px',
+  width: '200px',
   height: '100px',
   padding: '20px',
   backgroundColor: 'none',
   margin: 'auto',
+  borderStyle: 'none !important',
+  fontWeight: 'bold',
 };
 
 function Login() {
@@ -97,10 +99,14 @@ function Login() {
 
   return (
     <div className='login-form'>
-      {/* <Card style={logomain}>
-      <img className="
-      aimg" src={avatar} alt="" />
-     </Card> */}
+      <div style={logomain}>
+        <img
+          className='
+      aimg'
+          src={avatar}
+          alt=''
+        />
+      </div>
       <Card variant='outlined' style={style}>
         <TextField
           InputLabelProps={{ style: { fontSize: 15 } }}
@@ -131,26 +137,15 @@ function Login() {
           control={<Checkbox checked={checked} onChange={handlecheck} />}
           label='Remember me'
         />
-        <Button
-          variant='contained'
-          style={{ marginTop: '1rem' }}
-          onClick={handle}
-          color='primary'
-          style={{
-            color: '#ffff',
-            maxWidth: '100px',
-            maxHeight: '30px',
-            minWidth: '30px',
-            minHeight: '30px',
-          }}>
+        <button className='btn-color' onClick={handle}>
           {loading ? (
             <div style={spinerStyle}>
               <Spinner loading={loading} /> Loading...{' '}
             </div>
           ) : (
             'Login'
-          )}{' '}
-        </Button>
+          )}
+        </button>
         <h4 style={{ color: 'blue' }}>
           <Link to='/reset-password' style={{ color: 'blue' }}>
             Forgot password ?
