@@ -589,7 +589,6 @@ function Regteam({
         <button
           variant='contained'
           className='btn-havor'
-          sssss
           style={{
             marginTop: '20px',
             width: '200px',

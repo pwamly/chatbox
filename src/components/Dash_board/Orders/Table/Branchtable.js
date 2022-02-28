@@ -182,6 +182,15 @@ const handleClosestatus = () => {
   setOpenstatus(false);
 };
 
+
+const handleClosepdf = () => {
+  setOpenspdf(false);
+};
+
+const handleOpenpdf = () => {
+  setOpenspdf(true);
+};
+
 const handleOpenstatus = () => {
   setOpenstatus(true);
 };
@@ -407,8 +416,8 @@ return (
               labelId='label'
               id='selectstatus'
               open={openpdf}
-              onClose={handleClosestatus}
-              onOpen={handleOpenstatus}
+              onClose={handleClosepdf}
+              onOpen={handleOpenpdf}
               onChange={(e) => setExpire({ status: e.target.value })}>
               <MenuItem value='Delivered'>PDF</MenuItem>
               <MenuItem value='Dispatched'>CSV</MenuItem>

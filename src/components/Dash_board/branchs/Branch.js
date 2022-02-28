@@ -12,11 +12,48 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
 import { addUser, addBranch, updateBranch } from '../../../client/client';
 
+import {
+  getUsers,
+  getCustomers,
+  getconsignors,
+  getRegions,
+} from '../../../client/client';
+import { useGet, useGetList } from '../../../hooks/index';
+
+// ...................... for select ..............................
+
+import { useTheme } from '@mui/material/styles';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { InputLabel as inputlabels } from '@mui/material/InputLabel';
+import MenuItems from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+import Selects from '@mui/material/Select';
+
 const spinerStyle = {
   display: 'flex',
   flexDirection: 'rows',
   gap: '12px',
 };
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 300,
+    },
+  },
+};
+
+function getStyles(name, customerId, theme) {
+  return {
+    fontWeight:
+      customerId.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 
 function Regteam({
   adduser,
@@ -31,6 +68,9 @@ function Regteam({
   const [usrrole, setRole] = useState('');
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
+  const [regdatap, setRegtdatap] = useState('');
+  const { results: rowz } = useGetList(getRegions);
+  const theme = useTheme();
 
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
@@ -73,6 +113,15 @@ function Regteam({
     setRole(event.target.value);
   };
 
+  //......................... for regions package............
+
+  const handleChangesregp = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setRegtdatap(value);
+  };
+
   async function handlesave() {
     try {
       if (saveedit == 'add') {
@@ -82,8 +131,7 @@ function Regteam({
           branchId: bid.current.value,
           branchaddress: baddress.current.value,
           branchname: bname.current.value,
-          district: bdistrict.current.value,
-          region: bregion.current.value,
+          region: regdatap,
         });
 
         if (response) {
@@ -94,6 +142,7 @@ function Regteam({
             autoDismiss: true,
           });
           // window.location.replace(`/dashboard/employee`);
+          dispatch({ type: EXIT_ADD_FORM });
           return;
         }
         setLoading(false);
@@ -107,8 +156,7 @@ function Regteam({
           branchId: branchId,
           branchaddress: baddress.current.value,
           branchname: bname.current.value,
-          district: bdistrict.current.value,
-          region: bregion.current.value,
+          region: regdatap,
         });
 
         if (response) {
@@ -177,26 +225,34 @@ function Regteam({
         ref={formref}
         defaultValue={branchname}
       />{' '}
-      <TextField
-        label='Region '
-        margin='normal'
-        inputRef={bregion}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={region}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='District'
-        margin='normal'
-        inputRef={bdistrict}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        ref={formref}
-        defaultValue={district}
-      />{' '}
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-labelp'>Region</InputLabel>
+        <Select
+          labelId='demo-multiple-name-labelregp'
+          id='demo-multiple-nameregp'
+          value={regdatap}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangesregp}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {rowz.map((el) => (
+            <MenuItem
+              key={el.region}
+              value={el.region}
+              style={getStyles(rowz, regdatap, theme)}>
+              {el.region}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
       <TextField
         label='Address'
         margin='normal'
@@ -223,11 +279,17 @@ function Regteam({
           gap: '70px',
         }}>
         {' '}
-        <Button
+        <button
           variant='contained'
-          width='sm'
-          color='primary'
-          style={{ marginTop: '20px' }}
+          className='btn-havor'
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={handlesave}>
           {loading ? (
             <div style={spinerStyle}>
@@ -236,14 +298,21 @@ function Regteam({
           ) : (
             `${saveeditbtn}`
           )}{' '}
-        </Button>{' '}
-        <Button
+        </button>{' '}
+        <button
           variant='contained'
-          width='sm'
-          style={{ marginTop: '20px' }}
+          className='btn-havor'
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={() => dispatch({ type: EXIT_ADD_FORM })}>
           Close
-        </Button>
+        </button>
       </div>
       <h4> </h4>
     </Card>

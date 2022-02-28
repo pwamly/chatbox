@@ -177,7 +177,7 @@ function Regteam({
             appearance: 'success',
             autoDismiss: true,
           });
-          // window.location.replace(`/dashboard/employee`);
+          history.goBack();
           return;
         }
         setLoading(false);
@@ -232,7 +232,6 @@ function Regteam({
     const {
       target: { value },
     } = event;
-    console.log('vccccccccccccccccccvvvvvvvvvvvvb', value);
 
     setItemtype(value);
   };
@@ -370,11 +369,17 @@ function Regteam({
           justifyContent: 'center',
           gap: '70px',
         }}>
-        <Button
+        <button
           variant='contained'
-          width='sm'
-          color='primary'
-          style={{ marginTop: '20px' }}
+          className='btn-havor'
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={handlesave}>
           {loading ? (
             <div style={spinerStyle}>
@@ -383,17 +388,24 @@ function Regteam({
           ) : (
             `${saveeditbtn}`
           )}{' '}
-        </Button>{' '}
-        <Button
+        </button>{' '}
+        <button
           variant='contained'
-          width='sm'
-          style={{ marginTop: '20px' }}
+          className='btn-havor'
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={() => {
             dispatch({ type: EXIT_ADD_FORM });
             history.goBack();
           }}>
           Close
-        </Button>
+        </button>
       </div>
     </Card>
   );

@@ -69,11 +69,13 @@ const roles = [
   },
   {
     id: 5,
-    name: 'IT',
+    name: 'Courier',
+  },
+  {
+    id: 5,
+    name: 'Manager',
   },
 ];
-
-
 
 function validatePassword(pw) {
   console.log('', pw);
@@ -194,7 +196,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
               appearance: 'success',
               autoDismiss: true,
             });
-            // window.location.replace(`/dashboard/employee`);
+            dispatch({ type: EXIT_ADD_FORM });
             return;
           }
           setLoading(false);
@@ -404,11 +406,17 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
           gap: '70px',
         }}>
         {' '}
-        <Button
+        <button
           variant='contained'
-          width='sm'
-          color='primary'
-          style={{ marginTop: '20px' }}
+          className='btn-havor'
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={handlesave}>
           {loading ? (
             <div style={spinerStyle}>
@@ -417,14 +425,21 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
           ) : (
             `${saveeditbtn}`
           )}{' '}
-        </Button>{' '}
-        <Button
+        </button>{' '}
+        <button
           variant='contained'
-          width='sm'
-          style={{ marginTop: '20px' }}
+          className='btn-havor'
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={() => dispatch({ type: EXIT_ADD_FORM })}>
           Close
-        </Button>
+        </button>
       </div>
       <h4> </h4>
     </Card>

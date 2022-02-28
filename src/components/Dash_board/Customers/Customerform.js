@@ -173,7 +173,7 @@ function Regteam({
             appearance: 'success',
             autoDismiss: true,
           });
-          // window.location.replace(`/dashboard/employee`);
+          history.push('/dashboard/customers');
           return;
         }
         setLoading(false);
@@ -252,7 +252,7 @@ function Regteam({
       <Divider
         fullWidth
         style={{
-          background: 'gray',
+          background: 'red',
           marginTop: '10px',
           marginBottom: '30px',
           height: '30px',
@@ -393,11 +393,17 @@ function Regteam({
           justifyContent: 'center',
           gap: '70px',
         }}>
-        <Button
+        <button
           variant='contained'
-          width='sm'
-          color='primary'
-          style={{ marginTop: '20px' }}
+          className='btn-havor'
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={handlesave}>
           {loading ? (
             <div style={spinerStyle}>
@@ -406,14 +412,21 @@ function Regteam({
           ) : (
             `${saveeditbtn}`
           )}{' '}
-        </Button>{' '}
-        <Button
+        </button>{' '}
+        <button
           variant='contained'
-          width='sm'
-          style={{ marginTop: '20px' }}
+          className='btn-havor'
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={() => history.push('/dashboard/customers')}>
           Close
-        </Button>
+        </button>
       </div>
     </Card>
   );

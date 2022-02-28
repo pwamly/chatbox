@@ -119,6 +119,7 @@ function Navbar({ profile }) {
               <Button
                 aria-controls='simple-menu'
                 aria-haspopup='true'
+                style={{ textTransform: 'none' }}
                 onClick={handleClick}>
                 {profile.initial}
               </Button>

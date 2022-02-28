@@ -44,13 +44,15 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
   const { fname, lname, email, username, phone, userRole, branchId, dashData } =
     user || {};
 
-  if (fname && lname) {
-    initial = `${fname} ${lname}`
-      .split(' ')
-      .map((n, i, a) => (i === 0 || i + 1 === a.length ? n[0] : null))
-      .join('')
-      .toUpperCase();
-  }
+  // if (fname && lname) {
+
+  //   initial = `${fname} ${lname}`
+  //     .split(' ')
+  //     .map((n, i, a) => (i === 0 || i + 1 === a.length ? n[0] : null))
+  //     .join('')
+  //     .toUpperCase();
+  // }
+  initial = `${fname} ${lname}`;
   useEffect(() => {
     dispatch({
       type: SAVE_INITIAL_DATA,

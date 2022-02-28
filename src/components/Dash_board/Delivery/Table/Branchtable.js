@@ -420,12 +420,6 @@ const handleOpenstatus = () => {
                   flexDirection: 'row',
                   // textDecoration: 'none !important',
                 }}>
-                <AddIcon className='plus' onClick={handleAdduser} />
-                <Pagination.First
-                  disabled={!havePreviousPage}
-                  onClick={() => setCurrentPage(1)}
-                />
-
                 <Pagination.Prev
                   onClick={() => setCurrentPage(currentPage - 1)}
                   disabled={!havePreviousPage}

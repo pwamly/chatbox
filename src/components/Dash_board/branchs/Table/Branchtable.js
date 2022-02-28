@@ -74,7 +74,6 @@ function BasicTable({ adduser, dispatch }) {
           <ImPencil
             className='IconStyle'
             onClick={() => {
-              console.log('xxxxxxxxxxxxxxxxxxxx', row);
               dispatch({ type: SAVE_BRANCH_DATA, payload: row });
               dispatch({ type: EDIT_USER });
             }}
@@ -96,7 +95,6 @@ function BasicTable({ adduser, dispatch }) {
   const columns = [
     { label: 'Branch Name', show: true, name: 'branchname' },
     { label: 'Region', show: true, name: 'region' },
-    { label: 'District ', show: true, name: 'district' },
     { label: 'Addess', show: true, name: 'branchaddress' },
     { label: 'Created', show: true, name: 'created' },
     { label: 'Updated', show: true, name: 'updated' },
@@ -148,7 +146,6 @@ function BasicTable({ adduser, dispatch }) {
           }}>
           <TableHead style={{ background: 'rgb(241, 239, 239)' }}>
             <TableRow>
-              <TableCell></TableCell>
               {columns.map((th) => (
                 <TableCell>{th.label}</TableCell>
               ))}
@@ -158,9 +155,6 @@ function BasicTable({ adduser, dispatch }) {
             {rows &&
               rows.map((row, index) => (
                 <TableRow key={row.id}>
-                  <TableCell component='th' scope='row'>
-                    {index + 1}
-                  </TableCell>
                   {columns.map((column) => {
                     if (column.show == false) {
                       return null;
@@ -195,10 +189,6 @@ function BasicTable({ adduser, dispatch }) {
                   disabled={!havePreviousPage}
                   onClick={() => setCurrentPage(1)}
                 />
-                {console.log(
-                  'cccccccccccccccccccccccccccccccccccccccccccccccccccccc',
-                  !havePreviousPage
-                )}
 
                 <Pagination.Prev
                   onClick={() => setCurrentPage(currentPage - 1)}
