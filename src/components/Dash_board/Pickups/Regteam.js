@@ -42,7 +42,7 @@ const MenuProps = {
 function getStyles(name, customerData, theme) {
   return {
     fontWeight:
-      name.indexOf(customerData) === -1
+      customerData.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -69,24 +69,9 @@ const roles = [
   },
   {
     id: 5,
-    name: 'Courier',
-  },
-  {
-    id: 6,
-    name: 'Manager',
+    name: 'IT',
   },
 ];
-
-function validatePassword(pw) {
-  console.log('', pw);
-  return (
-    /[A-Z]/.test(pw) &&
-    /[a-z]/.test(pw) &&
-    /[0-9]/.test(pw) &&
-    /[^A-Za-z0-9]/.test(pw) &&
-    pw.length > 7
-  );
-}
 
 function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
@@ -98,6 +83,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   // ........................... for select ..................
 
   const theme = useTheme();
+  const [customerData, setcustomerData] = useState('');
   const [cData, setCData] = useState('');
   const [distdata, setDistdata] = useState('');
   const [selebranch, setSelebranch] = useState('');
@@ -115,7 +101,6 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   const usremail = useRef('');
   const signature = useRef('');
   const usrpass = useRef('');
-  const usrpassc = useRef('');
 
   const {
     fname = '',
@@ -149,59 +134,34 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   // ................. for dropdeown..................
 
   async function handlesave() {
-    if (
-      (usrpass.current.value === '') |
-      (usrphone.current.value === '') |
-      (usremail.current.value === '') |
-      (usrphone.current.value === '') |
-      (selebranch == '') |
-      (selerole == '')
-    ) {
-      setLoading(false);
-      addToast('Fill all fields', {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-      return;
-    }
     try {
       if (saveedit == 'add') {
         setLoading(true);
+        // formref.current.reset();
+        let response = await addUser({
+          firstname: fsname.current.value,
+          lastname: lsname.current.value,
+          email: usremail.current.value,
+          username: usremail.current.value,
+          branchId: selebranch,
+          role: selerole,
+          phone: usrphone.current.value,
+          password: usrpass.current.value,
+        });
 
-        if (!validatePassword(usrpass.current.value)) {
+        if (response) {
+          console.log(response);
           setLoading(false);
-          addToast(' Password not strong', {
-            appearance: 'error',
+          addToast(' User Added successfully', {
+            appearance: 'success',
             autoDismiss: true,
           });
-
-          return;
-        } else {
-          let response = await addUser({
-            firstname: fsname.current.value,
-            lastname: lsname.current.value,
-            email: usremail.current.value,
-            username: usremail.current.value,
-            branchId: selebranch,
-            role: selerole,
-            phone: usrphone.current.value,
-            password: usrpass.current.value,
-          });
-
-          if (response) {
-            console.log(response);
-            setLoading(false);
-            addToast(' User Added successfully', {
-              appearance: 'success',
-              autoDismiss: true,
-            });
-            dispatch({ type: EXIT_ADD_FORM });
-            return;
-          }
-          setLoading(false);
-          addToast('Updated!', { appearance: 'warning' });
+          // window.location.replace(`/dashboard/employee`);
           return;
         }
+        setLoading(false);
+        addToast('Updated!', { appearance: 'warning' });
+        return;
       }
       if (saveedit == 'edit') {
         setLoading(true);
@@ -333,15 +293,6 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
         defaultValue={pass}
         ref={formref}
       />
-      {/* <TextField
-        label='Comfirm Password'
-        margin='normal'
-        inputRef={usrpassc}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        ref={formref}
-      /> */}
       <div
         style={{
           marginTop: '20px',
@@ -362,7 +313,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
           MenuProps={MenuProps}>
           {branchdata.map((el) => (
             <MenuItem
-              key={el.branchId}
+              key={el.id}
               value={el.branchId}
               style={getStyles(branchdata, selebranch, theme)}>
               {el.branchname}
@@ -405,17 +356,11 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
           gap: '70px',
         }}>
         {' '}
-        <button
+        <Button
           variant='contained'
-          className='btn-havor'
-          style={{
-            marginTop: '20px',
-            width: '200px',
-            background: 'red',
-            color: 'white',
-            height: '30px',
-            borderRadius: '6px',
-          }}
+          width='sm'
+          color='primary'
+          style={{ marginTop: '20px' }}
           onClick={handlesave}>
           {loading ? (
             <div style={spinerStyle}>
@@ -424,21 +369,14 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
           ) : (
             `${saveeditbtn}`
           )}{' '}
-        </button>{' '}
-        <button
+        </Button>{' '}
+        <Button
           variant='contained'
-          className='btn-havor'
-          style={{
-            marginTop: '20px',
-            width: '200px',
-            background: 'red',
-            color: 'white',
-            height: '30px',
-            borderRadius: '6px',
-          }}
+          width='sm'
+          style={{ marginTop: '20px' }}
           onClick={() => dispatch({ type: EXIT_ADD_FORM })}>
           Close
-        </button>
+        </Button>
       </div>
       <h4> </h4>
     </Card>

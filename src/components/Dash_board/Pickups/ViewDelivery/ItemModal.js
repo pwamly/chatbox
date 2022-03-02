@@ -292,7 +292,7 @@ function Regteam({
         fullWidth
         defaultValue={itemname}
         ref={formref}
-      />
+      />{' '}
       <div
         style={{
           marginTop: '20px',

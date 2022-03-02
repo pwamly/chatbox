@@ -11,9 +11,19 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
-import { addUser, additem, editUser } from '../../../../client/client';
+import {
+  addUser,
+  additem,
+  getItemByorder,
+  loadPickup,
+  UnloadDispatchDelivered,
+  editUser,
+  deliverItem,
+} from '../../../../client/client';
 import { Divider } from '@mui/material';
 import './order.css';
+import { useGetList } from '../../../../hooks/index';
+
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
@@ -26,10 +36,6 @@ import Selects from '@mui/material/Select';
 // .................... for select end.........................
 
 //  import Textdate from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import DateAdapter from '@mui/lab/AdapterMoment';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,21 +47,6 @@ const MenuProps = {
     },
   },
 };
-
-const items = [
-  {
-    id: 1,
-    name: 'PC',
-  },
-  {
-    id: 2,
-    name: 'SEED',
-  },
-  {
-    id: 3,
-    name: 'FOOD',
-  },
-];
 
 function getStyles(name, customerData, theme) {
   return {
@@ -88,30 +79,36 @@ function Regteam({
   const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
+  const history = useHistory();
+  const { orderid, itemname, itemtype, units, weight, loadnote, loadunits } =
+    reportdata;
+
   // ........................... for select ..................
 
   const theme = useTheme();
   const [customerData, setcustomerData] = useState('');
   const [cData, setCData] = useState('');
   const [distdata, setDistdata] = useState('');
-  const [itemtypef, setItemtype] = useState('');
+  const [itemf, setItem] = useState('');
   const [driver, setDriver] = useState('');
   const [regdatap, setRegtdatap] = useState('');
   const [pickdate, setPickdate] = useState(new Date().toGMTString());
   const [deliverydat, setDeliverydate] = useState(new Date().toGMTString());
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
+  const { results: itemdata } = useGetList(getItemByorder, {
+    orderid: orderid,
+  });
 
   // ........... to be passed to form values ..........
   const formref = useRef();
-  const itemnamef = useRef();
+  const loadunitsf = useRef();
   const unitsf = useRef();
   const weightf = useRef();
-  const notef = useRef();
-  // ......................... to be passed to the form default...........
+  const loadnotef = useRef();
+  const pickdat = useRef('');
 
-  const history = useHistory();
-  const { orderid, itemname, itemtype, units, weight, note } = reportdata;
+  // ......................... to be passed to the form default...........
 
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -161,13 +158,11 @@ function Regteam({
       if (saveedit == 'save') {
         setLoading(true);
         // formref.current.reset();
-        let response = await additem({
-          orderid,
-          itemname: itemnamef.current.value,
-          units: unitsf.current.value,
-          weight: weightf.current.value,
-          note: notef.current.value,
-          itemtype: itemtypef,
+        let response = await deliverItem({
+          itemdeliverynote: loadnotef.current.value,
+          deliveredunits: loadunitsf.current.value,
+          itemid: itemf,
+          orderid: orderid,
         });
 
         if (response) {
@@ -228,13 +223,13 @@ function Regteam({
 
   //......................... for regions............
 
-  const handleChangesitemtype = (event) => {
+  const handleChangesitem = (event) => {
     const {
       target: { value },
     } = event;
-    console.log('vccccccccccccccccccvvvvvvvvvvvvb', value);
+    console.log('', value);
 
-    setItemtype(value);
+    setItem(value);
   };
 
   //......................... for districts............
@@ -273,7 +268,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>ITEM FORM</FormLabel>
+      <FormLabel>DELIVER ORDER</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -283,16 +278,6 @@ function Regteam({
           height: '30px',
         }}
       />
-      <TextField
-        label='ITEM NAME'
-        margin='normal'
-        inputRef={itemnamef}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={itemname}
-        ref={formref}
-      />
       <div
         style={{
           marginTop: '20px',
@@ -300,45 +285,35 @@ function Regteam({
           gap: '5%',
         }}>
         {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>ITEM TYPE</InputLabel>
+        <InputLabel id='demo-multiple-name-label'>SELECT ITEM</InputLabel>
         <Select
           labelId='demo-multiple-name-labelreg'
           id='demo-multiple-namereg'
-          value={itemtypef}
+          value={itemf}
           label='helloo'
           style={{ width: '100%' }}
           fullWidth
-          onChange={handleChangesitemtype}
+          onChange={handleChangesitem}
           input={<OutlinedInput label='Name'></OutlinedInput>}
           MenuProps={MenuProps}>
-          {items.map((el) => (
+          {itemdata.map((el) => (
             <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(items, itemtypef, theme)}>
-              {el.name}
+              key={el.itemid}
+              value={el.itemid}
+              style={getStyles(itemdata, itemf, theme)}>
+              {el.itemname}
             </MenuItem>
           ))}
         </Select>
       </div>
       <TextField
-        label='UNITS'
+        label='QUANTITY'
         margin='normal'
-        inputRef={unitsf}
+        inputRef={loadunitsf}
         variant='outlined'
         autoComplete='off'
         fullWidth
-        defaultValue={units}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='WEIGHT IN KG'
-        margin='normal'
-        inputRef={weightf}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={weight}
+        defaultValue={loadunits}
         ref={formref}
       />{' '}
       <TextField
@@ -346,12 +321,12 @@ function Regteam({
         rows={3}
         maxRows={4}
         fullWidth
-        label='DESCRIPTION'
+        label='NOTE'
         margin='normal'
-        inputRef={notef}
+        inputRef={loadnotef}
         variant='outlined'
         autoComplete='off'
-        defaultValue={note}
+        defaultValue={loadnote}
         ref={formref}
       />
       <Divider

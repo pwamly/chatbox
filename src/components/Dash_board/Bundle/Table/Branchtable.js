@@ -109,6 +109,7 @@ function BasicTable({ adduser, dispatch }) {
   const columns = [
     { label: 'Bundle Serial Number', show: true, name: 'bundlename' },
     { label: 'From', show: true, name: 'bundlefrom' },
+    { label: 'Next Destination', show: true, name: 'nextDestination' },
     { label: 'Destination ', show: true, name: 'bundleto' },
     { label: 'Status', show: true, name: 'status' },
     { label: 'Created', show: true, name: 'created' },

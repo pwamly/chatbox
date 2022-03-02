@@ -12,6 +12,8 @@ import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../../actions';
 import Checkbox from '@mui/material/Checkbox';
+
+
 import {
   addUser,
   additem,
@@ -202,7 +204,8 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
 
   function filterBranch(data, region) {
     let neworders = data.filter(function (el) {
-      return el.dregion == region;
+      // return el.dregion == region && el.pickupUnloaded;
+      return el.pickupUnloaded & !el.isbundled;
     });
     setRows(neworders);
     return neworders;
@@ -248,7 +251,7 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
       <Divider
         fullWidth
         style={{
-          background: 'gray',
+          background: 'red',
           marginTop: '10px',
           marginBottom: '30px',
           height: '30px',

@@ -331,6 +331,8 @@ export const getDispatchedOrders = async (param) => {
   }
 };
 
+
+
 export const getBundledOrders = async (param) => {
   const { bundleid } = param;
   try {
@@ -356,10 +358,6 @@ export const getDelivery = async (param) => {
     return { isSuccessful: false };
   }
 };
-
-
-
-
 
 //.............................. get drivers ..................
 
@@ -409,12 +407,9 @@ export const scheduleDispatch = async (data) => {
 export const scheduleBundleDispatch = async (data) => {
   const { bundleid } = data;
   try {
-    const response = await instance.post(
-      `/api/bundle/scheduleDispatch/<${bundleid}`,
-      {
-        ...data,
-      }
-    );
+    const response = await instance.post('/api/bundle/scheduleDispatch', {
+      ...data,
+    });
     if (response) {
       return response;
     }

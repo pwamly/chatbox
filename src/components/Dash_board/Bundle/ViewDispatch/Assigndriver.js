@@ -339,7 +339,7 @@ function Regteam({
       <Divider
         fullWidth
         style={{
-          background: 'gray',
+          background: 'red',
           marginTop: '10px',
           marginBottom: '30px',
           height: '30px',
@@ -419,7 +419,7 @@ function Regteam({
       <Divider
         fullWidth
         style={{
-          background: 'gray',
+          background: 'red',
           marginTop: '10px',
           marginBottom: '30px',
           height: '30px',

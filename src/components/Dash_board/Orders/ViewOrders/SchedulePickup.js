@@ -19,6 +19,8 @@ import {
   getVehicles,
   getUsers,
   getDrivers,
+  getOrders,
+  getItemByorder,
 } from '../../../../client/client';
 import { Divider } from '@mui/material';
 import '../order.css';
@@ -40,6 +42,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import DateAdapter from '@mui/lab/AdapterMoment';
+import Checkbox from '@mui/material/Checkbox';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -68,8 +71,11 @@ const spinerStyle = {
   gap: '12px',
 };
 
+let listoItems = [];
+
 function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
+  const { orderid, pickupnote } = reportdata;
 
   // ........................... for select ..................
 
@@ -81,6 +87,10 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   const { results: vehicledata } = useGetList(getVehicles);
   const [seledrive, setSeledriver] = useState('');
   const [selevehicle, setSelevehicle] = useState('');
+  const { results: rowsdata } = useGetList(getItemByorder, {
+    orderid: orderid,
+  });
+  const [orderlist, setOrderList] = useState([]);
 
   // ........... to be passed to form values ..........
   const formref = useRef();
@@ -90,7 +100,6 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   // ......................... to be passed to the form default...........
 
   const history = useHistory();
-  const { orderid, pickupnote } = reportdata;
 
   function selcust(data, selector) {
     console.log('', data, selector);
@@ -113,7 +122,8 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           pickupnote: pickupnotef.current.value,
           driverId: seledrive,
           vehicleId: selevehicle,
-          scheduledPickuptime: pickdate._i, // note this value is from usestate not userf form
+          scheduledPickuptime: pickdate._i,
+          items: listoItems,
         });
 
         if (response) {
@@ -176,6 +186,18 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
 
   //................................... for date time ............
 
+  function handlecheck(val, data) {
+    if (val.ischecked) {
+      listoItems = [...orderlist, data];
+      setOrderList(listoItems);
+    } else {
+      listoItems = orderlist.filter(function (returnableObjects) {
+        return returnableObjects.orderid !== data.orderid;
+      });
+      setOrderList(listoItems);
+    }
+  }
+
   return (
     <Card
       variant='outlined '
@@ -194,89 +216,70 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
       <Divider
         fullWidth
         style={{
-          background: 'gray',
+          background: 'red',
           marginTop: '10px',
           marginBottom: '30px',
           height: '30px',
         }}
       />
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>SELECT DRIVER</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelreg'
-          id='demo-multiple-namereg'
-          value={seledrive}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesdriver}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {driverdata.map((el) => (
-            <MenuItem
-              key={el.userid}
-              value={el.userid}
-              style={getStyles(driverdata, seledrive, theme)}>
-              {el.fname}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>SELECT VEHICLE</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelreg'
-          id='demo-multiple-namere'
-          value={selevehicle}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesvehicle}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {vehicledata.map((el) => (
-            <MenuItem
-              key={el.vehicleid}
-              value={el.name}
-              style={getStyles(vehicledata, selevehicle, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <DateTimePicker
-            renderInput={(props) => (
-              <TextField
-                label='pickup-date'
-                margin='normal'
-                inputRef={pickdat}
-                variant='outlined'
-                autoComplete='off'
-                fullWidth
-                {...props}
-              />
-            )}
-            label='Pick Up Date'
-            value={pickdate}
-            onChange={(newValue) => {
-              setPickdate(newValue);
-            }}
-          />
-        </LocalizationProvider>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+        {' '}
+        <div
+          style={{
+            marginTop: '20px',
+            width: '100%',
+            gap: '5%',
+          }}>
+          {/* <span style={{ width: '12%' }}>FROM : </span> */}
+          <InputLabel id='demo-multiple-name-label'>SELECT DRIVER</InputLabel>
+          <Select
+            labelId='demo-multiple-name-labelreg'
+            id='demo-multiple-namereg'
+            value={seledrive}
+            label='helloo'
+            style={{ width: '100%' }}
+            fullWidth
+            onChange={handleChangesdriver}
+            input={<OutlinedInput label='Name'></OutlinedInput>}
+            MenuProps={MenuProps}>
+            {driverdata.map((el) => (
+              <MenuItem
+                key={el.userid}
+                value={el.userid}
+                style={getStyles(driverdata, seledrive, theme)}>
+                {el.fname}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+        <div
+          style={{
+            marginTop: '20px',
+            width: '100%',
+            gap: '5%',
+          }}>
+          {/* <span style={{ width: '12%' }}>FROM : </span> */}
+          <InputLabel id='demo-multiple-name-label'>SELECT VEHICLE</InputLabel>
+          <Select
+            labelId='demo-multiple-name-labelreg'
+            id='demo-multiple-namere'
+            value={selevehicle}
+            label='helloo'
+            style={{ width: '100%' }}
+            fullWidth
+            onChange={handleChangesvehicle}
+            input={<OutlinedInput label='Name'></OutlinedInput>}
+            MenuProps={MenuProps}>
+            {vehicledata.map((el) => (
+              <MenuItem
+                key={el.vehicleid}
+                value={el.name}
+                style={getStyles(vehicledata, selevehicle, theme)}>
+                {el.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
       </div>
 
       <TextField
@@ -295,12 +298,75 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
       <Divider
         fullWidth
         style={{
-          background: 'gray',
+          background: 'red',
           marginTop: '10px',
           marginBottom: '30px',
           height: '30px',
         }}
       />
+      <div className='Orderdetails'>
+        <div className='ordermaintitle'>
+          <h3 style={{ width: '30%' }}>Items</h3>
+        </div>
+
+        <div className='ordertable'>
+          <div className='tr'>
+            <div className='th'>
+              <h3>Item Type </h3>
+            </div>
+            <div className='thd'>
+              <h3>Descriptions</h3>
+            </div>
+
+            <div className='th'>
+              <h3>Units</h3>
+            </div>
+            <div className='th'>
+              <h3>Weight in Kg</h3>
+            </div>
+
+            <div className='th'>
+              <h3>Status</h3>
+            </div>
+            <div className='ths'>
+              <h3>Select</h3>
+            </div>
+          </div>
+
+          {rowsdata.length !== 0 ? (
+            rowsdata.map((row, index) => (
+              <div className='tr' id={index}>
+                <div className='td'>{row.itemtype}</div>
+                <div className='tdd'>{row.note}</div>
+                <div className='td'>{row.units}</div>
+                <div className='td'>{row.weight}</div>
+                <div className='td'>{row.status}</div>
+
+                <div className='tds'>
+                  {row.pickupScheduled && (
+                    <Checkbox
+                      id={index}
+                      onChange={(e) => {
+                        console.log(row);
+                        handlecheck({ ischecked: e.target.checked }, row);
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '30px',
+              }}>
+              No Items for this order
+            </div>
+          )}
+        </div>
+      </div>
       <div
         style={{
           display: 'flex',
@@ -308,30 +374,45 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           justifyContent: 'center',
           gap: '70px',
         }}>
-        <Button
+        <button
+          className='btn-havor'
+          background='red'
           variant='contained'
-          width='sm'
-          color='primary'
-          style={{ marginTop: '20px' }}
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={handlesave}>
           {loading ? (
             <div style={spinerStyle}>
               <Spinner loading={loading} /> Loading...{' '}
             </div>
           ) : (
-            `${saveeditbtn}`
-          )}{' '}
-        </Button>{' '}
-        <Button
+            'Schedule'
+          )}
+        </button>{' '}
+        <button
+          className='btn-havor'
+          background='red'
           variant='contained'
-          width='sm'
-          style={{ marginTop: '20px' }}
+          style={{
+            marginTop: '20px',
+            width: '200px',
+            background: 'red',
+            color: 'white',
+            height: '30px',
+            borderRadius: '6px',
+          }}
           onClick={() => {
             dispatch({ type: EXIT_ADD_FORM });
             history.goBack();
           }}>
           Close
-        </Button>
+        </button>
       </div>
     </Card>
   );

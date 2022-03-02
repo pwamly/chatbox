@@ -464,7 +464,7 @@ return (
                         border: 'none !important',
                         fontSize: 'small',
                       }}>
-                      {row[column.name] || 'N/A'}
+                      {row[column.name] || ''}
                     </TableCell>
                   );
                 })}

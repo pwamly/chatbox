@@ -6,65 +6,17 @@ import ItemModal from './ItemModal';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useGet, useGetList } from '../../../../hooks/index';
-import { useToasts } from 'react-toast-notifications';
-
-import {
-  getItemByorder,
-  getOrders,
-  deliverbundle,
-  getBundledOrders,
-} from '../../../../client/client';
+import { getItemByorder } from '../../../../client/client';
 import { Divider } from '@mui/material';
 
-import {
-  ADD_USER,
-  EDIT_USER,
-  CLEAR_PROFILE_DATA,
-  SAVE_REPORT_DATA,
-  SAVE_BRANCH_DATA,
-  CLEAR_BRANCH_DATA,
-  EDIT_BUNDLE_DATA,
-} from '../../../../actions';
+function OrderViewF({ reportdata }) {
+  const { orderid } = reportdata;
 
-function OrderViewF({ reportdata, dispatch }) {
-  const { addToast } = useToasts();
-
-  const { bundleid } = reportdata;
-  const [loading, setLoading] = useState(false);
-
-  const { results: rows, refresh } = useGetList(getBundledOrders, {
-    bundleid: bundleid,
-  });
-
-  function delay(delayInms) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(2);
-      }, delayInms);
-    });
-  }
-
-  async function handledeliver() {
-    setLoading(true);
-    // formref.current.reset();
-    let response = await deliverbundle({
-      bundleid: bundleid,
-    });
-
-    if (response) {
-      console.log(response);
-      setLoading(false);
-      addToast(' Item Added successfully', {
-        appearance: 'success',
-        autoDismiss: true,
-      });
-      // window.location.replace(`/dashboard/employee`);
-      return;
-    }
-    setLoading(false);
-    addToast('Failed!', { appearance: 'error' });
-    return;
-  }
+  const {
+    results: rows,
+    loading,
+    refresh,
+  } = useGetList(getItemByorder, { orderid });
 
   const statusColor = (status) => {
     let color = 'none';
@@ -125,12 +77,24 @@ function OrderViewF({ reportdata, dispatch }) {
           </div>
           <div className='toform'>
             <div className='consignordetails'>
-              <h3 className='csngtitle'>From (Branch)</h3>
+              <h3 className='csngtitle'>From (Consignor)</h3>
               <div className='cdetails'>
-                <h2 className='clabel'>Branch Name:</h2>
+                <h2 className='clabel'>Full Name:</h2>
                 <span className='cvalue'>
                   {' '}
                   {reportdata.consignername ? reportdata.consignername : 'NA'}
+                </span>
+              </div>
+              <div className='cdetails'>
+                <h2 className='clabel'>Company Name:</h2>
+                <span className='cvalue'>
+                  {reportdata.customername ? reportdata.customername : 'NA'}
+                </span>
+              </div>
+              <div className='cdetails'>
+                <h2 className='clabel'>Physical Address:</h2>
+                <span className='cvalue'>
+                  {reportdata.cmpnaddress ? reportdata.cmpnaddress : 'NA'}
                 </span>
               </div>
               <div className='cdetails'>
@@ -148,20 +112,32 @@ function OrderViewF({ reportdata, dispatch }) {
                 </span>
               </div>{' '}
               <div className='cdetails'>
-                <h2 className='clabel'>Bundle Dispatch Date:</h2>
-
+                <h2 className='clabel'>Pick Up Date:</h2>
                 <span className='cvalue'>
-                  {' '}
-                  {reportdata.expdlrtime ? reportdata.expdlrtime : 'NA'}
+                  {reportdata.pickuptime ? reportdata.pickuptime : 'NA'}
                 </span>
               </div>
             </div>
             <div className='consignordetails'>
-              <h1 className='csngtitle'>TO (Branch)</h1>
+              <h1 className='csngtitle'>TO (Consignee)</h1>
               <div className='cdetails'>
-                <h2 className='clabel'>Branch Name:</h2>
+                <h2 className='clabel'>Full Name:</h2>
                 <span className='cvalue'>
                   {reportdata.consigneename ? reportdata.consigneename : 'NA'}
+                </span>
+              </div>
+              <div className='cdetails'>
+                <h2 className='clabel'>Company Name:</h2>
+                <span className='cvalue'>
+                  {' '}
+                  {reportdata.customername ? reportdata.customername : 'NA'}
+                </span>
+              </div>
+              <div className='cdetails'>
+                <h2 className='clabel'>Physical Address:</h2>
+                <span className='cvalue'>
+                  {' '}
+                  {reportdata.cneaddress ? reportdata.cneaddress : 'NA'}
                 </span>
               </div>
               <div className='cdetails'>
@@ -177,7 +153,7 @@ function OrderViewF({ reportdata, dispatch }) {
                 </span>
               </div>{' '}
               <div className='cdetails'>
-                <h2 className='clabel'>Bundle Dispatch Date Delivery Date:</h2>
+                <h2 className='clabel'>EXP Delivery Date:</h2>
 
                 <span className='cvalue'>
                   {' '}
@@ -186,41 +162,26 @@ function OrderViewF({ reportdata, dispatch }) {
               </div>
             </div>
           </div>
-
           <div
             style={{
               width: '100%',
               paddingTop: '30px',
-              paddingRight: '10px',
               display: 'flex',
               justifyContent: 'flex-end',
               paddingBottom: '20px',
+              paddingRight: '30px',
               gap: '30px',
             }}>
-            {!reportdata.dispatchScheduled && (
+            {reportdata.orderStatus !== 'Delivered' && (
               <button
-                style={{ width: '120px' }}
+                style={{ width: '200px' }}
                 onClick={() => {
-                  history.push('/dashboard/bundles/schedule-dispatch');
-                  dispatch({
-                    type: SAVE_REPORT_DATA,
-                    payload: { bundleid: bundleid },
-                  });
+                  history.push('/dashboard/deliver-order');
                 }}>
-                Schedule Dispatch
-              </button>
-            )}
-            {!reportdata.dispatchDelivered && (
-              <button
-                style={{ width: '100px' }}
-                onClick={() => {
-                  handledeliver();
-                }}>
-                Deliver Dispatch
+                Delivered Order
               </button>
             )}
           </div>
-
           <Divider
             fullWidth
             style={{
@@ -230,31 +191,31 @@ function OrderViewF({ reportdata, dispatch }) {
           />
           <div className='Orderdetails'>
             <div className='ordermaintitle'>
-              <h3 style={{ width: '30%' }}>Orders</h3>
+              <h3 style={{ width: '30%' }}>Order Items</h3>
             </div>
 
             <div className='ordertable'>
               <div className='tr'>
                 <div className='th'>
-                  <h3>Customer Name</h3>
+                  <h3>Item Type</h3>
                 </div>
                 <div className='thd'>
-                  <h3>Package Location</h3>
+                  <h3>Description</h3>
                 </div>
                 <div className='th'>
-                  <h3>Consignor Name</h3>
+                  <h3>Units</h3>
                 </div>
                 <div className='th'>
-                  <h3>Destination</h3>
+                  <h3>Weight in Kg</h3>
                 </div>
                 <div className='th'>
-                  <h3>Consignee</h3>
+                  <h3>To be picked At</h3>
                 </div>
                 <div className='th'>
-                  <h3>Dispatch Date</h3>
+                  <h3>To be picked By</h3>
                 </div>
                 <div className='th'>
-                  <h3>Expected Delivered Date</h3>
+                  <h3>Vehicle</h3>
                 </div>
                 <div className='th'>
                   <h3>Status</h3>
@@ -264,15 +225,15 @@ function OrderViewF({ reportdata, dispatch }) {
               {rows.length !== 0 ? (
                 rows.map((row, index) => (
                   <div className='tr' id={index}>
-                    <div className='td'>{row.customername}</div>
-                    <div className='tdd'>{row.pregion}</div>
-                    <div className='td'>{row.consignername}</div>
-                    <div className='td'>{row.dregion}</div>
-                    <div className='td'>{row.consigneename}</div>
-                    <div className='td'>{row.scheduledDispatchtime}</div>
-                    <div className='td'>{row.expdlrtime}</div>
-                    <div className='td' style={statusColor(row.orderStatus)}>
-                      {row.orderStatus}
+                    <div className='td'>{row.itemtype}</div>
+                    <div className='tdd'>{row.note}</div>
+                    <div className='td'>{row.units}</div>
+                    <div className='td'>{row.weight}</div>
+                    <div className='td'>{row.description}</div>
+                    <div className='td'>{row.description}</div>
+                    <div className='td'>{row.vehicledetails}</div>
+                    <div className='td' style={statusColor(row.status)}>
+                      {row.status}
                     </div>
                   </div>
                 ))

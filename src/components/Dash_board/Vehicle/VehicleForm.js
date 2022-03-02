@@ -62,6 +62,18 @@ const routestatusd = [
   },
 ];
 
+const transTypesd = [
+  {
+    name: 'VEHICLE',
+    value: 'vehicle',
+  },
+
+  {
+    name: 'MOTORCYCLE',
+    value: 'motorcycle',
+  },
+];
+
 function getStyles(name, customerData, theme) {
   return {
     fontWeight:
@@ -97,6 +109,7 @@ function Regteam({
   const theme = useTheme();
   const [routestat, setRoutestat] = useState('');
   const [stat, setStatus] = useState('');
+  const [transtype, setTranstype] = useState('');
   const { addToast } = useToasts();
   const [loading, setLoading] = useState(false);
 
@@ -141,7 +154,6 @@ function Regteam({
   };
 
   function selcust(data, selector) {
-    console.log('fff', data, selector);
     let newdata = data.reduce((acc, item) => {
       if (item.customerId === selector) {
         acc.push(item);
@@ -173,6 +185,7 @@ function Regteam({
           loadcapacity: lcapacity.current.value,
           status: stat,
           routestatus: routestat,
+          type: transtype,
         });
 
         if (response) {
@@ -231,8 +244,6 @@ function Regteam({
     setStatus(value);
   };
 
-  //......................... for districts............
-
   const handleChangesroutestatus = (event) => {
     const {
       target: { value },
@@ -240,7 +251,14 @@ function Regteam({
     setRoutestat(value);
   };
 
-  //................................... for date time ............
+  //......................... for trans............
+
+  const handleChangeTransType = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setTranstype(value);
+  };
 
   return (
     <Card
@@ -256,7 +274,7 @@ function Regteam({
         transition: '0.3s',
         margin: '20px',
       }}>
-      <FormLabel>VEHICLE FORM</FormLabel>
+      <FormLabel>TRANSPORT FORM</FormLabel>
       <Divider
         fullWidth
         style={{
@@ -276,6 +294,33 @@ function Regteam({
         defaultValue={name}
         ref={formref}
       />
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        <InputLabel id='demo-multiple-name-label'>Transport Type</InputLabel>
+        <Select
+          labelId='demo-multiple-name-labelreg'
+          id='demo-multiple-namereg'
+          value={transtype}
+          label='helloo'
+          defaultValue='Mwanza'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangeTransType}
+          MenuProps={MenuProps}>
+          {transTypesd.map((el) => (
+            <MenuItem
+              key={el.name}
+              value={el.value}
+              style={getStyles(transTypesd, transtype, theme)}>
+              {el.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
       <TextField
         label='Plate Number'
         margin='normal'

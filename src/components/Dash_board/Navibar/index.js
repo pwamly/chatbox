@@ -100,6 +100,14 @@ function Navbar({ profile }) {
             </Link>
             <Link
               onClick={() => {
+                window.location.replace('/dashboard/pickups');
+              }}>
+              <li>
+                <a href='#'>Pickups</a>
+              </li>
+            </Link>
+            <Link
+              onClick={() => {
                 window.location.replace('/dashboard/delivery');
               }}>
               <li>

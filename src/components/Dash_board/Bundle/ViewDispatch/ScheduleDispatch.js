@@ -19,6 +19,7 @@ import {
   editUser,
   getVehicles,
   getUsers,
+  getBranches,
   getDrivers,
   getTransporters,
 } from '../../../../client/client';
@@ -84,7 +85,9 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   const { results: transporterdata } = useGetList(getTransporters);
   const [seledrive, setSeledriver] = useState('');
   const [seletrans, setSeletrans] = useState('');
+  const [selebranch, setSeleBranch] = useState('');
   const [selevehicle, setSelevehicle] = useState('');
+  const { results: branchdt } = useGetList(getBranches);
 
   // ........... to be passed to form values ..........
   const formref = useRef();
@@ -118,8 +121,9 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           dispatchDriverId: seledrive,
           dispatchvehicleId: selevehicle,
           transporterid: seletrans,
+          nextDestination: selebranch,
           scheduledDispatchtime: pickdate._i,
-          bundleid: bundleid,
+          bundleid_: bundleid,
         });
 
         if (response) {
@@ -185,6 +189,13 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
       target: { value },
     } = event;
     setSeletrans(value);
+  };
+
+  const handleChangebranch = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSeleBranch(value);
   };
   //................................... for date time ............
 
@@ -320,7 +331,36 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
           />
         </LocalizationProvider>
       </div>
-
+      <div
+        style={{
+          marginTop: '20px',
+          width: '100%',
+          gap: '5%',
+        }}>
+        {/* <span style={{ width: '12%' }}>FROM : </span> */}
+        <InputLabel id='demo-multiple-name-label'>
+          NEXT DESTINATION BRANCH
+        </InputLabel>
+        <Select
+          labelId='demo-multiple-name-labelreg'
+          id='demo-multiple-namereg'
+          value={selebranch}
+          label='helloo'
+          style={{ width: '100%' }}
+          fullWidth
+          onChange={handleChangebranch}
+          input={<OutlinedInput label='Name'></OutlinedInput>}
+          MenuProps={MenuProps}>
+          {branchdt.map((el) => (
+            <MenuItem
+              key={el.branchId}
+              value={el.region}
+              style={getStyles(branchdt, selebranch, theme)}>
+              {el.branchname}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
       <TextField
         multiline
         rows={3}

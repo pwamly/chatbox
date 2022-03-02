@@ -85,7 +85,6 @@ function BasicTable({ adduser, dispatch }) {
           <ImPencil
             className='IconStyle'
             onClick={() => {
-              console.log('xxxxxxxxxxxxxxxxxxxx', row);
               dispatch({ type: SAVE_BRANCH_DATA, payload: row });
               dispatch({ type: EDIT_USER });
             }}
@@ -106,6 +105,7 @@ function BasicTable({ adduser, dispatch }) {
   let history = useHistory();
   const columns = [
     { label: 'Vehicle Name', show: true, name: 'name' },
+    { label: 'TYPE', show: true, name: 'type' },
     { label: 'Plate Number', show: true, name: 'plateno' },
     { label: 'Model', show: true, name: 'model' },
     { label: 'Load Capacity', show: true, name: 'loadcapacity' },
