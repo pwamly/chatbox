@@ -2,5 +2,11 @@
     "liveServer.settings.port": 5501,
     "prettier.jsxBracketSameLine": true,
     "prettier.jsxSingleQuote": true,
-    "prettier.vueIndentScriptAndStyle": true
+    "prettier.vueIndentScriptAndStyle": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modifications",
+    "javascript.preferences.quoteStyle": "single",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.requireConfig": true,
+    "editor.formatOnPaste": true
 }

@@ -90,262 +90,311 @@ function Regteam({
   const taddress = useRef('');
   const troute = useRef('');
   const tdetails = useRef('');
+   const tinf = useRef('');
+   const vrnf = useRef('');
 
-  // ......................... to be passed to the form default...........
+   // ......................... to be passed to the form default...........
 
-  const {
-    name = '',
-    vehicledetails = '',
-    email = '',
-    address = '',
-    phone = '',
-    route = '',
-  } = branchdata;
-  const handleChange = (event) => {
-    setCng(event.target.value);
-  };
+   const {
+       name = '',
+       vehicledetails = '',
+       email = '',
+       address = '',
+       phone = '',
+       route = '',
+       tin = '',
+       vrn = ''
+   } = branchdata;
+   const handleChange = (event) => {
+       setCng(event.target.value);
+   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+   const handleClose = () => {
+       setOpen(false);
+   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose2 = () => {
-    setOpen2(false);
-  };
+   const handleOpen = () => {
+       setOpen(true);
+   };
+   const handleClose2 = () => {
+       setOpen2(false);
+   };
 
-  const handleOpen2 = () => {
-    setOpen2(true);
-  };
-  const handleChange2 = (event) => {
-    setRole(event.target.value);
-  };
+   const handleOpen2 = () => {
+       setOpen2(true);
+   };
+   const handleChange2 = (event) => {
+       setRole(event.target.value);
+   };
 
-  function selcust(data, selector) {
-    console.log('fff', data, selector);
-    let newdata = data.reduce((acc, item) => {
-      if (item.customerId === selector) {
-        acc.push(item);
-      }
-      return acc;
-    }, []);
-    return newdata[0];
-  }
+   function selcust(data, selector) {
+       console.log('fff', data, selector);
+       let newdata = data.reduce((acc, item) => {
+           if (item.customerId === selector) {
+               acc.push(item);
+           }
+           return acc;
+       }, []);
+       return newdata[0];
+   }
 
-  function selcons(data, selector) {
-    let newdata = data.reduce((acc, item) => {
-      if (item.consignerid === selector) {
-        acc.push(item);
-      }
-      return acc;
-    }, []);
-    return newdata[0];
-  }
+   function selcons(data, selector) {
+       let newdata = data.reduce((acc, item) => {
+           if (item.consignerid === selector) {
+               acc.push(item);
+           }
+           return acc;
+       }, []);
+       return newdata[0];
+   }
 
-  async function handlesave() {
-    try {
-      if (saveedit == 'add') {
-        setLoading(true);
-        // formref.current.reset();
-        let response = await registerTransporter({
-          name: tname.current.value,
-          email: temail.current.value,
-          phone: tphone.current.value,
-          address: taddress.current.value,
-          route: troute.current.value,
-          vehicledetails: tdetails.current.value,
-        });
+   async function handlesave() {
+       try {
+           if (saveedit == 'add') {
+               setLoading(true);
+               // formref.current.reset();
+               let response = await registerTransporter({
+                   name: tname.current.value,
+                   email: temail.current.value,
+                   phone: tphone.current.value,
+                   address: taddress.current.value,
+                   route: troute.current.value,
+                   vehicledetails: tdetails.current.value,
+                   tin: tinf.current.value,
+                   vrn: vrnf.current.value
+               });
 
-        if (response) {
-          console.log(response);
-          setLoading(false);
-          addToast(' User Added successfully', {
-            appearance: 'success',
-            autoDismiss: true,
-          });
-          // window.location.replace(`/dashboard/employee`);
-          return;
-        }
-        setLoading(false);
-        addToast('Updated!', { appearance: 'warning' });
-        return;
-      }
-      if (saveedit == 'edit') {
-        setLoading(true);
-        // formref.current.reset();
-        let response = await editUser({
-          name: tname.current.value,
-          email: temail.current.value,
-          phone: tphone.current.value,
-          address: taddress.current.value,
-          route: troute.current.value,
-          vehicledetails: tdetails.current.value,
-        });
+               if (response) {
+                   console.log(response);
+                   setLoading(false);
+                   addToast(' User Added successfully', {
+                       appearance: 'success',
+                       autoDismiss: true
+                   });
+                   window.location.replace(`/dashboard/transporters`);
+                   return;
+               }
+               setLoading(false);
+               addToast('Updated!', { appearance: 'warning' });
+               return;
+           }
+           if (saveedit == 'edit') {
+               setLoading(true);
+               // formref.current.reset();
+               let response = await editUser({
+                   name: tname.current.value,
+                   email: temail.current.value,
+                   phone: tphone.current.value,
+                   address: taddress.current.value,
+                   route: troute.current.value,
+                   vehicledetails: tdetails.current.value,
+                   tin: tinf.current.value,
+                   vrn: vrnf.current.value
+               });
 
-        if (response) {
-          console.log(response);
-          setLoading(false);
-          addToast(' User Updated successfully', {
-            appearance: 'success',
-            autoDismiss: true,
-          });
-          // window.location.replace(`/dashboard/employee`);
-          return;
-        }
-        setLoading(false);
-        addToast('Updated!', { appearance: 'warning' });
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      addToast('Failed', { appearance: 'error' });
-    }
-  }
+               if (response) {
+                   console.log(response);
+                   setLoading(false);
+                   addToast(' User Updated successfully', {
+                       appearance: 'success',
+                       autoDismiss: true
+                   });
+                   window.location.replace(`/dashboard/transporters`);
+                   return;
+               }
+               setLoading(false);
+               addToast('Updated!', { appearance: 'warning' });
+               return;
+           }
+       } catch (error) {
+           console.log(error);
+           setLoading(false);
+           addToast('Failed', { appearance: 'error' });
+       }
+   }
 
-  //................................... for date time ............
+   //................................... for date time ............
 
-  return (
-    <Card
-      variant='outlined '
-      style={{
-        fontFamily: 'sans-serif',
-        minWidth: '300px',
-        borderRadius: '16px',
-        padding: '40px',
-        width: '80%',
-        height: 'auto',
-        borderRadius: '16px',
-        transition: '0.3s',
-        margin: '20px',
-      }}>
-      <FormLabel>TRANSPORTER FORM</FormLabel>
-      <Divider
-        fullWidth
-        style={{
-          background: 'gray',
-          marginTop: '10px',
-          marginBottom: '30px',
-          height: '30px',
-        }}
-      />{' '}
-      <TextField
-        label='Transporter Name'
-        margin='normal'
-        inputRef={tname}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={name}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Email'
-        margin='normal'
-        inputRef={temail}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={email}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Phone'
-        margin='normal'
-        inputRef={tphone}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={phone}
-        ref={formref}
-      />{' '}
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}></div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}></div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}></div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}></div>
-      <TextField
-        label='Address'
-        margin='normal'
-        inputRef={taddress}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={address}
-        ref={formref}
-      />
-      <TextField
-        label='Route'
-        margin='normal'
-        inputRef={troute}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={route}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Vehicle Details'
-        margin='normal'
-        inputRef={tdetails}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={vehicledetails}
-        ref={formref}
-      />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          gap: '70px',
-        }}>
-        <Button
-          variant='contained'
-          width='sm'
-          color='primary'
-          style={{ marginTop: '20px' }}
-          onClick={handlesave}>
-          {loading ? (
-            <div style={spinerStyle}>
-              <Spinner loading={loading} /> Loading...{' '}
-            </div>
-          ) : (
-            `${saveeditbtn}`
-          )}{' '}
-        </Button>{' '}
-        <Button
-          variant='contained'
-          width='sm'
-          style={{ marginTop: '20px' }}
-          onClick={() => dispatch({ type: EXIT_ADD_FORM })}>
-          Close
-        </Button>
-      </div>
-    </Card>
-  );
+   return (
+       <Card
+           variant="outlined "
+           style={{
+               fontFamily: 'sans-serif',
+               minWidth: '300px',
+               borderRadius: '16px',
+               padding: '40px',
+               width: '80%',
+               height: 'auto',
+               borderRadius: '16px',
+               transition: '0.3s',
+               margin: '20px'
+           }}
+       >
+           <FormLabel>TRANSPORTER FORM</FormLabel>
+           <Divider
+               fullWidth
+               style={{
+                   background: 'red',
+                   marginTop: '10px',
+                   marginBottom: '30px',
+                   height: '30px'
+               }}
+           />{' '}
+           <TextField
+               label="Transporter Name"
+               margin="normal"
+               inputRef={tname}
+               variant="outlined"
+               autoComplete="off"
+               fullWidth
+               defaultValue={name}
+               ref={formref}
+           />{' '}
+           <TextField
+               label="TIN"
+               margin="normal"
+               inputRef={tinf}
+               variant="outlined"
+               autoComplete="off"
+               fullWidth
+               defaultValue={tin}
+               ref={formref}
+           />
+           <TextField
+               label="VRN"
+               margin="normal"
+               inputRef={vrnf}
+               variant="outlined"
+               autoComplete="off"
+               fullWidth
+               defaultValue={vrn}
+               ref={formref}
+           />{' '}
+           <TextField
+               label="Email"
+               margin="normal"
+               inputRef={temail}
+               variant="outlined"
+               autoComplete="off"
+               fullWidth
+               defaultValue={email}
+               ref={formref}
+           />{' '}
+           <TextField
+               label="Phone"
+               margin="normal"
+               inputRef={tphone}
+               variant="outlined"
+               autoComplete="off"
+               fullWidth
+               defaultValue={phone}
+               ref={formref}
+           />{' '}
+           <div
+               style={{
+                   marginTop: '20px',
+                   width: '100%',
+                   gap: '5%'
+               }}
+           ></div>
+           <div
+               style={{
+                   marginTop: '20px',
+                   width: '100%',
+                   gap: '5%'
+               }}
+           ></div>
+           <div
+               style={{
+                   marginTop: '20px',
+                   width: '100%',
+                   gap: '5%'
+               }}
+           ></div>
+           <div
+               style={{
+                   marginTop: '20px',
+                   width: '100%',
+                   gap: '5%'
+               }}
+           ></div>
+           <TextField
+               label="Address"
+               margin="normal"
+               inputRef={taddress}
+               variant="outlined"
+               autoComplete="off"
+               fullWidth
+               defaultValue={address}
+               ref={formref}
+           />
+           <TextField
+               label="Route"
+               margin="normal"
+               inputRef={troute}
+               variant="outlined"
+               autoComplete="off"
+               fullWidth
+               defaultValue={route}
+               ref={formref}
+           />{' '}
+           <TextField
+               label="Vehicle Details"
+               margin="normal"
+               inputRef={tdetails}
+               variant="outlined"
+               autoComplete="off"
+               fullWidth
+               defaultValue={vehicledetails}
+               ref={formref}
+           />
+           <div
+               style={{
+                   display: 'flex',
+                   flexDirection: 'row',
+                   justifyContent: 'center',
+                   gap: '70px'
+               }}
+           >
+               <button
+                   variant="contained"
+                   className="btn-havor"
+                   style={{
+                       marginTop: '20px',
+                       width: '200px',
+                       background: 'red',
+                       color: 'white',
+                       height: '30px',
+                       borderRadius: '6px'
+                   }}
+                   onClick={handlesave}
+               >
+                   {loading ? (
+                       <div style={spinerStyle}>
+                           <Spinner loading={loading} /> Loading...{' '}
+                       </div>
+                   ) : (
+                       `${saveeditbtn}`
+                   )}{' '}
+               </button>
+               <button
+                   variant="contained"
+                   className="btn-havor"
+                   style={{
+                       marginTop: '20px',
+                       width: '200px',
+                       background: 'red',
+                       color: 'white',
+                       height: '30px',
+                       borderRadius: '6px'
+                   }}
+                   onClick={() => dispatch({ type: EXIT_ADD_FORM })}
+               >
+                   Close
+               </button>
+           </div>
+       </Card>
+   );
 }
 const MapStateToprops = (store) => {
   return { ...store };

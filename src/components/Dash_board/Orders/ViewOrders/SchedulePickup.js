@@ -199,222 +199,243 @@ function Regteam({ dispatch, branchdata, reportdata, saveedit, saveeditbtn }) {
   }
 
   return (
-    <Card
-      variant='outlined '
-      style={{
-        fontFamily: 'sans-serif',
-        minWidth: '300px',
-        borderRadius: '16px',
-        padding: '40px',
-        width: '80%',
-        height: 'auto',
-        borderRadius: '16px',
-        transition: '0.3s',
-        margin: '20px',
-      }}>
-      <FormLabel>SCHEDULE PICKUP</FormLabel>
-      <Divider
-        fullWidth
-        style={{
-          background: 'red',
-          marginTop: '10px',
-          marginBottom: '30px',
-          height: '30px',
-        }}
-      />
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
-        {' '}
-        <div
+      <Card
+          variant="outlined "
           style={{
-            marginTop: '20px',
-            width: '100%',
-            gap: '5%',
-          }}>
-          {/* <span style={{ width: '12%' }}>FROM : </span> */}
-          <InputLabel id='demo-multiple-name-label'>SELECT DRIVER</InputLabel>
-          <Select
-            labelId='demo-multiple-name-labelreg'
-            id='demo-multiple-namereg'
-            value={seledrive}
-            label='helloo'
-            style={{ width: '100%' }}
-            fullWidth
-            onChange={handleChangesdriver}
-            input={<OutlinedInput label='Name'></OutlinedInput>}
-            MenuProps={MenuProps}>
-            {driverdata.map((el) => (
-              <MenuItem
-                key={el.userid}
-                value={el.userid}
-                style={getStyles(driverdata, seledrive, theme)}>
-                {el.fname}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-        <div
-          style={{
-            marginTop: '20px',
-            width: '100%',
-            gap: '5%',
-          }}>
-          {/* <span style={{ width: '12%' }}>FROM : </span> */}
-          <InputLabel id='demo-multiple-name-label'>SELECT VEHICLE</InputLabel>
-          <Select
-            labelId='demo-multiple-name-labelreg'
-            id='demo-multiple-namere'
-            value={selevehicle}
-            label='helloo'
-            style={{ width: '100%' }}
-            fullWidth
-            onChange={handleChangesvehicle}
-            input={<OutlinedInput label='Name'></OutlinedInput>}
-            MenuProps={MenuProps}>
-            {vehicledata.map((el) => (
-              <MenuItem
-                key={el.vehicleid}
-                value={el.name}
-                style={getStyles(vehicledata, selevehicle, theme)}>
-                {el.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-      </div>
-
-      <TextField
-        multiline
-        rows={3}
-        maxRows={4}
-        fullWidth
-        label='NOTE'
-        margin='normal'
-        inputRef={pickupnotef}
-        variant='outlined'
-        autoComplete='off'
-        defaultValue={pickupnote}
-        ref={formref}
-      />
-      <Divider
-        fullWidth
-        style={{
-          background: 'red',
-          marginTop: '10px',
-          marginBottom: '30px',
-          height: '30px',
-        }}
-      />
-      <div className='Orderdetails'>
-        <div className='ordermaintitle'>
-          <h3 style={{ width: '30%' }}>Items</h3>
-        </div>
-
-        <div className='ordertable'>
-          <div className='tr'>
-            <div className='th'>
-              <h3>Item Type </h3>
-            </div>
-            <div className='thd'>
-              <h3>Descriptions</h3>
-            </div>
-
-            <div className='th'>
-              <h3>Units</h3>
-            </div>
-            <div className='th'>
-              <h3>Weight in Kg</h3>
-            </div>
-
-            <div className='th'>
-              <h3>Status</h3>
-            </div>
-            <div className='ths'>
-              <h3>Select</h3>
-            </div>
+              fontFamily: 'sans-serif',
+              minWidth: '300px',
+              borderRadius: '16px',
+              padding: '40px',
+              width: '80%',
+              height: 'auto',
+              borderRadius: '16px',
+              transition: '0.3s',
+              margin: '20px'
+          }}
+      >
+          <FormLabel>SCHEDULE PICKUP</FormLabel>
+          <Divider
+              fullWidth
+              style={{
+                  background: 'red',
+                  marginTop: '10px',
+                  marginBottom: '30px',
+                  height: '30px'
+              }}
+          />
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+              {' '}
+              <div
+                  style={{
+                      marginTop: '20px',
+                      width: '100%',
+                      gap: '5%'
+                  }}
+              >
+                  {/* <span style={{ width: '12%' }}>FROM : </span> */}
+                  <InputLabel id="demo-multiple-name-label">
+                      SELECT DRIVER
+                  </InputLabel>
+                  <Select
+                      labelId="demo-multiple-name-labelreg"
+                      id="demo-multiple-namereg"
+                      value={seledrive}
+                      label="helloo"
+                      style={{ width: '100%' }}
+                      fullWidth
+                      onChange={handleChangesdriver}
+                      input={<OutlinedInput label="Name"></OutlinedInput>}
+                      MenuProps={MenuProps}
+                  >
+                      {driverdata.map((el) => (
+                          <MenuItem
+                              key={el.userid}
+                              value={el.userid}
+                              style={getStyles(driverdata, seledrive, theme)}
+                          >
+                              {el.fname}
+                          </MenuItem>
+                      ))}
+                  </Select>
+              </div>
+              <div
+                  style={{
+                      marginTop: '20px',
+                      width: '100%',
+                      gap: '5%'
+                  }}
+              >
+                  {/* <span style={{ width: '12%' }}>FROM : </span> */}
+                  <InputLabel id="demo-multiple-name-label">
+                      SELECT VEHICLE
+                  </InputLabel>
+                  <Select
+                      labelId="demo-multiple-name-labelreg"
+                      id="demo-multiple-namere"
+                      value={selevehicle}
+                      label="helloo"
+                      style={{ width: '100%' }}
+                      fullWidth
+                      onChange={handleChangesvehicle}
+                      input={<OutlinedInput label="Name"></OutlinedInput>}
+                      MenuProps={MenuProps}
+                  >
+                      {vehicledata.map((el) => (
+                          <MenuItem
+                              key={el.vehicleid}
+                              value={el.name}
+                              style={getStyles(vehicledata, selevehicle, theme)}
+                          >
+                              {el.name}
+                          </MenuItem>
+                      ))}
+                  </Select>
+              </div>
           </div>
 
-          {rowsdata.length !== 0 ? (
-            rowsdata.map((row, index) => (
-              <div className='tr' id={index}>
-                <div className='td'>{row.itemtype}</div>
-                <div className='tdd'>{row.note}</div>
-                <div className='td'>{row.units}</div>
-                <div className='td'>{row.weight}</div>
-                <div className='td'>{row.status}</div>
-
-                <div className='tds'>
-                  {row.pickupScheduled && (
-                    <Checkbox
-                      id={index}
-                      onChange={(e) => {
-                        console.log(row);
-                        handlecheck({ ischecked: e.target.checked }, row);
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            ))
-          ) : (
-            <div
+          <TextField
+              multiline
+              rows={3}
+              maxRows={4}
+              fullWidth
+              label="NOTE"
+              margin="normal"
+              inputRef={pickupnotef}
+              variant="outlined"
+              autoComplete="off"
+              defaultValue={pickupnote}
+              ref={formref}
+          />
+          <Divider
+              fullWidth
               style={{
-                display: 'flex',
-                justifyContent: 'center',
-                padding: '30px',
-              }}>
-              No Items for this order
-            </div>
-          )}
-        </div>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          gap: '70px',
-        }}>
-        <button
-          className='btn-havor'
-          background='red'
-          variant='contained'
-          style={{
-            marginTop: '20px',
-            width: '200px',
-            background: 'red',
-            color: 'white',
-            height: '30px',
-            borderRadius: '6px',
-          }}
-          onClick={handlesave}>
-          {loading ? (
-            <div style={spinerStyle}>
-              <Spinner loading={loading} /> Loading...{' '}
-            </div>
-          ) : (
-            'Schedule'
-          )}
-        </button>{' '}
-        <button
-          className='btn-havor'
-          background='red'
-          variant='contained'
-          style={{
-            marginTop: '20px',
-            width: '200px',
-            background: 'red',
-            color: 'white',
-            height: '30px',
-            borderRadius: '6px',
-          }}
-          onClick={() => {
-            dispatch({ type: EXIT_ADD_FORM });
-            history.goBack();
-          }}>
-          Close
-        </button>
-      </div>
-    </Card>
+                  background: 'red',
+                  marginTop: '10px',
+                  marginBottom: '30px',
+                  height: '30px'
+              }}
+          />
+          <div className="Orderdetails">
+              <div className="ordermaintitle">
+                  <h3 style={{ width: '30%' }}>Items</h3>
+              </div>
+
+              <div className="ordertable">
+                  <div className="tr">
+                      <div className="th">
+                          <h3>Item Type </h3>
+                      </div>
+                      <div className="thd">
+                          <h3>Descriptions</h3>
+                      </div>
+
+                      <div className="th">
+                          <h3>Units</h3>
+                      </div>
+                      <div className="th">
+                          <h3>Weight in Kg</h3>
+                      </div>
+
+                      <div className="th">
+                          <h3>Status</h3>
+                      </div>
+                      <div className="ths">
+                          <h3>Select</h3>
+                      </div>
+                  </div>
+
+                  {rowsdata.length !== 0 ? (
+                      rowsdata.map((row, index) => (
+                          <div className="tr" id={index}>
+                              <div className="td">{row.itemtype}</div>
+                              <div className="tdd">{row.note}</div>
+                              <div className="td">{row.units}</div>
+                              <div className="td">{row.weight}</div>
+                              <div className="td">{row.status}</div>
+
+                              <div className="tds">
+                                  {!row.pickupScheduled && (
+                                      <Checkbox
+                                          id={index}
+                                          onChange={(e) => {
+                                              console.log(row);
+                                              handlecheck(
+                                                  {
+                                                      ischecked:
+                                                          e.target.checked
+                                                  },
+                                                  row
+                                              );
+                                          }}
+                                      />
+                                  )}
+                              </div>
+                          </div>
+                      ))
+                  ) : (
+                      <div
+                          style={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              padding: '30px'
+                          }}
+                      >
+                          No Items for this order
+                      </div>
+                  )}
+              </div>
+          </div>
+          <div
+              style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: '70px'
+              }}
+          >
+              <button
+                  className="btn-havor"
+                  background="red"
+                  variant="contained"
+                  style={{
+                      marginTop: '20px',
+                      width: '200px',
+                      background: 'red',
+                      color: 'white',
+                      height: '30px',
+                      borderRadius: '6px'
+                  }}
+                  onClick={handlesave}
+              >
+                  {loading ? (
+                      <div style={spinerStyle}>
+                          <Spinner loading={loading} /> Loading...{' '}
+                      </div>
+                  ) : (
+                      'Schedule'
+                  )}
+              </button>{' '}
+              <button
+                  className="btn-havor"
+                  background="red"
+                  variant="contained"
+                  style={{
+                      marginTop: '20px',
+                      width: '200px',
+                      background: 'red',
+                      color: 'white',
+                      height: '30px',
+                      borderRadius: '6px'
+                  }}
+                  onClick={() => {
+                      dispatch({ type: EXIT_ADD_FORM });
+                      history.goBack();
+                  }}
+              >
+                  Close
+              </button>
+          </div>
+      </Card>
   );
 }
 const MapStateToprops = (store) => {

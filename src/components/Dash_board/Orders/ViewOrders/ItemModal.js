@@ -26,35 +26,33 @@ import Selects from '@mui/material/Select';
 // .................... for select end.........................
 
 //  import Textdate from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import DateAdapter from '@mui/lab/AdapterMoment';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 300,
-    },
-  },
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 300
+        }
+    }
 };
 
-
-
-
-
 const items = [
-  {
-    id: 1,
-    name: 'Box',
-  },
-  {
-    id: 2,
-    name: 'Parcel	',
-  },
+    {
+        id: 1,
+        name: 'Box'
+    },
+    {
+        id: 2,
+        name: 'Parcel	'
+    }
 ];
 
 function getStyles(name, customerData, theme) {

@@ -116,6 +116,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   const signature = useRef('');
   const usrpass = useRef('');
   const usrpassc = useRef('');
+  const employeenof = useRef('');
 
   const {
     fname = '',
@@ -126,6 +127,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
     branchId = '',
     pass = '',
     userid = '',
+    employeeno=''
   } = teamdata;
   const handleChange = (event) => {
     setCng(event.target.value);
@@ -186,6 +188,7 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
             role: selerole,
             phone: usrphone.current.value,
             password: usrpass.current.value,
+            employeeno:employeenof.current.value
           });
 
           if (response) {
@@ -260,80 +263,81 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
   };
 
   return (
-    <Card
-      variant='outlined '
-      style={{
-        marginTop: '30px',
-        position: 'relative',
-        left: '50%',
-        top: '50%',
-        fontFamily: 'sans-serif',
-        transform: 'translate(-50%, -50%)',
-        width: '35%',
-        minWidth: '80%',
-        zIndex: '1',
-        height: 'auto',
-        borderRadius: '16px',
-        padding: '20px',
-        borderRadius: '16px',
-        transition: '0.3s',
-        // boxShadow: '0 8px 40px -12px rgba(0,0,0,0.4)',
-        // '&:hover': {
-        //   boxShadow: '0 16px 70px -12.125px rgba(0,0,0,0.4)',
-        // },
-      }}>
-      <FormLabel>Employee Form</FormLabel>
-      <TextField
-        label='First Name '
-        margin='normal'
-        inputRef={fsname}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        ref={formref}
-        defaultValue={fname}
-      />{' '}
-      <TextField
-        label='Last Name '
-        margin='normal'
-        inputRef={lsname}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={lname}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Phone'
-        margin='normal'
-        inputRef={usrphone}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        ref={formref}
-        defaultValue={phone}
-      />{' '}
-      <TextField
-        label='Email'
-        margin='normal'
-        inputRef={usremail}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={email}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Password'
-        margin='normal'
-        inputRef={usrpass}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={pass}
-        ref={formref}
-      />
-      {/* <TextField
+      <Card
+          variant="outlined "
+          style={{
+              marginTop: '30px',
+              position: 'relative',
+              left: '50%',
+              top: '50%',
+              fontFamily: 'sans-serif',
+              transform: 'translate(-50%, -50%)',
+              width: '35%',
+              minWidth: '80%',
+              zIndex: '1',
+              height: 'auto',
+              borderRadius: '16px',
+              padding: '20px',
+              borderRadius: '16px',
+              transition: '0.3s'
+              // boxShadow: '0 8px 40px -12px rgba(0,0,0,0.4)',
+              // '&:hover': {
+              //   boxShadow: '0 16px 70px -12.125px rgba(0,0,0,0.4)',
+              // },
+          }}
+      >
+          <FormLabel>Employee Form</FormLabel>
+          <TextField
+              label="First Name "
+              margin="normal"
+              inputRef={fsname}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              ref={formref}
+              defaultValue={fname}
+          />{' '}
+          <TextField
+              label="Last Name "
+              margin="normal"
+              inputRef={lsname}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              defaultValue={lname}
+              ref={formref}
+          />{' '}
+          <TextField
+              label="Phone"
+              margin="normal"
+              inputRef={usrphone}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              ref={formref}
+              defaultValue={phone}
+          />{' '}
+          <TextField
+              label="Email"
+              margin="normal"
+              inputRef={usremail}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              defaultValue={email}
+              ref={formref}
+          />{' '}
+          <TextField
+              label="Password"
+              margin="normal"
+              inputRef={usrpass}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              defaultValue={pass}
+              ref={formref}
+          />
+          {/* <TextField
         label='Comfirm Password'
         margin='normal'
         inputRef={usrpassc}
@@ -342,106 +346,125 @@ function Regteam({ adduser, teamdata, dispatch, saveedit, saveeditbtn }) {
         fullWidth
         ref={formref}
       /> */}
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>BRANCH</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelreg'
-          id='demo-multiple-namereg'
-          value={selebranch}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangeBranch}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {branchdata.map((el) => (
-            <MenuItem
-              key={el.branchId}
-              value={el.branchId}
-              style={getStyles(branchdata, selebranch, theme)}>
-              {el.branchname}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>ROLE</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelreg'
-          id='demo-multiple-namereg'
-          value={selerole}
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangeRole}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {roles.map((el) => (
-            <MenuItem
-              key={el.id}
-              value={el.name}
-              style={getStyles(roles, selerole, theme)}>
-              {el.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>{' '}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          gap: '70px',
-        }}>
-        {' '}
-        <button
-          variant='contained'
-          className='btn-havor'
-          style={{
-            marginTop: '20px',
-            width: '200px',
-            background: 'red',
-            color: 'white',
-            height: '30px',
-            borderRadius: '6px',
-          }}
-          onClick={handlesave}>
-          {loading ? (
-            <div style={spinerStyle}>
-              <Spinner loading={loading} /> Loading...{' '}
-            </div>
-          ) : (
-            `${saveeditbtn}`
-          )}{' '}
-        </button>{' '}
-        <button
-          variant='contained'
-          className='btn-havor'
-          style={{
-            marginTop: '20px',
-            width: '200px',
-            background: 'red',
-            color: 'white',
-            height: '30px',
-            borderRadius: '6px',
-          }}
-          onClick={() => dispatch({ type: EXIT_ADD_FORM })}>
-          Close
-        </button>
-      </div>
-      <h4> </h4>
-    </Card>
+          <div
+              style={{
+                  marginTop: '20px',
+                  width: '100%',
+                  gap: '5%'
+              }}
+          >
+              {/* <span style={{ width: '12%' }}>FROM : </span> */}
+              <InputLabel id="demo-multiple-name-label">BRANCH</InputLabel>
+              <Select
+                  labelId="demo-multiple-name-labelreg"
+                  id="demo-multiple-namereg"
+                  value={selebranch}
+                  label="helloo"
+                  style={{ width: '100%' }}
+                  fullWidth
+                  onChange={handleChangeBranch}
+                  input={<OutlinedInput label="Name"></OutlinedInput>}
+                  MenuProps={MenuProps}
+              >
+                  {branchdata.map((el) => (
+                      <MenuItem
+                          key={el.branchId}
+                          value={el.branchId}
+                          style={getStyles(branchdata, selebranch, theme)}
+                      >
+                          {el.branchname}
+                      </MenuItem>
+                  ))}
+              </Select>
+          </div>
+          <div
+              style={{
+                  marginTop: '20px',
+                  width: '100%',
+                  gap: '5%'
+              }}
+          >
+              {/* <span style={{ width: '12%' }}>FROM : </span> */}
+              <InputLabel id="demo-multiple-name-label">ROLE</InputLabel>
+              <Select
+                  labelId="demo-multiple-name-labelreg"
+                  id="demo-multiple-namereg"
+                  value={selerole}
+                  style={{ width: '100%' }}
+                  fullWidth
+                  onChange={handleChangeRole}
+                  input={<OutlinedInput label="Name"></OutlinedInput>}
+                  MenuProps={MenuProps}
+              >
+                  {roles.map((el) => (
+                      <MenuItem
+                          key={el.id}
+                          value={el.name}
+                          style={getStyles(roles, selerole, theme)}
+                      >
+                          {el.name}
+                      </MenuItem>
+                  ))}
+              </Select>
+              <TextField
+                  label="Employee Number"
+                  margin="normal"
+                  inputRef={employeenof}
+                  variant="outlined"
+                  defaultValue={employeeno}
+                  autoComplete="off"
+                  fullWidth
+                  ref={formref}
+              />
+          </div>{' '}
+          <div
+              style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: '70px'
+              }}
+          >
+              {' '}
+              <button
+                  variant="contained"
+                  className="btn-havor"
+                  style={{
+                      marginTop: '20px',
+                      width: '200px',
+                      background: 'red',
+                      color: 'white',
+                      height: '30px',
+                      borderRadius: '6px'
+                  }}
+                  onClick={handlesave}
+              >
+                  {loading ? (
+                      <div style={spinerStyle}>
+                          <Spinner loading={loading} /> Loading...{' '}
+                      </div>
+                  ) : (
+                      `${saveeditbtn}`
+                  )}{' '}
+              </button>{' '}
+              <button
+                  variant="contained"
+                  className="btn-havor"
+                  style={{
+                      marginTop: '20px',
+                      width: '200px',
+                      background: 'red',
+                      color: 'white',
+                      height: '30px',
+                      borderRadius: '6px'
+                  }}
+                  onClick={() => dispatch({ type: EXIT_ADD_FORM })}
+              >
+                  Close
+              </button>
+          </div>
+          <h4> </h4>
+      </Card>
   );
 }
 const MapStateToprops = (store) => {
