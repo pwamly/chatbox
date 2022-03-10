@@ -67,38 +67,38 @@ function BasicTable({ adduser, dispatch, reportdata }) {
   const [pageNo, setPageNo] = useState(1);
   const { region } = reportdata;
   const Actions = useCallback(
-    (row) => (
-      <div
-        style={{
-          marginTop: '30px',
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '15px',
-          paddingRight: '40px',
-        }}>
-        <Link to='#'>
-          <FaEye className='IconStyle' onClick={() => {}} />
-        </Link>
-        <Link>
-          <ImPencil
-            className='IconStyle'
-            onClick={() => {
-              console.log('', row);
-              dispatch({ type: EXIT_EDIT_REGION, payload: row });
-              history.push('/dashboard/settings/add-regions');
-            }}
-          />
-        </Link>
-        <FaTrash
-          id='trash'
-          className='IconStyle'
-          onClick={() => {
-            handledelete(row);
-          }}
-        />
-      </div>
-    ),
-    []
+      (row) => (
+          <div
+              style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: '15px',
+                  paddingRight: '40px'
+              }}
+          >
+              <Link to="#">
+                  <FaEye className="IconStyle" onClick={() => {}} />
+              </Link>
+              <Link>
+                  <ImPencil
+                      className="IconStyle"
+                      onClick={() => {
+                          console.log('', row);
+                          dispatch({ type: EXIT_EDIT_REGION, payload: row });
+                          history.push('/dashboard/settings/add-regions');
+                      }}
+                  />
+              </Link>
+              <FaTrash
+                  id="trash"
+                  className="IconStyle"
+                  onClick={() => {
+                      handledelete(row);
+                  }}
+              />
+          </div>
+      ),
+      []
   );
   let history = useHistory();
   const columns = [

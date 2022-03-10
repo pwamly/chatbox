@@ -536,6 +536,20 @@ export const getCustomers = async (param) => {
   }
 };
 
+export const getCustomersById = async (param) => {
+    const { customerid } = param;
+    try {
+        const customer = await instance.get(`/api/customers/${customerid}`);
+        if (customer) {
+            return customer;
+        }
+    } catch (error) {
+        return { isSuccessful: false };
+    }
+};
+
+
+
 export const getTransporters = async (param) => {
   const { page, sort, q } = param;
 

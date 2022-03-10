@@ -115,514 +115,541 @@ function Regteam({
   const distnstreet = useRef();
   const dtnnote = useRef();
   const congneename = useRef();
-  const congneephone = useRef();
+  const congneephonef = useRef();
   // ......................... to be passed to the form default...........
 
   const {
-    customernotes = '',
-    pstreet = '',
-    pnotes = '',
-    dstreet = '',
-    dnotes = '',
-    consigneephone = '',
-    consigneename = '',
+      customernotes = '',
+      pstreet = '',
+      pnotes = '',
+      dstreet = '',
+      dnotes = '',
+      consigneephone = '',
+      consigneename = ''
   } = branchdata;
   const handleChange = (event) => {
-    setCng(event.target.value);
+      setCng(event.target.value);
   };
 
   async function handlesave() {
-    try {
-      if (saveedit == 'save') {
-        setLoading(true);
-        // formref.current.reset();
-        let response = await addorder({
-          pickuptime: pickdate._i,
-          expdlrtime: deliverydat._i,
-          packagestreet: packstreet.current.value,
-          custnote: custnote.current.value,
-          packagenotes: pkgnotes.current.value,
-          destinationstreet: distnstreet.current.value,
-          customerid: customerId,
-          consignerid: cData,
-          Packagedistdata: distdata,
-          packageRegionData: regdata,
-          destinationData: distdatap,
-          destinationRegionData: regdatap,
-          destinationnotes: dtnnote.current.value,
-          consigneename: congneename.current.value,
-        });
+      try {
+          if (saveedit == 'save') {
+              setLoading(true);
+              // formref.current.reset();
+              let response = await addorder({
+                  pickuptime: pickdate._i,
+                  expdlrtime: deliverydat._i,
+                  packagestreet: packstreet.current.value,
+                  custnote: custnote.current.value,
+                  packagenotes: pkgnotes.current.value,
+                  destinationstreet: distnstreet.current.value,
+                  customerid: customerId,
+                  consignerid: cData,
+                  Packagedistdata: distdata,
+                  packageRegionData: regdata,
+                  destinationData: distdatap,
+                  destinationRegionData: regdatap,
+                  destinationnotes: dtnnote.current.value,
+                  consigneename: congneename.current.value,
+                  consigneePhone: congneephonef.current.value
+              });
 
-        if (response) {
-          console.log(response);
-          setLoading(false);
-          addToast(' Order Added successfully', {
-            appearance: 'success',
-            autoDismiss: true,
-          });
-          window.location.replace('/dashboard/orders');
-          return;
-        }
-        setLoading(false);
-        addToast('Updated!', { appearance: 'warning' });
-        return;
-      }
-      if (saveedit == 'edit') {
-        setLoading(true);
-        // formref.current.reset();
-        let response = await editUser({
-          pickuptime: pickdat.current.value,
-          expdlrtime: deliverydate.current.value,
-          pstreet: packstreet.current.value,
-          custnote: custnote.current.value,
-          pnotes: pkgnotes.current.value,
-          dstreet: distnstreet.current.value,
-          customerData: customerId,
-          cData: cData,
-          distdata: distdata,
-          regdata: regdata,
-          distdatap: distdatap,
-          regdatap: regdatap,
-        });
+              if (response) {
+                  console.log(response);
+                  setLoading(false);
+                  addToast(' Order Added successfully', {
+                      appearance: 'success',
+                      autoDismiss: true
+                  });
+                  window.location.replace('/dashboard/orders');
+                  return;
+              }
+              setLoading(false);
+              addToast('Updated!', { appearance: 'warning' });
+              return;
+          }
+          if (saveedit == 'edit') {
+              setLoading(true);
+              // formref.current.reset();
+              let response = await editUser({
+                  pickuptime: pickdat.current.value,
+                  expdlrtime: deliverydate.current.value,
+                  pstreet: packstreet.current.value,
+                  custnote: custnote.current.value,
+                  pnotes: pkgnotes.current.value,
+                  dstreet: distnstreet.current.value,
+                  customerData: customerId,
+                  cData: cData,
+                  distdata: distdata,
+                  regdata: regdata,
+                  distdatap: distdatap,
+                  regdatap: regdatap,
+                   destinationRegionData: regdatap,
+                  destinationnotes: dtnnote.current.value,
+                  consigneename: congneename.current.value,
+                  consigneePhone: congneephonef.current.value
+              });
 
-        if (response) {
-          console.log(response);
+              if (response) {
+                  console.log(response);
+                  setLoading(false);
+                  addToast(' User Updated successfully', {
+                      appearance: 'success',
+                      autoDismiss: true
+                  });
+                  // window.location.replace(`/dashboard/employee`);
+                  return;
+              }
+              setLoading(false);
+              addToast('Updated!', { appearance: 'warning' });
+              return;
+          }
+      } catch (error) {
+          console.log(error);
           setLoading(false);
-          addToast(' User Updated successfully', {
-            appearance: 'success',
-            autoDismiss: true,
-          });
-          // window.location.replace(`/dashboard/employee`);
-          return;
-        }
-        setLoading(false);
-        addToast('Updated!', { appearance: 'warning' });
-        return;
+          addToast('Failed', { appearance: 'error' });
       }
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      addToast('Failed', { appearance: 'error' });
-    }
   }
 
   //............
   function filterBranch(customerid, rowscon) {
-    let neworders = rowscon.filter(function (el) {
-      return el.customerid == customerid;
-    });
-    return neworders;
+      let neworders = rowscon.filter(function (el) {
+          return el.customerid == customerid;
+      });
+      return neworders;
   }
 
   const handleChanges = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setCustomerId(value);
-    const data = filterBranch(value, rowscon);
-    setRowcons(data);
+      const {
+          target: { value }
+      } = event;
+      setCustomerId(value);
+      const data = filterBranch(value, rowscon);
+      setRowcons(data);
   };
 
   //......................... for consigers............
 
   const handleChangesc = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setCData(value);
+      const {
+          target: { value }
+      } = event;
+      setCData(value);
   };
 
   //......................... for regions............
 
   const handleChangesreg = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setRegtdata(value);
+      const {
+          target: { value }
+      } = event;
+      setRegtdata(value);
   };
 
   //......................... for districts............
 
   const handleChangesdis = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDistdata(value);
+      const {
+          target: { value }
+      } = event;
+      setDistdata(value);
   };
   //......................... for regions package............
 
   const handleChangesregp = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setRegtdatap(value);
+      const {
+          target: { value }
+      } = event;
+      setRegtdatap(value);
   };
 
   //......................... for districts package............
 
   const handleChangesdisp = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDistdatap(value);
+      const {
+          target: { value }
+      } = event;
+      setDistdatap(value);
   };
 
   //................................... for date time ............
 
   return (
-    <Card
-      variant='outlined '
-      style={{
-        fontFamily: 'sans-serif',
-        minWidth: '300px',
-        borderRadius: '16px',
-        padding: '40px',
-        width: '80%',
-        height: 'auto',
-        borderRadius: '16px',
-        transition: '0.3s',
-        margin: '20px',
-      }}>
-      <FormLabel>ORDER FORM</FormLabel>
-      <Divider
-        fullWidth
-        style={{
-          background: 'red',
-          marginTop: '10px',
-          marginBottom: '30px',
-          height: '30px',
-        }}
-      />
-      <span>
-        <h5>Customer Details</h5>
-      </span>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>Customer Name : </span> */}
-        <InputLabel id='demo-multiple-name-label'>Customer Name</InputLabel>
+      <Card
+          variant="outlined "
+          style={{
+              fontFamily: 'sans-serif',
+              minWidth: '300px',
+              borderRadius: '16px',
+              padding: '40px',
+              width: '80%',
+              height: 'auto',
+              borderRadius: '16px',
+              transition: '0.3s',
+              margin: '20px'
+          }}
+      >
+          <FormLabel>ORDER FORM</FormLabel>
+          <Divider
+              fullWidth
+              style={{
+                  background: 'red',
+                  marginTop: '10px',
+                  marginBottom: '30px',
+                  height: '30px'
+              }}
+          />
+          <span>
+              <h5>Customer Details</h5>
+          </span>
+          <div
+              style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginTop: '20px',
+                  width: '100%',
+                  gap: '5%'
+              }}
+          >
+              {/* <span style={{ width: '12%' }}>Customer Name : </span> */}
+              <InputLabel id="demo-multiple-name-label">
+                  Customer Name
+              </InputLabel>
 
-        <Select
-          labelId='demo-multiple-name-label'
-          id='demo-multiple-name'
-          value={customerId}
-          label='helloo'
-          style={{ width: '85%' }}
-          onChange={handleChanges}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {rows.map((el) => (
-            <MenuItem
-              key={el.customerid}
-              value={el.customerid}
-              style={getStyles(rows, customerId, theme)}>
-              {el.fname + '' + el.lname}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        <InputLabel id='demo-multiple-name-label'>Consigner Name</InputLabel>
-        <Select
-          labelId='demo-multiple-name-label2'
-          id='demo-multiple-name2'
-          value={cData}
-          label='helloo'
-          style={{ width: '82%' }}
-          onChange={handleChangesc}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {rowcons &&
-            rowcons.map((el) => (
-              <MenuItem
-                key={el.consginerid}
-                value={el.consginerid}
-                style={getStyles(rowcons, cData, theme)}>
-                {el.fullname}
-              </MenuItem>
-            ))}
-        </Select>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <DateTimePicker
-            renderInput={(props) => (
-              <TextField
-                label='pickup-date'
-                margin='normal'
-                inputRef={pickdat}
-                variant='outlined'
-                autoComplete='off'
-                fullWidth
-                {...props}
-              />
-            )}
-            label='Pick Up Date'
-            value={pickdate}
-            onChange={(newValue) => {
-              setPickdate(newValue);
-            }}
+              <Select
+                  labelId="demo-multiple-name-label"
+                  id="demo-multiple-name"
+                  value={customerId}
+                  label="helloo"
+                  style={{ width: '85%' }}
+                  onChange={handleChanges}
+                  input={<OutlinedInput label="Name"></OutlinedInput>}
+                  MenuProps={MenuProps}
+              >
+                  {rows.map((el) => (
+                      <MenuItem
+                          key={el.customerid}
+                          value={el.customerid}
+                          style={getStyles(rows, customerId, theme)}
+                      >
+                          {el.fname + '' + el.lname}
+                      </MenuItem>
+                  ))}
+              </Select>
+          </div>
+          <div
+              style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginTop: '20px',
+                  width: '100%',
+                  gap: '5%'
+              }}
+          >
+              <InputLabel id="demo-multiple-name-label">
+                  Consigner Name
+              </InputLabel>
+              <Select
+                  labelId="demo-multiple-name-label2"
+                  id="demo-multiple-name2"
+                  value={cData}
+                  label="helloo"
+                  style={{ width: '82%' }}
+                  onChange={handleChangesc}
+                  input={<OutlinedInput label="Name"></OutlinedInput>}
+                  MenuProps={MenuProps}
+              >
+                  {rowcons &&
+                      rowcons.map((el) => (
+                          <MenuItem
+                              key={el.consginerid}
+                              value={el.consginerid}
+                              style={getStyles(rowcons, cData, theme)}
+                          >
+                              {el.fullname}
+                          </MenuItem>
+                      ))}
+              </Select>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '5%' }}>
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                  <DateTimePicker
+                      renderInput={(props) => (
+                          <TextField
+                              label="pickup-date"
+                              margin="normal"
+                              inputRef={pickdat}
+                              variant="outlined"
+                              autoComplete="off"
+                              fullWidth
+                              {...props}
+                          />
+                      )}
+                      label="Pick Up Date"
+                      value={pickdate}
+                      onChange={(newValue) => {
+                          setPickdate(newValue);
+                      }}
+                  />
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                  <DateTimePicker
+                      renderInput={(props) => (
+                          <TextField
+                              label="delivery-date"
+                              margin="normal"
+                              inputRef={deliverydate}
+                              variant="outlined"
+                              autoComplete="off"
+                              fullWidth
+                              {...props}
+                          />
+                      )}
+                      label="Expected Delivery Date"
+                      value={deliverydat}
+                      onChange={(newValue) => {
+                          setDeliverydate(newValue);
+                      }}
+                  />
+              </LocalizationProvider>
+          </div>
+          <TextField
+              multiline
+              rows={2}
+              maxRows={4}
+              fullWidth
+              label="Note"
+              margin="normal"
+              inputRef={custnote}
+              variant="outlined"
+              autoComplete="off"
+              defaultValue={customernotes}
+              ref={formref}
           />
-        </LocalizationProvider>
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <DateTimePicker
-            renderInput={(props) => (
-              <TextField
-                label='delivery-date'
-                margin='normal'
-                inputRef={deliverydate}
-                variant='outlined'
-                autoComplete='off'
-                fullWidth
-                {...props}
-              />
-            )}
-            label='Expected Delivery Date'
-            value={deliverydat}
-            onChange={(newValue) => {
-              setDeliverydate(newValue);
-            }}
+          <Divider
+              fullWidth
+              style={{
+                  background: 'red',
+                  marginTop: '10px',
+                  marginBottom: '30px',
+                  height: '30px'
+              }}
           />
-        </LocalizationProvider>
-      </div>
-      <TextField
-        multiline
-        rows={2}
-        maxRows={4}
-        fullWidth
-        label='Note'
-        margin='normal'
-        inputRef={custnote}
-        variant='outlined'
-        autoComplete='off'
-        defaultValue={customernotes}
-        ref={formref}
-      />
-      <Divider
-        fullWidth
-        style={{
-          background: 'red',
-          marginTop: '10px',
-          marginBottom: '30px',
-          height: '30px',
-        }}
-      />
-      <span>
-        <h5>Package Location Details</h5>
-      </span>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-label'>Region</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelreg'
-          id='demo-multiple-namereg'
-          value={regdata}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesreg}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {rowz.map((el) => (
-            <MenuItem
-              key={el.region}
-              value={el.region}
-              style={getStyles(rowz, regdata, theme)}>
-              {el.region}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}></div>
-      <TextField
-        label='Street'
-        margin='normal'
-        inputRef={packstreet}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={pstreet}
-        ref={formref}
-      />{' '}
-      <TextField
-        multiline
-        rows={2}
-        maxRows={4}
-        fullWidth
-        label='Note'
-        margin='normal'
-        inputRef={pkgnotes}
-        variant='outlined'
-        autoComplete='off'
-        defaultValue={pnotes}
-        ref={formref}
-      />
-      <Divider
-        fullWidth
-        style={{
-          background: 'red',
-          marginTop: '10px',
-          marginBottom: '30px',
-          height: '30px',
-        }}
-      />{' '}
-      <span>
-        <h5>Destination Details</h5>
-      </span>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-        <InputLabel id='demo-multiple-name-labelp'>Region</InputLabel>
-        <Select
-          labelId='demo-multiple-name-labelregp'
-          id='demo-multiple-nameregp'
-          value={regdatap}
-          label='helloo'
-          style={{ width: '100%' }}
-          fullWidth
-          onChange={handleChangesregp}
-          input={<OutlinedInput label='Name'></OutlinedInput>}
-          MenuProps={MenuProps}>
-          {rowz.map((el) => (
-            <MenuItem
-              key={el.region}
-              value={el.region}
-              style={getStyles(rowz, regdatap, theme)}>
-              {el.region}
-            </MenuItem>
-          ))}
-        </Select>
-      </div>
-      <div
-        style={{
-          marginTop: '20px',
-          width: '100%',
-          gap: '5%',
-        }}>
-        {/* <span style={{ width: '12%' }}>FROM : </span> */}
-      </div>
-      <TextField
-        label='Street'
-        margin='normal'
-        inputRef={distnstreet}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={dstreet}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Consignee Name'
-        margin='normal'
-        inputRef={congneename}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={consigneename}
-        ref={formref}
-      />{' '}
-      <TextField
-        label='Consignee Phone'
-        margin='normal'
-        inputRef={congneephone}
-        variant='outlined'
-        autoComplete='off'
-        fullWidth
-        defaultValue={consigneephone}
-        ref={formref}
-      />{' '}
-      <TextField
-        multiline
-        rows={2}
-        maxRows={4}
-        fullWidth
-        label='Note'
-        margin='normal'
-        inputRef={dtnnote}
-        variant='outlined'
-        autoComplete='off'
-        defaultValue={dnotes}
-        ref={formref}
-      />
-      <Divider
-        fullWidth
-        style={{
-          background: 'red',
-          marginTop: '10px',
-          marginBottom: '30px',
-          height: '30px',
-        }}
-      />{' '}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          gap: '70px',
-        }}>
-        <button
-          variant='contained'
-          className='btn-havor'
-          style={{
-            marginTop: '20px',
-            width: '200px',
-            background: 'red',
-            color: 'white',
-            height: '30px',
-            borderRadius: '6px',
-          }}
-          onClick={handlesave}>
-          {loading ? (
-            <div style={spinerStyle}>
-              <Spinner loading={loading} /> Loading...{' '}
-            </div>
-          ) : (
-            `${saveeditbtn}`
-          )}{' '}
-        </button>{' '}
-        <button
-          className='btn-havor'
-          background='red'
-          variant='contained'
-          style={{
-            marginTop: '20px',
-            width: '200px',
-            background: 'red',
-            color: 'white',
-            height: '30px',
-            borderRadius: '6px',
-          }}
-          onClick={() => window.location.replace('/dashboard/orders')}>
-          Close
-        </button>
-      </div>
-    </Card>
+          <span>
+              <h5>Package Location Details</h5>
+          </span>
+          <div
+              style={{
+                  marginTop: '20px',
+                  width: '100%',
+                  gap: '5%'
+              }}
+          >
+              {/* <span style={{ width: '12%' }}>FROM : </span> */}
+              <InputLabel id="demo-multiple-name-label">Region</InputLabel>
+              <Select
+                  labelId="demo-multiple-name-labelreg"
+                  id="demo-multiple-namereg"
+                  value={regdata}
+                  label="helloo"
+                  style={{ width: '100%' }}
+                  fullWidth
+                  onChange={handleChangesreg}
+                  input={<OutlinedInput label="Name"></OutlinedInput>}
+                  MenuProps={MenuProps}
+              >
+                  {rowz.map((el) => (
+                      <MenuItem
+                          key={el.region}
+                          value={el.region}
+                          style={getStyles(rowz, regdata, theme)}
+                      >
+                          {el.region}
+                      </MenuItem>
+                  ))}
+              </Select>
+          </div>
+          <div
+              style={{
+                  marginTop: '20px',
+                  width: '100%',
+                  gap: '5%'
+              }}
+          ></div>
+          <TextField
+              label="Street"
+              margin="normal"
+              inputRef={packstreet}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              defaultValue={pstreet}
+              ref={formref}
+          />{' '}
+          <TextField
+              multiline
+              rows={2}
+              maxRows={4}
+              fullWidth
+              label="Note"
+              margin="normal"
+              inputRef={pkgnotes}
+              variant="outlined"
+              autoComplete="off"
+              defaultValue={pnotes}
+              ref={formref}
+          />
+          <Divider
+              fullWidth
+              style={{
+                  background: 'red',
+                  marginTop: '10px',
+                  marginBottom: '30px',
+                  height: '30px'
+              }}
+          />{' '}
+          <span>
+              <h5>Destination Details</h5>
+          </span>
+          <div
+              style={{
+                  marginTop: '20px',
+                  width: '100%',
+                  gap: '5%'
+              }}
+          >
+              {/* <span style={{ width: '12%' }}>FROM : </span> */}
+              <InputLabel id="demo-multiple-name-labelp">Region</InputLabel>
+              <Select
+                  labelId="demo-multiple-name-labelregp"
+                  id="demo-multiple-nameregp"
+                  value={regdatap}
+                  label="helloo"
+                  style={{ width: '100%' }}
+                  fullWidth
+                  onChange={handleChangesregp}
+                  input={<OutlinedInput label="Name"></OutlinedInput>}
+                  MenuProps={MenuProps}
+              >
+                  {rowz.map((el) => (
+                      <MenuItem
+                          key={el.region}
+                          value={el.region}
+                          style={getStyles(rowz, regdatap, theme)}
+                      >
+                          {el.region}
+                      </MenuItem>
+                  ))}
+              </Select>
+          </div>
+          <div
+              style={{
+                  marginTop: '20px',
+                  width: '100%',
+                  gap: '5%'
+              }}
+          >
+              {/* <span style={{ width: '12%' }}>FROM : </span> */}
+          </div>
+          <TextField
+              label="Street"
+              margin="normal"
+              inputRef={distnstreet}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              defaultValue={dstreet}
+              ref={formref}
+          />{' '}
+          <TextField
+              label="Consignee Name"
+              margin="normal"
+              inputRef={congneename}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              defaultValue={consigneename}
+              ref={formref}
+          />{' '}
+          <TextField
+              label="Consignee Phone"
+              margin="normal"
+              inputRef={congneephonef}
+              variant="outlined"
+              autoComplete="off"
+              fullWidth
+              defaultValue={consigneephone}
+              ref={formref}
+          />{' '}
+          <TextField
+              multiline
+              rows={2}
+              maxRows={4}
+              fullWidth
+              label="Note"
+              margin="normal"
+              inputRef={dtnnote}
+              variant="outlined"
+              autoComplete="off"
+              defaultValue={dnotes}
+              ref={formref}
+          />
+          <Divider
+              fullWidth
+              style={{
+                  background: 'red',
+                  marginTop: '10px',
+                  marginBottom: '30px',
+                  height: '30px'
+              }}
+          />{' '}
+          <div
+              style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  gap: '70px'
+              }}
+          >
+              <button
+                  variant="contained"
+                  className="btn-havor"
+                  style={{
+                      marginTop: '20px',
+                      width: '200px',
+                      background: 'red',
+                      color: 'white',
+                      height: '30px',
+                      borderRadius: '6px'
+                  }}
+                  onClick={handlesave}
+              >
+                  {loading ? (
+                      <div style={spinerStyle}>
+                          <Spinner loading={loading} /> Loading...{' '}
+                      </div>
+                  ) : (
+                      `${saveeditbtn}`
+                  )}{' '}
+              </button>{' '}
+              <button
+                  className="btn-havor"
+                  background="red"
+                  variant="contained"
+                  style={{
+                      marginTop: '20px',
+                      width: '200px',
+                      background: 'red',
+                      color: 'white',
+                      height: '30px',
+                      borderRadius: '6px'
+                  }}
+                  onClick={() => window.location.replace('/dashboard/orders')}
+              >
+                  Close
+              </button>
+          </div>
+      </Card>
   );
 }
 const MapStateToprops = (store) => {
