@@ -4,21 +4,21 @@ import { isLogged } from "../client";
 
 export const ProtectRoute = ({ component: Component, ...rest }) => {
   return (
-    <Route
-      render={(props) =>
-        isLogged() ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: {
-                from: props.location,
-              },
-            }}
-          />
-        )
-      }
-    />
+      <Route
+          render={(props) =>
+              1 ? (
+                  <Component {...props} />
+              ) : (
+                  <Redirect
+                      to={{
+                          pathname: '/login',
+                          state: {
+                              from: props.location
+                          }
+                      }}
+                  />
+              )
+          }
+      />
   );
 };

@@ -260,18 +260,15 @@ export const getAllhistory = async (data) => {
   }
 };
 
-export const getUsers = async (param) => {
-  const { page, q, sort } = param;
-  try {
-    const users = await instance.get(
-      `/api/users?page=${page}&sort=${sort}&q=${q}`
-    );
-    if (users) {
-      return users;
+export const Upladfile = async () => {
+    try {
+        const users = await instance.post(`/api/upladfile`);
+        if (users) {
+            return users;
+        }
+    } catch (error) {
+        return { isSuccessful: false };
     }
-  } catch (error) {
-    return { isSuccessful: false };
-  }
 };
 
 // ............................. new services  2022 ...........................

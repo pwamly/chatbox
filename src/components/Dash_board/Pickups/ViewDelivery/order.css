@@ -1,5 +1,0 @@
-.itemadded{ display: flex; flex-direction: row; gap: 15px ;background:#f3f4f6}
-
-@media screen and (max-width: 550px) {
-    .itemadded{ display: flex; flex-direction: column; gap: 15px ;background:#f3f4f6}
-}

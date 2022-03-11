@@ -47,7 +47,7 @@ function Navbar({ profile }) {
                             {/* <span>S</span> */}
                             {/* <span className='sga-sub-log'>SGA Courier Department System</span> */}
                             <div style={logomain}>
-                                <img className="aimg" src={avatar} alt="" />
+                                {/* <img className="aimg" src={avatar} alt="" /> */}
                             </div>
                         </h2>
                     </Link>
@@ -61,121 +61,6 @@ function Navbar({ profile }) {
                     }
                 >
                     {/* <div className="menu-link"> */}
-                    <ul>
-                        <Link
-                            onClick={() => {
-                                window.location.replace('/dashboard');
-                            }}
-                        >
-                            <li>
-                                <a href="#">Dashboard</a>
-                            </li>
-                        </Link>
-                        <Link
-                            onClick={() => {
-                                // history.push('/dashboard/orders');
-                                window.location.replace('/dashboard/orders');
-                            }}
-                        >
-                            <li>
-                                <a href="#">Orders </a>
-                            </li>
-                        </Link>
-                        {/* <Link
-                            onClick={() => {
-                                // history.push('/dashboard/orders');
-                                window.location.replace('/dashboard/bundles');
-                            }}
-                        >
-                            <li>
-                                <a href="#">Bundles</a>
-                            </li>
-                        </Link> */}
-                        <Link
-                            onClick={() => {
-                                window.location.replace('/dashboard/dispatch');
-                            }}
-                        >
-                            <li>
-                                <a href="#">Dispatch</a>
-                            </li>
-                        </Link>
-                        {/* <Link
-                            onClick={() => {
-                                window.location.replace('/dashboard/pickups');
-                            }}
-                        >
-                            <li>
-                                <a href="#">Pickups</a>
-                            </li>
-                        </Link> */}
-                        <Link
-                            onClick={() => {
-                                window.location.replace('/dashboard/delivery');
-                            }}
-                        >
-                            <li>
-                                <a href="#">Delivery</a>
-                            </li>
-                        </Link>
-                        <Link to="#">
-                            <li>
-                                <a href="#">Reports</a>
-                            </li>
-                        </Link>
-                        <Link>
-                            <li></li>
-                        </Link>
-
-                        <div>
-                            <Button
-                                aria-controls="simple-menu"
-                                aria-haspopup="true"
-                                style={{ textTransform: 'none' }}
-                                onClick={handleClick}
-                            >
-                                ({profile.initial})
-                            </Button>
-                            <Menu
-                                id="simple-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                            >
-                                <MenuItem
-                                    id="profile"
-                                    onClick={() => {
-                                        // handle profile
-                                        handleClose();
-                                    }}
-                                >
-                                    Profile
-                                </MenuItem>
-                                <MenuItem
-                                    id="settings"
-                                    onClick={() => {
-                                        // handle profile
-                                        window.location.replace(
-                                            'dashboard/settings'
-                                        );
-                                        handleClose();
-                                    }}
-                                >
-                                    Settings
-                                </MenuItem>
-                                <MenuItem
-                                    id="logout"
-                                    onClick={() => {
-                                        logout();
-                                        handleClose();
-                                    }}
-                                >
-                                    <Signiout /> Logout
-                                </MenuItem>
-                            </Menu>
-                        </div>
-                    </ul>
                 </div>
 
                 <div className="social-media">

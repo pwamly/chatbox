@@ -6,15 +6,16 @@ import { ADD_USER } from '../../../actions';
 
 function Index({ adduser }) {
   return (
-    <div
-      style={{
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      {!adduser ? <BranchDash /> : <Adduser />}{' '}
-    </div>
+      <div
+          style={{
+              height: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+          }}
+      >
+          {!adduser ? <Adduser /> : <BranchDash />}{' '}
+      </div>
   );
 }
 

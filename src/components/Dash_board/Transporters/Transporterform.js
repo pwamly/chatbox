@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import { useToasts } from 'react-toast-notifications';
 import TextField from '@material-ui/core/TextField';
 import FormLabel from '@material-ui/core/FormLabel';
-import Spinner from '../../Spinner/Spiner';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import { connect } from 'react-redux';
@@ -12,6 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
 import { addUser, registerTransporter, editUser } from '../../../client/client';
 import { Divider } from '@mui/material';
+import axios from 'axios';
+
 // ...................... for select ..............................
 
 import { useTheme } from '@mui/material/styles';
@@ -29,372 +30,290 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import DateAdapter from '@mui/lab/AdapterMoment';
 
+import { Upladfile } from '../../../client/client';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 300,
-    },
-  },
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 300
+        }
+    }
 };
 
-
-
-
-
 function getStyles(name, customerData, theme) {
-  return {
-    fontWeight:
-      customerData.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
+    return {
+        fontWeight:
+            customerData.indexOf(name) === -1
+                ? theme.typography.fontWeightRegular
+                : theme.typography.fontWeightMedium
+    };
 }
 // ................. end for select
 
-const spinerStyle = {
-  display: 'flex',
-  flexDirection: 'rows',
-  gap: '12px',
-};
-
 function Regteam({
-  adduser,
-  teamdata,
-  dispatch,
-  branchdata,
-  saveedit,
-  saveeditbtn,
+    adduser,
+    teamdata,
+    dispatch,
+    branchdata,
+    saveedit,
+    saveeditbtn
 }) {
-  const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
-  const [usrbranch, setCng] = useState('');
-  const [usrrole, setRole] = useState('');
-  const [open, setOpen] = useState(false);
-  const [open2, setOpen2] = useState(false);
+    const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
+    const [usrbranch, setCng] = useState('');
+    const [usrrole, setRole] = useState('');
+    const [open, setOpen] = useState(false);
+    const [uploadfile, setUploadfile] = useState('');
 
-  // ........................... for select ..................
+    // ........................... for select ..................
 
-  const theme = useTheme();
+    const theme = useTheme();
 
-  const { addToast } = useToasts();
-  const [loading, setLoading] = useState(false);
+    const { addToast } = useToasts();
+    const [loading, setLoading] = useState(false);
 
-  // ........... to be passed to form values ..........
+    // ........... to be passed to form values ..........
 
-  const formref = useRef();
-  const tname = useRef('');
-  const temail = useRef('');
-  const tphone = useRef('');
-  const taddress = useRef('');
-  const troute = useRef('');
-  const tdetails = useRef('');
-   const tinf = useRef('');
-   const vrnf = useRef('');
+    const tinf = useRef('');
 
-   // ......................... to be passed to the form default...........
+    // ......................... to be passed to the form default...........
 
-   const {
-       name = '',
-       vehicledetails = '',
-       email = '',
-       address = '',
-       phone = '',
-       route = '',
-       tin = '',
-       vrn = ''
-   } = branchdata;
-   const handleChange = (event) => {
-       setCng(event.target.value);
-   };
+    const {} = branchdata;
+    const handleChange = (event) => {
+        setCng(event.target.value);
+    };
 
-   const handleClose = () => {
-       setOpen(false);
-   };
+    const handleRundle = async () => {
+        let response = await axios.get(
+            'http://192.168.1.62:9898/api/process_ruffle'
+        );
+        if (response) {
+            console.log('server response', response);
+            return;
+        }
+    };
 
-   const handleOpen = () => {
-       setOpen(true);
-   };
-   const handleClose2 = () => {
-       setOpen2(false);
-   };
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    let formData = new FormData();
+    const handleChangeUpload = async (e) => {
+        formData.append('newfile', document.getElementById('filenew').files[0]);
+        var newfile = formData.get('newfile');
+        console.log('', newfile);
 
-   const handleOpen2 = () => {
-       setOpen2(true);
-   };
-   const handleChange2 = (event) => {
-       setRole(event.target.value);
-   };
+        let response = await Upladfile(formData);
+        axios.post('upload_file', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        if (response) {
+            console.log('server response', response);
+            return;
+        }
+        console.log('file not sent');
+    };
 
-   function selcust(data, selector) {
-       console.log('fff', data, selector);
-       let newdata = data.reduce((acc, item) => {
-           if (item.customerId === selector) {
-               acc.push(item);
-           }
-           return acc;
-       }, []);
-       return newdata[0];
-   }
+    function selcust(data, selector) {
+        console.log('fff', data, selector);
+        let newdata = data.reduce((acc, item) => {
+            if (item.customerId === selector) {
+                acc.push(item);
+            }
+            return acc;
+        }, []);
+        return newdata[0];
+    }
 
-   function selcons(data, selector) {
-       let newdata = data.reduce((acc, item) => {
-           if (item.consignerid === selector) {
-               acc.push(item);
-           }
-           return acc;
-       }, []);
-       return newdata[0];
-   }
+    function selcons(data, selector) {
+        let newdata = data.reduce((acc, item) => {
+            if (item.consignerid === selector) {
+                acc.push(item);
+            }
+            return acc;
+        }, []);
+        return newdata[0];
+    }
 
-   async function handlesave() {
-       try {
-           if (saveedit == 'add') {
-               setLoading(true);
-               // formref.current.reset();
-               let response = await registerTransporter({
-                   name: tname.current.value,
-                   email: temail.current.value,
-                   phone: tphone.current.value,
-                   address: taddress.current.value,
-                   route: troute.current.value,
-                   vehicledetails: tdetails.current.value,
-                   tin: tinf.current.value,
-                   vrn: vrnf.current.value
-               });
+    async function handlesave() {
+        try {
+            if (saveedit == 'add') {
+                setLoading(true);
+                // formref.current.reset();
+                let response = await registerTransporter({});
 
-               if (response) {
-                   console.log(response);
-                   setLoading(false);
-                   addToast(' User Added successfully', {
-                       appearance: 'success',
-                       autoDismiss: true
-                   });
-                   window.location.replace(`/dashboard/transporters`);
-                   return;
-               }
-               setLoading(false);
-               addToast('Updated!', { appearance: 'warning' });
-               return;
-           }
-           if (saveedit == 'edit') {
-               setLoading(true);
-               // formref.current.reset();
-               let response = await editUser({
-                   name: tname.current.value,
-                   email: temail.current.value,
-                   phone: tphone.current.value,
-                   address: taddress.current.value,
-                   route: troute.current.value,
-                   vehicledetails: tdetails.current.value,
-                   tin: tinf.current.value,
-                   vrn: vrnf.current.value
-               });
+                if (response) {
+                    console.log(response);
+                    setLoading(false);
+                    addToast(' User Added successfully', {
+                        appearance: 'success',
+                        autoDismiss: true
+                    });
+                    window.location.replace(`/dashboard/transporters`);
+                    return;
+                }
+                setLoading(false);
+                addToast('Updated!', { appearance: 'warning' });
+                return;
+            }
+            if (saveedit == 'edit') {
+                setLoading(true);
+                // formref.current.reset();
+                let response = await editUser({});
 
-               if (response) {
-                   console.log(response);
-                   setLoading(false);
-                   addToast(' User Updated successfully', {
-                       appearance: 'success',
-                       autoDismiss: true
-                   });
-                   window.location.replace(`/dashboard/transporters`);
-                   return;
-               }
-               setLoading(false);
-               addToast('Updated!', { appearance: 'warning' });
-               return;
-           }
-       } catch (error) {
-           console.log(error);
-           setLoading(false);
-           addToast('Failed', { appearance: 'error' });
-       }
-   }
+                if (response) {
+                    console.log(response);
+                    setLoading(false);
+                    addToast(' User Updated successfully', {
+                        appearance: 'success',
+                        autoDismiss: true
+                    });
+                    window.location.replace(`/dashboard/transporters`);
+                    return;
+                }
+                setLoading(false);
+                addToast('Updated!', { appearance: 'warning' });
+                return;
+            }
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+            addToast('Failed', { appearance: 'error' });
+        }
+    }
 
-   //................................... for date time ............
+    //................................... for date time ............
 
-   return (
-       <Card
-           variant="outlined "
-           style={{
-               fontFamily: 'sans-serif',
-               minWidth: '300px',
-               borderRadius: '16px',
-               padding: '40px',
-               width: '80%',
-               height: 'auto',
-               borderRadius: '16px',
-               transition: '0.3s',
-               margin: '20px'
-           }}
-       >
-           <FormLabel>TRANSPORTER FORM</FormLabel>
-           <Divider
-               fullWidth
-               style={{
-                   background: 'red',
-                   marginTop: '10px',
-                   marginBottom: '30px',
-                   height: '30px'
-               }}
-           />{' '}
-           <TextField
-               label="Transporter Name"
-               margin="normal"
-               inputRef={tname}
-               variant="outlined"
-               autoComplete="off"
-               fullWidth
-               defaultValue={name}
-               ref={formref}
-           />{' '}
-           <TextField
-               label="TIN"
-               margin="normal"
-               inputRef={tinf}
-               variant="outlined"
-               autoComplete="off"
-               fullWidth
-               defaultValue={tin}
-               ref={formref}
-           />
-           <TextField
-               label="VRN"
-               margin="normal"
-               inputRef={vrnf}
-               variant="outlined"
-               autoComplete="off"
-               fullWidth
-               defaultValue={vrn}
-               ref={formref}
-           />{' '}
-           <TextField
-               label="Email"
-               margin="normal"
-               inputRef={temail}
-               variant="outlined"
-               autoComplete="off"
-               fullWidth
-               defaultValue={email}
-               ref={formref}
-           />{' '}
-           <TextField
-               label="Phone"
-               margin="normal"
-               inputRef={tphone}
-               variant="outlined"
-               autoComplete="off"
-               fullWidth
-               defaultValue={phone}
-               ref={formref}
-           />{' '}
-           <div
-               style={{
-                   marginTop: '20px',
-                   width: '100%',
-                   gap: '5%'
-               }}
-           ></div>
-           <div
-               style={{
-                   marginTop: '20px',
-                   width: '100%',
-                   gap: '5%'
-               }}
-           ></div>
-           <div
-               style={{
-                   marginTop: '20px',
-                   width: '100%',
-                   gap: '5%'
-               }}
-           ></div>
-           <div
-               style={{
-                   marginTop: '20px',
-                   width: '100%',
-                   gap: '5%'
-               }}
-           ></div>
-           <TextField
-               label="Address"
-               margin="normal"
-               inputRef={taddress}
-               variant="outlined"
-               autoComplete="off"
-               fullWidth
-               defaultValue={address}
-               ref={formref}
-           />
-           <TextField
-               label="Route"
-               margin="normal"
-               inputRef={troute}
-               variant="outlined"
-               autoComplete="off"
-               fullWidth
-               defaultValue={route}
-               ref={formref}
-           />{' '}
-           <TextField
-               label="Vehicle Details"
-               margin="normal"
-               inputRef={tdetails}
-               variant="outlined"
-               autoComplete="off"
-               fullWidth
-               defaultValue={vehicledetails}
-               ref={formref}
-           />
-           <div
-               style={{
-                   display: 'flex',
-                   flexDirection: 'row',
-                   justifyContent: 'center',
-                   gap: '70px'
-               }}
-           >
-               <button
-                   variant="contained"
-                   className="btn-havor"
-                   style={{
-                       marginTop: '20px',
-                       width: '200px',
-                       background: 'red',
-                       color: 'white',
-                       height: '30px',
-                       borderRadius: '6px'
-                   }}
-                   onClick={handlesave}
-               >
-                   {loading ? (
-                       <div style={spinerStyle}>
-                           <Spinner loading={loading} /> Loading...{' '}
-                       </div>
-                   ) : (
-                       `${saveeditbtn}`
-                   )}{' '}
-               </button>
-               <button
-                   variant="contained"
-                   className="btn-havor"
-                   style={{
-                       marginTop: '20px',
-                       width: '200px',
-                       background: 'red',
-                       color: 'white',
-                       height: '30px',
-                       borderRadius: '6px'
-                   }}
-                   onClick={() => dispatch({ type: EXIT_ADD_FORM })}
-               >
-                   Close
-               </button>
-           </div>
-       </Card>
-   );
+    return (
+        <Card
+            variant="outlined "
+            style={{
+                fontFamily: 'sans-serif',
+                minWidth: '300px',
+                borderRadius: '16px',
+                padding: '40px',
+                width: '80%',
+                height: 'auto',
+                borderRadius: '16px',
+                transition: '0.3s',
+                margin: '20px'
+            }}
+        >
+            <FormLabel>KIBUNDA </FormLabel>
+            <Divider
+                fullWidth
+                style={{
+                    background: 'gray',
+                    marginTop: '10px',
+                    marginBottom: '30px',
+                    height: '30px'
+                }}
+            />
+            <div
+                style={{
+                    marginTop: '20px',
+                    width: '100%',
+                    gap: '5%'
+                }}
+            ></div>
+            <div
+                style={{
+                    marginTop: '20px',
+                    width: '100%',
+                    gap: '5%'
+                }}
+            ></div>
+            <div
+                style={{
+                    marginTop: '20px',
+                    width: '100%',
+                    gap: '5%'
+                }}
+            ></div>
+            <div
+                style={{
+                    marginTop: '20px',
+                    width: '100%',
+                    gap: '5%'
+                }}
+            ></div>
+            <form onSubmit={(e) => e.preventDefault()}>
+                <input type="file" name="fileuploaded" id="filenew" />
+                <button
+                    variant="contained"
+                    className="btn-havor"
+                    style={{
+                        marginTop: '20px',
+                        width: '200px',
+                        background: 'gray',
+                        color: 'white',
+                        height: '30px',
+                        borderRadius: '6px'
+                    }}
+                    onClick={handleChangeUpload}
+                >
+                    Upload file
+                </button>
+            </form>
+
+            {/* <Button variant="contained" component="label">
+                Upload File
+                <input inputRef={tinf} type="file" hidden />
+            </Button> */}
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    gap: '70px'
+                }}
+            ></div>
+            <Divider
+                fullWidth
+                style={{
+                    background: 'gray',
+                    marginTop: '50px',
+                    marginBottom: '30px',
+                    height: '30px'
+                }}
+            />
+            <Card
+                variant="outlined "
+                style={{
+                    fontFamily: 'sans-serif',
+                    minWidth: '300px',
+                    borderRadius: '16px',
+                    padding: '40px',
+                    width: '80%',
+                    height: 'auto',
+                    borderRadius: '16px',
+                    transition: '0.3s',
+                    margin: '20px'
+                }}
+            >
+                <div>
+                    <button
+                        onClick={handleRundle}
+                        variant="contained"
+                        className="btn-havor"
+                        style={{
+                            marginTop: '20px',
+                            width: '200px',
+                            background: 'gray',
+                            color: 'white',
+                            height: '30px',
+                            borderRadius: '6px'
+                        }}
+                    >
+                        Run Ruffle
+                    </button>
+                </div>
+            </Card>
+        </Card>
+    );
 }
 const MapStateToprops = (store) => {
   return { ...store };
