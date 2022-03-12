@@ -53,38 +53,16 @@ function Navbar({ profile }) {
                     </Link>
                 </div>
 
-                <div
-                    className={
-                        showMediaIcons
-                            ? 'menu-link mobile-menu-link'
-                            : 'menu-link'
-                    }
-                >
-                    {/* <div className="menu-link"> */}
-                </div>
+            
 
                 <div className="social-media">
                     <div className="header">
-                        <div className="header__nav">
-                            <Link to="/login">
-                                <div className="header__option">
-                                    <span className="header__optionLineTwo"></span>
-                                </div>
-                            </Link>
-                        </div>
+                    
+                        <span className="header__optionLineTwo" style={{fontSize:30}}>SIMBA vs YANGA : 2022 WINNERS</span>
 
-                        <div className="hamburger-menu">
-                            <a
-                                href="#"
-                                onClick={() =>
-                                    setShowMediaIcons(!showMediaIcons)
-                                }
-                            >
-                                <GiHamburgerMenu />
-                            </a>
-                        </div>
                     </div>
                 </div>
+               
             </nav>
             <nav
                 className="sub-nav"

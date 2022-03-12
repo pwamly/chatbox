@@ -14,3 +14,8 @@
 .menu-bars {
     display: block;
 }
+
+.btn-havor:hover{
+cursor: pointer;
+background: rgb(70, 68, 68) !important;
+}

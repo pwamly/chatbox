@@ -12,6 +12,7 @@ import { ADD_USER, EXIT_ADD_FORM } from '../../../actions';
 import { addUser, registerTransporter, editUser } from '../../../client/client';
 import { Divider } from '@mui/material';
 import axios from 'axios';
+import Loader from '../Spinner/Loader'
 
 // ...................... for select ..............................
 
@@ -96,11 +97,16 @@ function Regteam({
         }
     };
 
+  
+
+
     const handleOpen = () => {
         setOpen(true);
     };
     let formData = new FormData();
     const handleChangeUpload = async (e) => {
+        setLoading(true);
+        try{
         formData.append('file', document.getElementById('filenew').files[0]);
 
         let response = await axios.post(
@@ -113,13 +119,24 @@ function Regteam({
             }
         );
         if (response) {
-            console.log('server response', response);
+            console.log(response);
+            setLoading(false);
+            addToast(' File Uploaded successfully', {
+              appearance: 'success',
+              autoDismiss: true,
+            });
+
             return;
         }
-        console.log('file not sent');
+    } catch (error) {
+        console.log(error);
+        setLoading(false);
+        addToast('Failed to upload', { appearance: 'error' });
+      }
     };
 
     //................................... for date time ............
+   
 
     return (
         <Card
@@ -133,14 +150,16 @@ function Regteam({
                 height: 'auto',
                 borderRadius: '16px',
                 transition: '0.3s',
-                margin: '20px'
+                margin: '0px  20px'
             }}
         >
-            <FormLabel>KIBUNDA </FormLabel>
+           <div style={{display:'flex',justifyContent: 'center',
+}}><span style={{color:'blue',fontWeight:'bold',
+                                fontSize:32}} > </span></div> 
             <Divider
                 fullWidth
                 style={{
-                    background: 'gray',
+                    background: 'yellow',
                     marginTop: '10px',
                     marginBottom: '30px',
                     height: '30px'
@@ -167,36 +186,28 @@ function Regteam({
                     gap: '5%'
                 }}
             ></div>
-            <div
+          <div style={{display:'flex',justifyContent:'center'}}> <form onSubmit={(e) => e.preventDefault()}>
+            <input type="file" accept=".xls,.xlsx" name="fileuploaded" id="filenew" />
+            
+            <button
+                variant="contained"
+                className="btn-havor"
                 style={{
                     marginTop: '20px',
-                    width: '100%',
-                    gap: '5%'
+                    width: '200px',
+                    background: 'gray',
+                    color: 'white',
+                    height: '30px',
+                    borderRadius: '6px',
                 }}
-            ></div>
-            <form onSubmit={(e) => e.preventDefault()}>
-                <input type="file" name="fileuploaded" id="filenew" />
-                <button
-                    variant="contained"
-                    className="btn-havor"
-                    style={{
-                        marginTop: '20px',
-                        width: '200px',
-                        background: 'gray',
-                        color: 'white',
-                        height: '30px',
-                        borderRadius: '6px'
-                    }}
-                    onClick={handleChangeUpload}
-                >
-                    Upload file
-                </button>
-            </form>
+                onClick={handleChangeUpload}
+            >
+                Upload file {loading?<Loader/>:''}
+            </button>
+        </form></div>
+           
 
-            {/* <Button variant="contained" component="label">
-                Upload File
-                <input inputRef={tinf} type="file" hidden />
-            </Button> */}
+         
             <div
                 style={{
                     display: 'flex',
@@ -208,7 +219,7 @@ function Regteam({
             <Divider
                 fullWidth
                 style={{
-                    background: 'gray',
+                    background: 'yellow',
                     marginTop: '50px',
                     marginBottom: '30px',
                     height: '30px'
@@ -239,7 +250,11 @@ function Regteam({
                         <TextField
                             label="Number of Winners"
                             margin="normal"
+                            type='number'
+                            InputLabelProps={{ style: { fontSize: 13 } }}
+                            inputStyle={{ backgroundColor: 'red' }}
                             inputRef={winnersf}
+                            style={{fontSize:30}}
                             variant="outlined"
                             autoComplete="off"
                             maxWidth="300px"
@@ -270,16 +285,18 @@ function Regteam({
                             width: '400px'
                         }}
                     >
-                        <span style={{ marginBottom: '20px' }}>Winners:</span>
+                        <span style={{ marginBottom: '20px',fontSize:22,color:'blue',fontWeight:'bold',fontFamily:  'Georgia' }}>Who are the LUCKY winners ?</span>
                         <div
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                gap: '10px'
+                                gap: '10px',
+                                
                             }}
                         >
                             {Newwinners.map((row) => (
-                                <span>{row}</span>
+                                <span style={{color:'red',fontWeight:'bold',
+                                fontSize:27}}>{row}</span>
                             ))}
                         </div>
                     </div>
