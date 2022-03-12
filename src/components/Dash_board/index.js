@@ -22,18 +22,18 @@ import {
 function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
     let initial;
     // const userid = getUserId();
-    const { result: user, loading, refresh } = useGet(userid, getProfile);
+    // const { result: user, loading, refresh } = useGet(userid, getProfile);
 
-    const {
-        fname,
-        lname,
-        email,
-        username,
-        phone,
-        userRole,
-        branchId,
-        dashData
-    } = user || {};
+    // const {
+    //     fname,
+    //     lname,
+    //     email,
+    //     username,
+    //     phone,
+    //     userRole,
+    //     branchId,
+    //     dashData
+    // } = user || {};
 
     initial = `${fname} ${lname}`;
     useEffect(() => {
