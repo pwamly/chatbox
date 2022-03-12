@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { isLogged } from "../client";
+// import { isLogged } from "../client";
 
 export const ProtectRoute = ({ component: Component, ...rest }) => {
   return (

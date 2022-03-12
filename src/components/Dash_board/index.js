@@ -3,7 +3,7 @@ import Navbar from "./Navibar/index";
 import { IconContext } from "react-icons";
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
-import { getUserId, httpActions } from '../../client/index';
+// import { getUserId, httpActions } from '../../client/index';
 import DashView from './Transporters/Index';
 import { useGet } from '../../hooks';
 import './dashbar.css';
@@ -69,7 +69,7 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
                             <Container className="dashboard">
                                 <Switch>
                                     <ProtectRoute
-                                        path="/dashboard"
+                                        path="/"
                                         exact
                                         component={DashView}
                                     />
