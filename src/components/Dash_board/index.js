@@ -17,11 +17,11 @@ import {
     Switch
 } from 'react-router-dom';
 
-const { getProfile } = httpActions;
+// const { getProfile } = httpActions;
 
 function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
     let initial;
-    const userid = getUserId();
+    // const userid = getUserId();
     const { result: user, loading, refresh } = useGet(userid, getProfile);
 
     const {
