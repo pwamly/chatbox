@@ -69,7 +69,7 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
                             <Container className="dashboard">
                                 <Switch>
                                     <ProtectRoute
-                                        path="/"
+                                        path="/dashboard"
                                         exact
                                         component={DashView}
                                     />
