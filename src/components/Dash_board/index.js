@@ -35,23 +35,23 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
     //     dashData
     // } = user || {};
 
-    initial = `${fname} ${lname}`;
-    useEffect(() => {
-        dispatch({
-            type: SAVE_INITIAL_DATA,
-            payload: {
-                fname,
-                lname,
-                email,
-                username,
-                phone,
-                userRole,
-                branchId,
-                initial,
-                dashData
-            }
-        });
-    }, [user]);
+    // initial = `${fname} ${lname}`;
+    // useEffect(() => {
+    //     dispatch({
+    //         type: SAVE_INITIAL_DATA,
+    //         payload: {
+    //             fname,
+    //             lname,
+    //             email,
+    //             username,
+    //             phone,
+    //             userRole,
+    //             branchId,
+    //             initial,
+    //             dashData
+    //         }
+    //     });
+    // }, [user]);
 
     return (
         <>
@@ -65,7 +65,7 @@ function Index({ modalShown, toggleModal, showProfile, dispatch, pdf }) {
                         }}
                     >
                         <Router>
-                            <Navbar props={initial} />
+                            <Navbar />
                             <Container className="dashboard">
                                 <Switch>
                                     <ProtectRoute
