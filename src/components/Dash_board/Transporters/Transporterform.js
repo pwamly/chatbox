@@ -110,7 +110,7 @@ function Regteam({
         formData.append('file', document.getElementById('filenew').files[0]);
 
         let response = await axios.post(
-            'http://192.168.100.8:9898/api/process_file',
+            'http://196.41.38.46:9898/api/process_file',
             formData,
             {
                 headers: {
