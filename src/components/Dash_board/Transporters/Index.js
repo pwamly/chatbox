@@ -1,25 +1,24 @@
 import React, { useMemo } from 'react';
-import BranchDash from './Table/Transporttable';
 import Adduser from './Transporterform';
 import { connect } from 'react-redux';
 import { ADD_USER } from '../../../actions';
 
 function Index({ adduser }) {
-  return (
-      <div
-          style={{
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-          }}
-      >
-          {!adduser ? <Adduser /> : <BranchDash />}{' '}
-      </div>
-  );
+    return (
+        <div
+            style={{
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}
+        >
+            <Adduser />
+        </div>
+    );
 }
 
 const MapStateToprops = (store) => {
-  return { ...store };
+    return { ...store };
 };
 export default connect(MapStateToprops)(Index);

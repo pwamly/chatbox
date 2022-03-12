@@ -59,14 +59,16 @@ function Regteam({
     dispatch,
     branchdata,
     saveedit,
-    saveeditbtn
+    saveeditbtn,
+    reportdata
 }) {
     const style = { display: 'flex', flexDirection: 'row', fontWeight: 'bold' };
     const [usrbranch, setCng] = useState('');
     const [usrrole, setRole] = useState('');
     const [open, setOpen] = useState(false);
-    const [uploadfile, setUploadfile] = useState('');
+    const [Newwinners, setNewWinners] = useState([]);
 
+    const formref = useRef();
     // ........................... for select ..................
 
     const theme = useTheme();
@@ -76,21 +78,20 @@ function Regteam({
 
     // ........... to be passed to form values ..........
 
-    const tinf = useRef('');
+    const winnersf = useRef('');
 
     // ......................... to be passed to the form default...........
 
+    const { winners } = reportdata;
+
     const {} = branchdata;
-    const handleChange = (event) => {
-        setCng(event.target.value);
-    };
 
     const handleRundle = async () => {
         let response = await axios.get(
-            'http://192.168.1.62:9898/api/process_ruffle'
+            `http://196.41.38.46:9898/api/process_ruffle?winners=${winnersf.current.value}`
         );
         if (response) {
-            console.log('server response', response);
+            setNewWinners(response.data.message);
             return;
         }
     };
@@ -100,90 +101,23 @@ function Regteam({
     };
     let formData = new FormData();
     const handleChangeUpload = async (e) => {
-        formData.append('newfile', document.getElementById('filenew').files[0]);
-        var newfile = formData.get('newfile');
-        console.log('', newfile);
+        formData.append('file', document.getElementById('filenew').files[0]);
 
-        let response = await Upladfile(formData);
-        axios.post('upload_file', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+        let response = await axios.post(
+            'http://192.168.100.8:9898/api/process_file',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             }
-        });
+        );
         if (response) {
             console.log('server response', response);
             return;
         }
         console.log('file not sent');
     };
-
-    function selcust(data, selector) {
-        console.log('fff', data, selector);
-        let newdata = data.reduce((acc, item) => {
-            if (item.customerId === selector) {
-                acc.push(item);
-            }
-            return acc;
-        }, []);
-        return newdata[0];
-    }
-
-    function selcons(data, selector) {
-        let newdata = data.reduce((acc, item) => {
-            if (item.consignerid === selector) {
-                acc.push(item);
-            }
-            return acc;
-        }, []);
-        return newdata[0];
-    }
-
-    async function handlesave() {
-        try {
-            if (saveedit == 'add') {
-                setLoading(true);
-                // formref.current.reset();
-                let response = await registerTransporter({});
-
-                if (response) {
-                    console.log(response);
-                    setLoading(false);
-                    addToast(' User Added successfully', {
-                        appearance: 'success',
-                        autoDismiss: true
-                    });
-                    window.location.replace(`/dashboard/transporters`);
-                    return;
-                }
-                setLoading(false);
-                addToast('Updated!', { appearance: 'warning' });
-                return;
-            }
-            if (saveedit == 'edit') {
-                setLoading(true);
-                // formref.current.reset();
-                let response = await editUser({});
-
-                if (response) {
-                    console.log(response);
-                    setLoading(false);
-                    addToast(' User Updated successfully', {
-                        appearance: 'success',
-                        autoDismiss: true
-                    });
-                    window.location.replace(`/dashboard/transporters`);
-                    return;
-                }
-                setLoading(false);
-                addToast('Updated!', { appearance: 'warning' });
-                return;
-            }
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-            addToast('Failed', { appearance: 'error' });
-        }
-    }
 
     //................................... for date time ............
 
@@ -294,22 +228,61 @@ function Regteam({
                     margin: '20px'
                 }}
             >
-                <div>
-                    <button
-                        onClick={handleRundle}
-                        variant="contained"
-                        className="btn-havor"
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '20%'
+                    }}
+                >
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <TextField
+                            label="Number of Winners"
+                            margin="normal"
+                            inputRef={winnersf}
+                            variant="outlined"
+                            autoComplete="off"
+                            maxWidth="300px"
+                            defaultValue={winners}
+                            ref={formref}
+                        />
+                        <button
+                            onClick={handleRundle}
+                            variant="contained"
+                            className="btn-havor"
+                            style={{
+                                marginTop: '20px',
+                                width: '150px',
+                                background: 'gray',
+                                color: 'white',
+                                height: '30px',
+                                borderRadius: '6px'
+                            }}
+                        >
+                            Run Ruffle
+                        </button>
+                    </div>
+
+                    <div
                         style={{
-                            marginTop: '20px',
-                            width: '200px',
-                            background: 'gray',
-                            color: 'white',
-                            height: '30px',
-                            borderRadius: '6px'
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '400px'
                         }}
                     >
-                        Run Ruffle
-                    </button>
+                        <span style={{ marginBottom: '20px' }}>Winners:</span>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '10px'
+                            }}
+                        >
+                            {Newwinners.map((row) => (
+                                <span>{row}</span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </Card>
         </Card>
