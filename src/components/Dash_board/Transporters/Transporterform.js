@@ -121,9 +121,9 @@ function Regteam({
         if (response) {
             console.log(response);
             setLoading(false);
-            addToast(' File Uploaded successfully', {
-              appearance: 'success',
-              autoDismiss: true,
+            addToast(response.message, {
+                appearance: 'success',
+                autoDismiss: true
             });
 
             return;
