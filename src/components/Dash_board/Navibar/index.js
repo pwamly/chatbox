@@ -70,16 +70,6 @@ function Navbar({ profile }) {
                     className="social-media"
                     id="logout"
                 >
-                    <span>Users</span>
-                </div>
-                <div
-                    onClick={() => {
-                        logout();
-                        window.location.replace('/login');
-                    }}
-                    className="social-media"
-                    id="logout"
-                >
                     <span>Logout</span>
                 </div>
             </nav>
