@@ -119,7 +119,7 @@ function Regteam({
             }
         );
         if (response) {
-            console.log(response);
+            console.log('ttttttttttttttttttttttttt', response);
             setLoading(false);
             addToast(response.message, {
                 appearance: 'success',
