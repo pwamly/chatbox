@@ -1,11 +1,11 @@
 import './navbar.css';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import React, { useState } from 'react';
+import { logout } from '../../../client';
 
 // import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import Signiout from '@material-ui/icons/ExitToApp';
 import { Link, useHistory } from 'react-router-dom';
-import { logout } from '../../../client/index';
 import { connect } from 'react-redux';
 import SettingsIcon from '@mui/icons-material/Settings';
 // import { useStateValue } from './StateProvider';
@@ -52,17 +52,36 @@ function Navbar({ profile }) {
                         </h2>
                     </Link>
                 </div>
-
-            
-
                 <div className="social-media">
                     <div className="header">
-                    
-                        <span className="header__optionLineTwo" style={{fontSize:30}}>SIMBA vs YANGA : 2022 WINNERS</span>
-
+                        <span
+                            className="header__optionLineTwo"
+                            style={{ fontSize: 30 }}
+                        >
+                            SIMBA vs YANGA : 2022 WINNERS
+                        </span>
                     </div>
+                </div>{' '}
+                <div
+                    onClick={() => {
+                        logout();
+                        window.location.replace('/login');
+                    }}
+                    className="social-media"
+                    id="logout"
+                >
+                    <span>Users</span>
                 </div>
-               
+                <div
+                    onClick={() => {
+                        logout();
+                        window.location.replace('/login');
+                    }}
+                    className="social-media"
+                    id="logout"
+                >
+                    <span>Logout</span>
+                </div>
             </nav>
             <nav
                 className="sub-nav"

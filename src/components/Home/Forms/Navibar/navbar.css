@@ -104,11 +104,6 @@ width: 20%;
   width: 130px;
 }  
 
-#logout:hover{
-  cursor: pointer;
-
-}
-
 /* responsive css style  */
 @media (max-width: 1080px) {
   .main-nav {

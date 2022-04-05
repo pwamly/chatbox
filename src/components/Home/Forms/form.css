@@ -1,0 +1,22 @@
+.login-form {
+    position: block;
+    padding-top: 10%;
+    height: 100px;
+    font-size: 300px !important;
+}
+
+.btn-color{  
+        color: white;
+        width: 100px;
+        background: blue;
+        border-radius: 4px;
+        height: 30px;
+      
+      }
+
+.tracking-form {
+    position: block;
+    padding-top: 10%;
+    height: 100px;
+    font-size: 300px !important;
+}
