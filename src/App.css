@@ -4,7 +4,6 @@
     margin: 0;
     padding: 0;
     font-family: "Lato", sans-serif;
-    
 }
 
 h4 {
@@ -17,18 +16,20 @@ h4 {
 
 .navbar {}
 
+
 /* place holder color */
 
- body,html{
-     height: 100%;
- }
+body,
+html {
+    height: 100%;
+}
 
- .site{
-    background:#f3f4f6;
+.site {
+    background: #f3f4f6;
     /* background:red; */
     display: flex;
     flex-direction: column;
     gap: 20px;
-    min-height:75hv;
+    min-height: 75hv;
     font-size: 15px !important;
- }
+}
