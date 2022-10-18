@@ -20,10 +20,12 @@ function ChatRoom() {
   const formref = useRef()
 
   const messages = [
-    { username: 'joe', message: 'hi', time: '19:00', sender: true },
-    { username: 'peter', message: 'mambo', time: '19:00', sender: false },
-    { username: 'joe', message: 'poa', time: '19:00', sender: true },
+    { username: 'J', message: 'hi', time: '19:00', sender: true },
+    { username: 'P', message: 'mambo kfcjgfffffffffffffffffffff', time: '19:00', sender: false },
+    { username: 'J', message: 'poa', time: '19:00', sender: true },
   ]
+
+  function sendMessage() {}
 
   return (
     <div className="chat">
@@ -72,6 +74,21 @@ function ChatRoom() {
               fullWidth
               ref={formref}
             />{' '}
+            <Button
+              variant="contained"
+              onClick={sendMessage}
+              style={{
+                color: '#ffff',
+                maxWidth: '100px',
+                maxHeight: '30px',
+                minWidth: '30px',
+                minHeight: '30px',
+                background: '#1F2937',
+                marginTop: '25px',
+              }}
+            >
+              Send
+            </Button>
           </div>
         </>
       </div>

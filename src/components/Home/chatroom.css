@@ -33,6 +33,7 @@
     background: cornflowerblue;
     height: 60px;
     border-radius: 18px;
+    font-size: 18px;
 }
 
 .usn {
@@ -46,4 +47,11 @@
     width: 80%;
     padding-top: 20px;
     border-radius: 20px;
+}
+
+.messsage-form {
+    display: flex;
+    flex-direction: row;
+    /* background: red; */
+    gap: 15px;
 }
