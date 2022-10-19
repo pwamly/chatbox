@@ -33,3 +33,22 @@ html {
     min-height: 75hv;
     font-size: 15px !important;
 }
+
+.userform {
+    display: block;
+    position: fixed;
+    z-index: 2;
+    top: 50px;
+    height: 500px;
+    width: 100%;
+    background: rgb(116, 110, 106);
+    opacity: 1;
+}
+
+.userInput {
+    display: block;
+    position: relative;
+    top: 200px;
+    left: 40%;
+    width: 250px;
+}
