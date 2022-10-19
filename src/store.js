@@ -4,8 +4,8 @@ import reducer from "./reducer";
 
 let store;
 const initstore = {
-    data: [],
-    adduser: false,
+    mesagesData: [],
+    CurrentUser: '',
 }
 if (!store) {
     store = createStore(reducer, initstore);
