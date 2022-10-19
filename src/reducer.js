@@ -19,7 +19,6 @@ function reducer(state, action) {
     }
 
     if (action.type === SAVE_CHAT_NAME) {
-        console.log('gggggggggggg', action.payload)
         return {...state, CurrentUser: action.payload }
     }
     return state

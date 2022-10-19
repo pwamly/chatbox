@@ -13,6 +13,11 @@ function App({ CurrentUser = '', dispatch }) {
   const formref = useRef()
   const [user, setUser] = useState(CurrentUser)
 
+  function adduser() {
+    dispatch({ type: 'SAVE_CHAT_NAME', payload: chatname.current.value })
+    setUser(chatname.current.value)
+  }
+
   return (
     <Provider store={store}>
       <ToastProvider placement="top-center">
@@ -20,7 +25,6 @@ function App({ CurrentUser = '', dispatch }) {
           <Router>
             <Switch>
               <Route exact path="/chatroom">
-                {console.log('bbbbbbbbbbbbbbbb', user)}
                 <div>
                   {user == '' && (
                     <div className="userform">
@@ -43,10 +47,7 @@ function App({ CurrentUser = '', dispatch }) {
                         >
                           <Button
                             variant="contained"
-                            onClick={() => {
-                              dispatch({ type: 'SAVE_CHAT_NAME', payload: chatname.current.value })
-                              setUser(chatname.current.value)
-                            }}
+                            onClick={() => adduser()}
                             style={{
                               color: '#ffff',
                               maxWidth: '100px',

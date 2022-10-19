@@ -10,12 +10,6 @@ h4 {
     margin-top: 12px;
 }
 
-.home,
-.reports,
-.products {}
-
-.navbar {}
-
 
 /* place holder color */
 
@@ -39,7 +33,7 @@ html {
     position: fixed;
     z-index: 2;
     top: 50px;
-    height: 500px;
+    height: 100%;
     width: 100%;
     background: rgb(116, 110, 106);
     opacity: 1;
