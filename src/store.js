@@ -3,8 +3,10 @@ import { createStore } from "redux";
 import reducer from "./reducer";
 
 let store;
+let messageData = JSON.parse(localStorage.getItem('messageData')) || []
+
 const initstore = {
-    mesagesData: [],
+    mesagesData: messageData || [],
     CurrentUser: '',
 }
 if (!store) {

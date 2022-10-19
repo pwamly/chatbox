@@ -19,6 +19,9 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px;
+    max-height: 350px;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 .dialog {
@@ -29,17 +32,19 @@
 }
 
 .avar {
-    width: 60px;
+    width: 50px;
     background: cornflowerblue;
-    height: 60px;
+    height: 50px;
     border-radius: 18px;
-    font-size: 18px;
+    font-size: 8px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
 }
 
 .usn {
     display: block;
     position: relative;
-    left: 20px;
+    left: 17px;
     top: 20px;
 }
 
